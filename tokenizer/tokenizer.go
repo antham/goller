@@ -15,7 +15,6 @@ func Init() {
 }
 
 func Tokenize(line string) []sequence.Token {
-
 	seq, err := scanner.Scan(line)
 
 	if err == nil {
