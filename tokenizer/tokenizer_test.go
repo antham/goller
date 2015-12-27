@@ -21,7 +21,7 @@ func TestTokenizeLine(t *testing.T) {
 		t.Error("We should retrieve an IP 80.154.42.54 at token 0, got", tokens[0].Value)
 	}
 
-	if tokens[19].Value != "zmeu" {
-		t.Error("We should retrieve a string zmeu at token 19, got", tokens[19].Value)
+	if tokens[19].Value != "ZmEu" {
+		t.Error("We should retrieve a string ZmEu at token 19, got", tokens[19].Value)
 	}
 }
