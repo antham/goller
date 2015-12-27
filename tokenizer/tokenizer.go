@@ -9,7 +9,7 @@ var analyzer *sequence.Analyzer
 var scanner *sequence.Scanner
 
 func Init() {
-	sequence.ReadConfig("sequence.toml")
+	sequence.ReadConfig("")
 	parser = sequence.NewParser()
 	scanner = sequence.NewScanner()
 }
