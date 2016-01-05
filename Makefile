@@ -1,2 +1,6 @@
 compile:
 	gox -output "build/{{.Dir}}_{{.OS}}_{{.Arch}}"
+test:
+	go test -cover ./...
+fmt:
+	go fmt ./...
