@@ -6,17 +6,17 @@ import (
 	"strings"
 )
 
-//Term defined a terminal renderer
+// Term defined a terminal renderer
 type Term struct {
 	delimiter string
 }
 
-//NewTermDispatcher create a new terminal renderer
+// NewTermDispatcher create a new terminal renderer
 func NewTermDispatcher(delimiter string) Term {
 	return Term{delimiter: delimiter}
 }
 
-//RenderItems is called to render items in a terminal
+// RenderItems is called to render items in a terminal
 func (t Term) RenderItems(agregators map[[20]byte]*agregator.Agregator) {
 	for _, agregator := range agregators {
 		fmt.Printf("%d%s%s\n", agregator.Count, t.delimiter, strings.Join(agregator.Datas, t.delimiter))

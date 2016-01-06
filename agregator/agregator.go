@@ -9,25 +9,25 @@ import (
 	"strings"
 )
 
-//Agregator represents a unique log line
+// Agregator represents a unique log line
 type Agregator struct {
 	Count int
 	Datas []string
 }
 
-//Agregators contains a map of Agregator
+// Agregators contains a map of Agregator
 type Agregators struct {
 	agregators map[[20]byte]*Agregator
 }
 
-//NewAgregators create agregators
+// NewAgregators create agregators
 func NewAgregators() *Agregators {
 	return &Agregators{
 		agregators: make(map[[20]byte]*Agregator, 0),
 	}
 }
 
-//Agregate agregate tokens acoording to positions
+// Agregate agregate tokens acoording to positions
 func (a *Agregators) Agregate(positions []int, tokens *[]sequence.Token, trans transformer.TransformersMap) {
 	var accumulator string
 	var datas []string
@@ -57,12 +57,12 @@ func (a *Agregators) Agregate(positions []int, tokens *[]sequence.Token, trans t
 	}
 }
 
-//Get return agregated values
+// Get return agregated values
 func (a *Agregators) Get() map[[20]byte]*Agregator {
 	return a.agregators
 }
 
-//ExtractPositions split positions fields from string
+// ExtractPositions split positions fields from string
 func ExtractPositions(fields string, size int) ([]int, error) {
 	var positions []int
 

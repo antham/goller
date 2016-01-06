@@ -6,12 +6,12 @@ import (
 
 type transformer func(string) string
 
-//Transformers list
+// Transformers list
 type Transformers struct {
 	transformers []transformer
 }
 
-//Append transformer to transformer list
+// Append transformer to transformer list
 func (t *Transformers) Append(trans string, args []string) {
 	var function transformer
 
@@ -30,7 +30,7 @@ func (t *Transformers) Append(trans string, args []string) {
 	}
 }
 
-//Apply transformers to a string
+// Apply transformers to a string
 func (t *Transformers) Apply(input string) string {
 
 	result := input

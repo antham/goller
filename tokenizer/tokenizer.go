@@ -6,12 +6,12 @@ import (
 
 var scanner *sequence.Scanner
 
-//Init instantiate sequence objects
+// Init instantiate sequence objects
 func Init() {
 	scanner = sequence.NewScanner()
 }
 
-//Tokenize split a line to tokens
+// Tokenize split a line to tokens
 func Tokenize(line string) []sequence.Token {
 	seq, err := scanner.Scan(line)
 
