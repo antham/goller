@@ -7,8 +7,8 @@ import (
 func TestAppend(t *testing.T) {
 	transformers := &Transformers{}
 
-	transformers.Append("low", []string{})
 	transformers.Append("upp", []string{})
+	transformers.Append("low", []string{})
 
 	result := transformers.Apply("A RANDOM TEST")
 	expected := "a random test"

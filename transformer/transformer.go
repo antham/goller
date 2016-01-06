@@ -19,9 +19,9 @@ func (t *Transformers) Append(trans string, args []string) {
 	case 0:
 		switch trans {
 		case "low":
-			function = strings.ToUpper
-		case "upp":
 			function = strings.ToLower
+		case "upp":
+			function = strings.ToUpper
 		}
 	}
 
