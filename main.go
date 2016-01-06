@@ -6,6 +6,7 @@ import (
 	"github.com/antham/goller/dispatcher"
 	"github.com/antham/goller/reader"
 	"github.com/antham/goller/tokenizer"
+	"github.com/antham/goller/transformer"
 	"gopkg.in/alecthomas/kingpin.v2"
 	"os"
 )
@@ -13,19 +14,20 @@ import (
 var (
 	app = kingpin.New("goller", "Logger parser")
 
-	counter          = app.Command("counter", "Count occurence of field")
-	counterDelimiter = counter.Flag("delimiter", "Separator bewteen results").Default(" | ").String()
-	counterPositions = counter.Arg("positions", "Field positions").Required().String()
+	counter             = app.Command("counter", "Count occurence of field")
+	counterDelimiter    = counter.Flag("delimiter", "Separator bewteen results").Short('d').Default(" | ").String()
+	counterTransformers = transformer.TransformersWrapper(counter.Flag("trans", "Transformers applied to every fields").Short('t'))
+	counterPositions    = counter.Arg("positions", "Field positions").Required().String()
 )
 
 func main() {
 	switch kingpin.MustParse(app.Parse(os.Args[1:])) {
 	case counter.FullCommand():
-		count(*counterPositions, *counterDelimiter)
+		count(*counterPositions, *counterDelimiter, *counterTransformers)
 	}
 }
 
-func count(positionsString string, delimiter string) {
+func count(positionsString string, delimiter string, transformers transformer.TransformersMap) {
 	tokenizer.Init()
 
 	agregators := agregator.NewAgregators()

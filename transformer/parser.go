@@ -12,7 +12,7 @@ type FunctionStatement struct {
 	Args []string
 }
 
-// Statement represents all parsed functions
+// Statement represents all parsed functions from command line
 type Statement struct {
 	Position  int
 	Functions []FunctionStatement
