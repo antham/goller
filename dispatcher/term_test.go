@@ -3,6 +3,7 @@ package dispatcher
 import (
 	"bytes"
 	"github.com/antham/goller/agregator"
+	"github.com/antham/goller/transformer"
 	"github.com/trustpath/sequence"
 	"io"
 	"os"
@@ -33,7 +34,7 @@ func TestTermDispatcherDisplaying(t *testing.T) {
 		},
 	}
 
-	agregators.Agregate([]int{0, 1, 3}, &tokens)
+	agregators.Agregate([]int{0, 1, 3}, &tokens, transformer.TransformersMap{})
 
 	old := os.Stdout
 	r, w, _ := os.Pipe()

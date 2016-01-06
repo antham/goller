@@ -3,6 +3,7 @@ package agregator
 import (
 	"crypto/sha1"
 	"fmt"
+	"github.com/antham/goller/transformer"
 	"github.com/trustpath/sequence"
 	"reflect"
 	"testing"
@@ -90,7 +91,7 @@ func TestAgregateSingleValue(t *testing.T) {
 		},
 	}
 
-	agregators.Agregate([]int{0, 1, 3}, &tokens)
+	agregators.Agregate([]int{0, 1, 3}, &tokens, transformer.TransformersMap{})
 
 	for key, agregator := range agregators.Get() {
 		id := fmt.Sprintf("%x", key)
@@ -135,18 +136,18 @@ func TestAgregateSeveralValues(t *testing.T) {
 		}
 
 		if i <= 2 {
-			agregators.Agregate([]int{0, 1}, &tokens)
+			agregators.Agregate([]int{0, 1}, &tokens, transformer.TransformersMap{})
 		} else if i > 2 && i <= 5 {
-			agregators.Agregate([]int{2, 3}, &tokens)
+			agregators.Agregate([]int{2, 3}, &tokens, transformer.TransformersMap{})
 		} else if i > 5 {
-			agregators.Agregate([]int{4, 5}, &tokens)
+			agregators.Agregate([]int{4, 5}, &tokens, transformer.TransformersMap{})
 		}
 	}
 
 	datas := agregators.Get()
 
 	if len(datas) != 3 {
-		t.Error("Count must be 3 got", len(datas))
+		t.Error("Length must be 3 got", len(datas))
 	}
 
 	key := sha1.Sum([]byte("test1" + "test2"))
@@ -165,5 +166,48 @@ func TestAgregateSeveralValues(t *testing.T) {
 
 	if datas[key].Count != 4 {
 		t.Errorf("Count for key %x must be 4 got %d", key, datas[key].Count)
+	}
+}
+
+func TestApplyPreTransformer(t *testing.T) {
+	agregators := NewAgregators()
+
+	for i := 0; i < 10; i++ {
+		tokens := []sequence.Token{
+			sequence.Token{
+				Value: "test1",
+			},
+			sequence.Token{
+				Value: "test2",
+			},
+			sequence.Token{
+				Value: "test3",
+			},
+		}
+
+		trans := transformer.Transformers{}
+		trans.Append("upp", []string{})
+
+		agregators.Agregate(
+			[]int{0, 1, 2},
+			&tokens,
+			transformer.TransformersMap{0: trans, 2: trans},
+		)
+	}
+
+	datas := agregators.Get()
+
+	if len(datas) != 1 {
+		t.Error("Length must be 1 got", len(datas))
+	}
+
+	key := sha1.Sum([]byte("TEST1" + "test2" + "TEST3"))
+
+	if _, ok := datas[key]; ok != true {
+		t.Error("Entry for TEST1 test2 TEST3 doesn't exist")
+	}
+
+	if datas[key].Count != 10 {
+		t.Errorf("Count for key %x must be 10, got %s", key, datas[key].Count)
 	}
 }

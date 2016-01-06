@@ -27,7 +27,7 @@ func main() {
 	}
 }
 
-func count(positionsString string, delimiter string, transformers transformer.TransformersMap) {
+func count(positionsString string, delimiter string, trans transformer.TransformersMap) {
 	tokenizer.Init()
 
 	agregators := agregator.NewAgregators()
@@ -43,7 +43,7 @@ func count(positionsString string, delimiter string, transformers transformer.Tr
 			os.Exit(1)
 		}
 
-		agregators.Agregate(positions, &tokens)
+		agregators.Agregate(positions, &tokens, trans)
 	})
 
 	d := dispatcher.NewTermDispatcher(delimiter)

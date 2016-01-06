@@ -3,6 +3,7 @@ package agregator
 import (
 	"crypto/sha1"
 	"fmt"
+	"github.com/antham/goller/transformer"
 	"github.com/trustpath/sequence"
 	"strconv"
 	"strings"
@@ -27,13 +28,21 @@ func NewAgregators() *Agregators {
 }
 
 //Agregate agregate tokens acoording to positions
-func (a *Agregators) Agregate(positions []int, tokens *[]sequence.Token) {
+func (a *Agregators) Agregate(positions []int, tokens *[]sequence.Token, trans transformer.TransformersMap) {
 	var accumulator string
 	var datas []string
 
 	for _, i := range positions {
-		datas = append(datas, (*tokens)[i].Value)
-		accumulator = accumulator + (*tokens)[i].Value
+		var result string
+
+		if trans, ok := trans[i]; ok == true {
+			result = trans.Apply((*tokens)[i].Value)
+		} else {
+			result = (*tokens)[i].Value
+		}
+
+		datas = append(datas, result)
+		accumulator = accumulator + result
 	}
 
 	footprint := sha1.Sum([]byte(accumulator))
