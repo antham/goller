@@ -38,6 +38,13 @@ func (t *Transformers) Append(trans string, args []string) {
 				return strings.TrimRight(input, args[0])
 			}
 		}
+	case 2:
+		switch trans {
+		case "repl":
+			function = func(input string) string {
+				return strings.Replace(input, args[0], args[1], -1)
+			}
+		}
 	}
 
 	if function != nil {

@@ -68,3 +68,16 @@ func TestTrimRight(t *testing.T) {
 		t.Errorf("%s got %s", expected, result)
 	}
 }
+
+func TestReplace(t *testing.T) {
+	transformers := &Transformers{}
+
+	transformers.Append("repl", []string{"test", "hello world !"})
+
+	result := transformers.Apply("test")
+	expected := "hello world !"
+
+	if result != expected {
+		t.Errorf("%s got %s", expected, result)
+	}
+}
