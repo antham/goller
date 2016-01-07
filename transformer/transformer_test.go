@@ -29,3 +29,16 @@ func TestUpp(t *testing.T) {
 		t.Errorf("%s got %s", expected, result)
 	}
 }
+
+func TestTrim(t *testing.T) {
+	transformers := &Transformers{}
+
+	transformers.Append("trim", []string{"1"})
+
+	result := transformers.Apply("11test11")
+	expected := "test"
+
+	if result != expected {
+		t.Errorf("%s got %s", expected, result)
+	}
+}

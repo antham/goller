@@ -23,6 +23,13 @@ func (t *Transformers) Append(trans string, args []string) {
 		case "upp":
 			function = strings.ToUpper
 		}
+	case 1:
+		switch trans {
+		case "trim":
+			function = func(input string) string {
+				return strings.Trim(input, args[0])
+			}
+		}
 	}
 
 	if function != nil {
