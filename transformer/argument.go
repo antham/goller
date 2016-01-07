@@ -18,8 +18,9 @@ func (t *TransformersMap) Set(value string) error {
 		return err
 	}
 
+	trans := &Transformers{}
+
 	for _, stmt := range stmts.Functions {
-		trans := &Transformers{}
 		trans.Append(stmt.Name, stmt.Args)
 
 		(*t)[stmts.Position] = *trans
