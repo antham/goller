@@ -55,3 +55,16 @@ func TestTrimLeft(t *testing.T) {
 		t.Errorf("%s got %s", expected, result)
 	}
 }
+
+func TestTrimRight(t *testing.T) {
+	transformers := &Transformers{}
+
+	transformers.Append("trimr", []string{"1"})
+
+	result := transformers.Apply("11test11")
+	expected := "11test"
+
+	if result != expected {
+		t.Errorf("%s got %s", expected, result)
+	}
+}
