@@ -1,6 +1,7 @@
 package transformer
 
 import (
+	"strconv"
 	"strings"
 )
 
@@ -22,6 +23,10 @@ func (t *Transformers) Append(trans string, args []string) {
 			function = strings.ToLower
 		case "upp":
 			function = strings.ToUpper
+		case "len":
+			function = func(input string) string {
+				return strconv.Itoa(len(input))
+			}
 		}
 	case 1:
 		switch trans {

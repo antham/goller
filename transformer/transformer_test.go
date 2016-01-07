@@ -94,3 +94,16 @@ func TestConcat(t *testing.T) {
 		t.Errorf("%s got %s", expected, result)
 	}
 }
+
+func TestStringLength(t *testing.T) {
+	transformers := &Transformers{}
+
+	transformers.Append("len", []string{})
+
+	result := transformers.Apply("hello world")
+	expected := "11"
+
+	if result != expected {
+		t.Errorf("%s got %s", expected, result)
+	}
+}
