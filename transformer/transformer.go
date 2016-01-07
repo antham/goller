@@ -37,6 +37,10 @@ func (t *Transformers) Append(trans string, args []string) {
 			function = func(input string) string {
 				return strings.TrimRight(input, args[0])
 			}
+		case "cat":
+			function = func(input string) string {
+				return input + args[0]
+			}
 		}
 	case 2:
 		switch trans {

@@ -81,3 +81,16 @@ func TestReplace(t *testing.T) {
 		t.Errorf("%s got %s", expected, result)
 	}
 }
+
+func TestConcat(t *testing.T) {
+	transformers := &Transformers{}
+
+	transformers.Append("cat", []string{" world"})
+
+	result := transformers.Apply("hello")
+	expected := "hello world"
+
+	if result != expected {
+		t.Errorf("%s got %s", expected, result)
+	}
+}
