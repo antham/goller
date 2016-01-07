@@ -29,6 +29,10 @@ func (t *Transformers) Append(trans string, args []string) {
 			function = func(input string) string {
 				return strings.Trim(input, args[0])
 			}
+		case "triml":
+			function = func(input string) string {
+				return strings.TrimLeft(input, args[0])
+			}
 		}
 	}
 
