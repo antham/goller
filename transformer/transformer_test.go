@@ -159,3 +159,16 @@ func TestAdd(t *testing.T) {
 		t.Errorf("%s got %s", expected, result)
 	}
 }
+
+func TestSubstract(t *testing.T) {
+	transformers := &Transformers{}
+
+	transformers.Append("sub", []string{"1"})
+
+	result := transformers.Apply("2")
+	expected := "1"
+
+	if result != expected {
+		t.Errorf("%s got %s", expected, result)
+	}
+}
