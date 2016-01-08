@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	app = kingpin.New("goller", "Logger parser")
+	app = kingpin.New("goller", "Aggregate log fields and count occurences")
 
 	counter             = app.Command("counter", "Count occurence of field")
 	counterDelimiter    = counter.Flag("delimiter", "Separator bewteen results").Short('d').Default(" | ").String()
