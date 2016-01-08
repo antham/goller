@@ -1,6 +1,8 @@
 package transformer
 
 import (
+	"log"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -45,6 +47,16 @@ func (t *Transformers) Append(trans string, args []string) {
 		case "cat":
 			function = func(input string) string {
 				return input + args[0]
+			}
+		case "match":
+			function = func(input string) string {
+				result, err := regexp.MatchString(args[0], input)
+
+				if err != nil {
+					log.Fatalf("An error occured when parsing regexp : %s", err)
+				}
+
+				return strconv.FormatBool(result)
 			}
 		}
 	case 2:

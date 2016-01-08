@@ -107,3 +107,29 @@ func TestStringLength(t *testing.T) {
 		t.Errorf("%s got %s", expected, result)
 	}
 }
+
+func TestMatchSuccessful(t *testing.T) {
+	transformers := &Transformers{}
+
+	transformers.Append("match", []string{"hello.*"})
+
+	result := transformers.Apply("hello world")
+	expected := "true"
+
+	if result != expected {
+		t.Errorf("%s got %s", expected, result)
+	}
+}
+
+func TestMatchFailed(t *testing.T) {
+	transformers := &Transformers{}
+
+	transformers.Append("match", []string{"a"})
+
+	result := transformers.Apply("hello world")
+	expected := "false"
+
+	if result != expected {
+		t.Errorf("%s got %s", expected, result)
+	}
+}
