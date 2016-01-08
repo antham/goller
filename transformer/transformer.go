@@ -44,9 +44,13 @@ func (t *Transformers) Append(trans string, args []string) {
 			function = func(input string) string {
 				return strings.TrimRight(input, args[0])
 			}
-		case "cat":
+		case "rcat":
 			function = func(input string) string {
 				return input + args[0]
+			}
+		case "lcat":
+			function = func(input string) string {
+				return args[0] + input
 			}
 		case "match":
 			function = func(input string) string {

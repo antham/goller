@@ -82,12 +82,25 @@ func TestReplace(t *testing.T) {
 	}
 }
 
-func TestConcat(t *testing.T) {
+func TestRightConcat(t *testing.T) {
 	transformers := &Transformers{}
 
-	transformers.Append("cat", []string{" world"})
+	transformers.Append("rcat", []string{" world"})
 
 	result := transformers.Apply("hello")
+	expected := "hello world"
+
+	if result != expected {
+		t.Errorf("%s got %s", expected, result)
+	}
+}
+
+func TestLeftConcat(t *testing.T) {
+	transformers := &Transformers{}
+
+	transformers.Append("lcat", []string{"hello"})
+
+	result := transformers.Apply(" world")
 	expected := "hello world"
 
 	if result != expected {
