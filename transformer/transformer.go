@@ -62,6 +62,22 @@ func (t *Transformers) Append(trans string, args []string) {
 
 				return strconv.FormatBool(result)
 			}
+		case "add":
+			function = func(input string) string {
+				rightOp, err := strconv.Atoi(input)
+
+				if err != nil {
+					log.Fatalf("Argument must be an integer %s given", input)
+				}
+
+				leftOp, err := strconv.Atoi(args[0])
+
+				if err != nil {
+					log.Fatal("Argument must be an integer : %s given", input)
+				}
+
+				return strconv.Itoa(rightOp + leftOp)
+			}
 		}
 	case 2:
 		switch trans {

@@ -146,3 +146,16 @@ func TestMatchFailed(t *testing.T) {
 		t.Errorf("%s got %s", expected, result)
 	}
 }
+
+func TestAdd(t *testing.T) {
+	transformers := &Transformers{}
+
+	transformers.Append("add", []string{"1"})
+
+	result := transformers.Apply("2")
+	expected := "3"
+
+	if result != expected {
+		t.Errorf("%s got %s", expected, result)
+	}
+}
