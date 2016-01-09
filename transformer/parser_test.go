@@ -13,36 +13,36 @@ func TestParseValidTransformer(t *testing.T) {
 	expected := &Statement{
 		Position: 8,
 		Functions: []FunctionStatement{
-			FunctionStatement{
+			{
 				Name: "test1",
 				Args: []string{},
 			},
-			FunctionStatement{
+			{
 				Name: "test2",
 				Args: []string{},
 			},
-			FunctionStatement{
+			{
 				Name: "test3",
 				Args: []string{
 					"@[{}_ |,(hello world),| _{}]@",
 					"\\whatever\\",
 				},
 			},
-			FunctionStatement{
+			{
 				Name: "test4",
 				Args: []string{},
 			},
-			FunctionStatement{
+			{
 				Name: "test5",
 				Args: []string{
 					"hello",
 				},
 			},
-			FunctionStatement{
+			{
 				Name: "test6",
 				Args: []string{},
 			},
-			FunctionStatement{
+			{
 				Name: "test7",
 				Args: []string{
 					"hello",

@@ -71,22 +71,22 @@ func TestAgregateSingleValue(t *testing.T) {
 	agregators := NewAgregators()
 
 	tokens := []sequence.Token{
-		sequence.Token{
+		{
 			Value: "test1",
 		},
-		sequence.Token{
+		{
 			Value: "test2",
 		},
-		sequence.Token{
+		{
 			Value: "test3",
 		},
-		sequence.Token{
+		{
 			Value: "test4",
 		},
-		sequence.Token{
+		{
 			Value: "test5",
 		},
-		sequence.Token{
+		{
 			Value: "test6",
 		},
 	}
@@ -115,22 +115,22 @@ func TestAgregateSeveralValues(t *testing.T) {
 
 	for i := 0; i < 10; i++ {
 		tokens := []sequence.Token{
-			sequence.Token{
+			{
 				Value: "test1",
 			},
-			sequence.Token{
+			{
 				Value: "test2",
 			},
-			sequence.Token{
+			{
 				Value: "test3",
 			},
-			sequence.Token{
+			{
 				Value: "test4",
 			},
-			sequence.Token{
+			{
 				Value: "test5",
 			},
-			sequence.Token{
+			{
 				Value: "test6",
 			},
 		}
@@ -174,13 +174,13 @@ func TestApplyPreTransformer(t *testing.T) {
 
 	for i := 0; i < 10; i++ {
 		tokens := []sequence.Token{
-			sequence.Token{
+			{
 				Value: "test1",
 			},
-			sequence.Token{
+			{
 				Value: "test2",
 			},
-			sequence.Token{
+			{
 				Value: "test3",
 			},
 		}
