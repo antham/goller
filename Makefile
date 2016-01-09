@@ -4,6 +4,6 @@ test:
 	go test -cover ./...
 vet:
 	go vet ./...
-check: test vet
+check: test vet fmt
 fmt:
 	gofmt -l -s -w .
