@@ -27,7 +27,7 @@ func NewAgregators() *Agregators {
 	}
 }
 
-// Agregate agregate tokens acoording to positions
+// Agregate agregate tokens according to positions
 func (a *Agregators) Agregate(positions []int, tokens *[]sequence.Token, trans transformer.TransformersMap) {
 	var accumulator string
 	var datas []string
