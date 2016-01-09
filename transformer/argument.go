@@ -5,7 +5,7 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
-//  is a map of statement sort by position
+// TransformersMap is a map of statement sort by position
 type TransformersMap map[int]Transformers
 
 // Set is used to populate statement from string
