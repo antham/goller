@@ -208,6 +208,6 @@ func TestApplyPreTransformer(t *testing.T) {
 	}
 
 	if datas[key].Count != 10 {
-		t.Errorf("Count for key %x must be 10, got %s", key, datas[key].Count)
+		t.Errorf("Count for key %x must be 10, got %d", key, datas[key].Count)
 	}
 }

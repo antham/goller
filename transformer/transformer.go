@@ -73,7 +73,7 @@ func (t *Transformers) Append(trans string, args []string) {
 				leftOp, err := strconv.Atoi(args[0])
 
 				if err != nil {
-					log.Fatal("Argument must be an integer : %s given", input)
+					log.Fatalf("Argument must be an integer : %s given", input)
 				}
 
 				return strconv.Itoa(rightOp + leftOp)
@@ -89,7 +89,7 @@ func (t *Transformers) Append(trans string, args []string) {
 				leftOp, err := strconv.Atoi(args[0])
 
 				if err != nil {
-					log.Fatal("Argument must be an integer : %s given", input)
+					log.Fatalf("Argument must be an integer : %s given", input)
 				}
 
 				return strconv.Itoa(rightOp - leftOp)
