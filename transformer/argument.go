@@ -2,6 +2,7 @@ package transformer
 
 import (
 	"bytes"
+	"github.com/antham/goller/dsl"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
@@ -10,7 +11,7 @@ type TransformersMap map[int]Transformers
 
 // Set is used to populate statement from string
 func (t *TransformersMap) Set(value string) error {
-	parser := NewParser(bytes.NewBufferString(value))
+	parser := dsl.NewParser(bytes.NewBufferString(value))
 
 	stmts, err := parser.Parse()
 

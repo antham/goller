@@ -1,4 +1,4 @@
-package transformer
+package dsl
 
 // Token represents a entity extracted from string parsing
 type Token int

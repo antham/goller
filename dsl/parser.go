@@ -1,4 +1,4 @@
-package transformer
+package dsl
 
 import (
 	"fmt"
