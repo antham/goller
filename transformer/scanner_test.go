@@ -134,6 +134,15 @@ func TestReadDoubleQuote(t *testing.T) {
 	}
 }
 
+func TestReadEscapedDoubleQuote(t *testing.T) {
+	scanner := NewScanner(bytes.NewBufferString("\\\""))
+	token, data := scanner.Scan()
+
+	if token != EDQUOTE || data[0] != '"' {
+		t.Error("Token must be an escaped double quote got", data)
+	}
+}
+
 func TestReadEOF(t *testing.T) {
 	scanner := NewScanner(bytes.NewBufferString(""))
 	token, data := scanner.Scan()

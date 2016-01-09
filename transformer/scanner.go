@@ -50,6 +50,11 @@ func (s *Scanner) Scan() (tok Token, lit string) {
 		return DQUOTE, string(ch)
 	case ',':
 		return COMMA, string(ch)
+	case '\\':
+		if s.read() == '"' {
+			return EDQUOTE, string('"')
+		}
+		s.unread()
 	}
 
 	if strconv.IsPrint(ch) {

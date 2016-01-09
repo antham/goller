@@ -7,9 +7,9 @@ import (
 )
 
 func TestParseValidTransformer(t *testing.T) {
-	parser := NewParser(bytes.NewBufferString("8:test1|test2|test3(\"@[{}_ |,(hello world),| _{}]@\",\"\\whatever\\\")|test4|test5(\"hello\")|test6|test7(\"hello\",\"world\",\"!\")"))
+	parser := NewParser(bytes.NewBufferString("8:test1|test2|test3(\"@[{}_ |,(hello world),| _{}]@\",\"\\\\whatever\\\")|test4|test5(\"hello\")|test6|test7(\"hello\",\"world\",\"!\")"))
 	stmt, err := parser.Parse()
-
+	t.Log("8:test1|test2|test3(\"@[{}_ |,(hello world),| _{}]@\",\"\\whatever\\\")|test4|test5(\"hello\")|test6|test7(\"hello\",\"world\",\"!\")")
 	expected := &Statement{
 		Position: 8,
 		Functions: []FunctionStatement{

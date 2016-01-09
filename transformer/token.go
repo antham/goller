@@ -15,5 +15,6 @@ const (
 	COMMA
 	COLON
 	DQUOTE
+	EDQUOTE
 	PIPE
 )
