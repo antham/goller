@@ -12,8 +12,8 @@ type FunctionStatement struct {
 	Args []string
 }
 
-// Statement represents all parsed functions from command line
-type Statement struct {
+// PositionStatement represents all parsed functions from command line
+type PositionStatement struct {
 	Position  int
 	Functions []FunctionStatement
 }
@@ -33,8 +33,8 @@ func NewParser(r io.Reader) *Parser {
 	return &Parser{s: NewScanner(r)}
 }
 
-// Parse extract tokens from string
-func (p *Parser) Parse() (*Statement, error) {
+// ParsePositionAndFunctions extract tokens from string
+func (p *Parser) ParsePositionAndFunctions() (*PositionStatement, error) {
 	pos, err := p.parsePosition()
 
 	if err != nil {
@@ -47,7 +47,7 @@ func (p *Parser) Parse() (*Statement, error) {
 		return nil, err
 	}
 
-	return &Statement{
+	return &PositionStatement{
 		Position:  pos,
 		Functions: functionsStmt,
 	}, nil

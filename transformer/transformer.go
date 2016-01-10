@@ -17,7 +17,7 @@ type TransformersMap map[int]Transformers
 func (t *TransformersMap) Set(value string) error {
 	parser := dsl.NewParser(bytes.NewBufferString(value))
 
-	stmts, err := parser.Parse()
+	stmts, err := parser.ParsePositionAndFunctions()
 
 	if err != nil {
 		return err

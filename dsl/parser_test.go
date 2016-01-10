@@ -6,11 +6,11 @@ import (
 	"testing"
 )
 
-func TestParseValidTransformer(t *testing.T) {
+func TestParsePositionAndFunctions(t *testing.T) {
 	parser := NewParser(bytes.NewBufferString("8:test1|test2|test3(\"@[{}_ |,(hello world),| _{}]@\",\"\\\\whatever\\\")|test4|test5(\"hello\")|test6|test7(\"hello\",\"world\",\"!\")"))
-	stmt, err := parser.Parse()
-	t.Log("8:test1|test2|test3(\"@[{}_ |,(hello world),| _{}]@\",\"\\whatever\\\")|test4|test5(\"hello\")|test6|test7(\"hello\",\"world\",\"!\")")
-	expected := &Statement{
+	stmt, err := parser.ParsePositionAndFunctions()
+
+	expected := &PositionStatement{
 		Position: 8,
 		Functions: []FunctionStatement{
 			{
@@ -58,63 +58,63 @@ func TestParseValidTransformer(t *testing.T) {
 	}
 }
 
-func TestParseUnValidPosition(t *testing.T) {
+func TestParsePositionAndFunctionsUnValidPosition(t *testing.T) {
 	parser := NewParser(bytes.NewBufferString("a:test1|test2|test3"))
-	stmt, err := parser.Parse()
+	stmt, err := parser.ParsePositionAndFunctions()
 
 	if stmt != nil || err == nil || err.Error() != "found \"a\", expected a number" {
 		t.Error("Must throw an error if no position is found")
 	}
 }
 
-func TestParseUnvalidColon(t *testing.T) {
+func TestParsePositionAndFunctionsUnvalidColon(t *testing.T) {
 	parser := NewParser(bytes.NewBufferString("8|test1|test2|test3"))
-	stmt, err := parser.Parse()
+	stmt, err := parser.ParsePositionAndFunctions()
 
 	if stmt != nil || err == nil || err.Error() != "found \"|\", expected a colon" {
 		t.Error("Must throw an error if no colon is found")
 	}
 }
 
-func TestParseUnvalidFunction(t *testing.T) {
+func TestParsePositionAndFunctionsUnvalidFunction(t *testing.T) {
 	parser := NewParser(bytes.NewBufferString("8:test1@|test2|test3"))
-	stmt, err := parser.Parse()
+	stmt, err := parser.ParsePositionAndFunctions()
 
 	if stmt != nil || err == nil || err.Error() != "found \"test1@\", function must have letter and number only" {
 		t.Error("Must throw an error if function as an invalid format")
 	}
 }
 
-func TestParseFunctionWithNoDoubleQuoteToStartArg(t *testing.T) {
+func TestParseFunctionPositionAndFunctionsWithNoDoubleQuoteToStartArg(t *testing.T) {
 	parser := NewParser(bytes.NewBufferString("8:test1|test2(hello)|test3"))
-	stmt, err := parser.Parse()
+	stmt, err := parser.ParsePositionAndFunctions()
 
 	if stmt != nil || err == nil || err.Error() != "found \"hello\", arg must start with a quote" {
 		t.Error("Must throw an error if function args doesn't start with a double quote")
 	}
 }
 
-func TestParseFunctionWithNoDoubleQuoteToEndArg(t *testing.T) {
+func TestParseFunctionPositionAndFunctionsWithNoDoubleQuoteToEndArg(t *testing.T) {
 	parser := NewParser(bytes.NewBufferString("8:test1|test2(\"hello"))
-	stmt, err := parser.Parse()
+	stmt, err := parser.ParsePositionAndFunctions()
 
 	if stmt != nil || err == nil || err.Error() != "found \"hello\", arg must end with a quote" {
 		t.Error("Must throw an error if function args doesn't end with a double quote")
 	}
 }
 
-func TestParseFunctionWithNoFinalParenToEndArg(t *testing.T) {
+func TestParseFunctionPositionAndFunctionsWithNoFinalParenToEndArg(t *testing.T) {
 	parser := NewParser(bytes.NewBufferString("8:test1|test2(\"hello\""))
-	stmt, err := parser.Parse()
+	stmt, err := parser.ParsePositionAndFunctions()
 
 	if stmt != nil || err == nil || err.Error() != "found \"\", must be a comma or close paren" {
 		t.Error("Must throw an error if function arg doesn't end with paren")
 	}
 }
 
-func TestParseFunctionWithNoCommaAfterArg(t *testing.T) {
+func TestParseFunctionPositionAndFunctionsWithNoCommaAfterArg(t *testing.T) {
 	parser := NewParser(bytes.NewBufferString("8:test1|test2(\"hello\"|\"world\")"))
-	stmt, err := parser.Parse()
+	stmt, err := parser.ParsePositionAndFunctions()
 
 	if stmt != nil || err == nil || err.Error() != "found \"|\", must be a comma or close paren" {
 		t.Error("Must throw an error if function args are not separated with comma")
