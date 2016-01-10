@@ -74,32 +74,43 @@ func (p *Parser) parsePosition() (int, error) {
 	return pos, nil
 }
 
-// parseFuntions extract all functions from string
+// parseFunctions extract function from string
+func (p *Parser) parseFunction() (FunctionStatement, error) {
+	var lit string
+	var tok Token
+
+	tok, lit = p.scan()
+
+	if tok != ALNUM {
+		return FunctionStatement{}, fmt.Errorf("found %q, function must have letter and number only", lit)
+	}
+
+	args, err := p.parseFuncArgs()
+
+	if err != nil {
+		return FunctionStatement{}, err
+	}
+
+	return FunctionStatement{
+		Name: lit,
+		Args: args,
+	}, nil
+}
+
+// parseFunctions extract all functions from string
 func (p *Parser) parseFunctions() ([]FunctionStatement, error) {
-	functionStmt := []FunctionStatement{}
+	functionStmts := []FunctionStatement{}
 
 	for {
-		var lit string
-		var tok Token
-
-		tok, lit = p.scan()
-
-		if tok != ALNUM {
-			return []FunctionStatement{}, fmt.Errorf("found %q, function must have letter and number only", lit)
-		}
-
-		args, err := p.parseFuncArgs()
+		functionStmt, err := p.parseFunction()
 
 		if err != nil {
 			return []FunctionStatement{}, err
 		}
 
-		functionStmt = append(functionStmt, FunctionStatement{
-			Name: lit,
-			Args: args,
-		})
+		functionStmts = append(functionStmts, functionStmt)
 
-		tok, lit = p.scan()
+		tok, lit := p.scan()
 
 		if tok == EOF {
 			break
@@ -110,7 +121,7 @@ func (p *Parser) parseFunctions() ([]FunctionStatement, error) {
 		}
 	}
 
-	return functionStmt, nil
+	return functionStmts, nil
 }
 
 // parseFuncArgs parse all function arguments
