@@ -35,20 +35,10 @@ func NewParser(r io.Reader) *Parser {
 
 // Parse extract tokens from string
 func (p *Parser) Parse() (*Statement, error) {
-	tok, lit := p.scan()
-
-	if tok != NUMBER {
-		return nil, fmt.Errorf("found %q, expected a number", lit)
-	}
-
-	pos, err := strconv.Atoi(lit)
+	pos, err := p.parsePosition()
 
 	if err != nil {
 		return nil, err
-	}
-
-	if tok, lit = p.scan(); tok != COLON {
-		return nil, fmt.Errorf("found %q, expected a colon", lit)
 	}
 
 	functionsStmt, err := p.parseFunctions()
@@ -61,6 +51,27 @@ func (p *Parser) Parse() (*Statement, error) {
 		Position:  pos,
 		Functions: functionsStmt,
 	}, nil
+}
+
+// parsePosition extract position from string
+func (p *Parser) parsePosition() (int, error) {
+	tok, lit := p.scan()
+
+	if tok != NUMBER {
+		return -1, fmt.Errorf("found %q, expected a number", lit)
+	}
+
+	pos, err := strconv.Atoi(lit)
+
+	if err != nil {
+		return -1, err
+	}
+
+	if tok, lit = p.scan(); tok != COLON {
+		return -1, fmt.Errorf("found %q, expected a colon", lit)
+	}
+
+	return pos, nil
 }
 
 // parseFuntions extract all functions from string
