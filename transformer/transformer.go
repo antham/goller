@@ -54,9 +54,7 @@ func TransformersWrapper(s kingpin.Settings) (target *TransformersMap) {
 type transformer func(string) string
 
 // Transformers list
-type Transformers struct {
-	transformers []transformer
-}
+type Transformers []transformer
 
 // Append transformer to transformer list
 func (t *Transformers) Append(trans string, args []string) {
@@ -149,7 +147,7 @@ func (t *Transformers) Append(trans string, args []string) {
 	}
 
 	if function != nil {
-		t.transformers = append(t.transformers, function)
+		*t = append(*t, function)
 	}
 }
 
@@ -158,7 +156,7 @@ func (t *Transformers) Apply(input string) string {
 
 	result := input
 
-	for _, transformer := range t.transformers {
+	for _, transformer := range *t {
 		result = transformer(result)
 	}
 
