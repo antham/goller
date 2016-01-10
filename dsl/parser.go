@@ -53,6 +53,23 @@ func (p *Parser) ParsePositionAndFunctions() (*PositionStatement, error) {
 	}, nil
 }
 
+// ParseFunction extract tokens from string
+func (p *Parser) ParseFunction() (*FunctionStatement, error) {
+	functionStmt, err := p.parseFunction()
+
+	if err != nil {
+		return nil, err
+	}
+
+	tok, lit := p.scan()
+
+	if tok != EOF {
+		return &FunctionStatement{}, fmt.Errorf("found %q, only one function can be defined", lit)
+	}
+
+	return &functionStmt, nil
+}
+
 // parsePosition extract position from string
 func (p *Parser) parsePosition() (int, error) {
 	tok, lit := p.scan()

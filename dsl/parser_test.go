@@ -120,3 +120,49 @@ func TestParseFunctionPositionAndFunctionsWithNoCommaAfterArg(t *testing.T) {
 		t.Error("Must throw an error if function args are not separated with comma")
 	}
 }
+
+func TestParseFunctionWithoutArgs(t *testing.T) {
+	parser := NewParser(bytes.NewBufferString("test1"))
+	stmt, err := parser.ParseFunction()
+
+	expected := &FunctionStatement{
+		Name: "test1",
+		Args: []string{},
+	}
+
+	if err != nil || reflect.DeepEqual(stmt, expected) != true {
+		t.Errorf("Struct not equals expected %v got %v", expected, stmt)
+	}
+}
+
+func TestParseFunctionWithArgs(t *testing.T) {
+	parser := NewParser(bytes.NewBufferString("test1(\"hello\",\"world\")"))
+	stmt, err := parser.ParseFunction()
+
+	expected := &FunctionStatement{
+		Name: "test1",
+		Args: []string{"hello", "world"},
+	}
+
+	if err != nil || reflect.DeepEqual(stmt, expected) != true {
+		t.Errorf("Struct not equals expected %v got %v", expected, stmt)
+	}
+}
+
+func TestParseFunctionWithExtraCharacters(t *testing.T) {
+	parser := NewParser(bytes.NewBufferString("test1(\"hello\",\"world\")|"))
+	_, err := parser.ParseFunction()
+
+	if err == nil || err.Error() != "found \"|\", only one function can be defined" {
+		t.Error("Must throw an error if characters remain after single function definition")
+	}
+}
+
+func TestParseFunctionUnvalidFunction(t *testing.T) {
+	parser := NewParser(bytes.NewBufferString("test1(\"hello\","))
+	_, err := parser.ParseFunction()
+
+	if err == nil || err.Error() != "found \"\", arg must start with a quote" {
+		t.Error("Must throw an error if function is not correct")
+	}
+}
