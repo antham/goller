@@ -86,6 +86,34 @@ func (t *Transformers) Append(trans string, args []string) {
 			function = func(input string) string {
 				return strings.TrimRight(input, args[0])
 			}
+		case "dell":
+			function = func(input string) string {
+				size, err := strconv.Atoi(args[0])
+
+				if err != nil {
+					log.Fatalf("Argument must be an integer : %s given", args[0])
+				}
+
+				if len(input) < size {
+					return ""
+				}
+
+				return input[size:]
+			}
+		case "delr":
+			function = func(input string) string {
+				size, err := strconv.Atoi(args[0])
+
+				if err != nil {
+					log.Fatalf("Argument must be an integer : %s given", args[0])
+				}
+
+				if len(input) < size {
+					return ""
+				}
+
+				return input[:len(input)-size]
+			}
 		case "rcat":
 			function = func(input string) string {
 				return input + args[0]

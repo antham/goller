@@ -204,3 +204,55 @@ func TestSubstract(t *testing.T) {
 		t.Errorf("%s got %s", expected, result)
 	}
 }
+
+func TestDeleteNumberOfCharactersAtTheRightSide(t *testing.T) {
+	transformers := &Transformers{}
+
+	transformers.Append("delr", []string{"8"})
+
+	result := transformers.Apply("Hello world !")
+	expected := "Hello"
+
+	if result != expected {
+		t.Errorf("%s got %s", expected, result)
+	}
+}
+
+func TestDeleteNumberOfCharactersAtTheLeftSide(t *testing.T) {
+	transformers := &Transformers{}
+
+	transformers.Append("dell", []string{"6"})
+
+	result := transformers.Apply("Hello world !")
+	expected := "world !"
+
+	if result != expected {
+		t.Errorf("%s got %s", expected, result)
+	}
+}
+
+func TestDeleteBiggerNumberOfCharactersTheLeftSide(t *testing.T) {
+	transformers := &Transformers{}
+
+	transformers.Append("dell", []string{"100"})
+
+	result := transformers.Apply("Hello world !")
+	expected := ""
+
+	if result != expected {
+		t.Errorf("%s got %s", expected, result)
+	}
+}
+
+func TestDeleteBiggerNumberOfCharactersTheRightSide(t *testing.T) {
+	transformers := &Transformers{}
+
+	transformers.Append("delr", []string{"100"})
+
+	result := transformers.Apply("Hello world !")
+	expected := ""
+
+	if result != expected {
+		t.Errorf("%s got %s", expected, result)
+	}
+}
