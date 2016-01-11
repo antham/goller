@@ -41,3 +41,27 @@ func TestParseWhitespace(t *testing.T) {
 		t.Errorf("%s got %s", expected, result)
 	}
 }
+
+func TestParseRegexpWithPatternMatchingWholeExpression(t *testing.T) {
+	parser := new(Parser)
+	parser.Create("reg", []string{"(h.{4}) (w.{4}), (a) (testing) (sentence) !"})
+
+	result := parser.Parse("hello world, a testing sentence !")
+	expected := []string{"hello", "world", "a", "testing", "sentence"}
+
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("%s got %s", expected, result)
+	}
+}
+
+func TestParseRegexpWithPatternNotMatchingExpression(t *testing.T) {
+	parser := new(Parser)
+	parser.Create("reg", []string{"(h.{4}) (w.{4}) (testing) (sentence)"})
+
+	result := parser.Parse("hello world, a testing sentence !")
+	expected := []string{}
+
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("%s got %s", expected, result)
+	}
+}

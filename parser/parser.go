@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"github.com/antham/goller/dsl"
 	"gopkg.in/alecthomas/kingpin.v2"
+	"regexp"
 	"strings"
 )
 
@@ -37,6 +38,26 @@ func (p *Parser) Create(pars string, args []string) {
 		case "whi":
 			{
 				function = strings.Fields
+			}
+		}
+	case 1:
+		switch pars {
+		case "reg":
+			{
+				{
+					function = func(input string) []string {
+						re := regexp.MustCompile(args[0])
+
+						matches := re.FindStringSubmatch(input)
+
+						if len(matches) > 1 {
+							return matches[1:]
+						}
+
+						return []string{}
+					}
+				}
+
 			}
 		}
 	}
