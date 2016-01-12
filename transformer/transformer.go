@@ -114,11 +114,11 @@ func (t *Transformers) Append(trans string, args []string) {
 
 				return input[:len(input)-size]
 			}
-		case "rcat":
+		case "catr":
 			function = func(input string) string {
 				return input + args[0]
 			}
-		case "lcat":
+		case "catl":
 			function = func(input string) string {
 				return args[0] + input
 			}

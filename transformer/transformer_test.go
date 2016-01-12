@@ -117,7 +117,7 @@ func TestReplace(t *testing.T) {
 func TestRightConcat(t *testing.T) {
 	transformers := &Transformers{}
 
-	transformers.Append("rcat", []string{" world"})
+	transformers.Append("catr", []string{" world"})
 
 	result := transformers.Apply("hello")
 	expected := "hello world"
@@ -130,7 +130,7 @@ func TestRightConcat(t *testing.T) {
 func TestLeftConcat(t *testing.T) {
 	transformers := &Transformers{}
 
-	transformers.Append("lcat", []string{"hello"})
+	transformers.Append("catl", []string{"hello"})
 
 	result := transformers.Apply(" world")
 	expected := "hello world"
