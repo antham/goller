@@ -54,6 +54,43 @@ func (p *Parser) ParsePositionAndFunctions() (*PositionStatement, error) {
 	}, nil
 }
 
+// ParsePositionsAndFunctions extract tokens from string
+// ex : position:test,position:test1("arg1","arg2")
+func (p *Parser) ParsePositionsAndFunctions() (*[]PositionStatement, error) {
+	var positionsStatement []PositionStatement
+	var tok Token
+	var lit string
+
+	for {
+		pos, err := p.parsePosition()
+
+		if err != nil {
+			return nil, err
+		}
+
+		functionStmt, err := p.parseFunction()
+
+		if err != nil {
+			return nil, err
+		}
+
+		positionsStatement = append(positionsStatement, PositionStatement{
+			Position:  pos,
+			Functions: []FunctionStatement{functionStmt},
+		})
+
+		if tok, lit = p.scan(); tok != EOF && tok != COMMA {
+			return &[]PositionStatement{}, fmt.Errorf("found %q, must be a comma", lit)
+		}
+
+		if tok == EOF {
+			break
+		}
+	}
+
+	return &positionsStatement, nil
+}
+
 // ParseFunction extract tokens from string
 // ex : test1("arg1","arg2")
 func (p *Parser) ParseFunction() (*FunctionStatement, error) {

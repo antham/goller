@@ -166,3 +166,60 @@ func TestParseFunctionUnvalidFunction(t *testing.T) {
 		t.Error("Must throw an error if function is not correct")
 	}
 }
+
+func TestParsePositionsAndFunctions(t *testing.T) {
+	parser := NewParser(bytes.NewBufferString("8:test1(\"1\"),9:test2(\"2\"),10:test3"))
+	stmt, err := parser.ParsePositionsAndFunctions()
+
+	expected := &[]PositionStatement{
+		{
+			Position: 8,
+			Functions: []FunctionStatement{
+				{
+					Name: "test1",
+					Args: []string{"1"},
+				},
+			},
+		},
+		{
+			Position: 9,
+			Functions: []FunctionStatement{
+				{
+					Name: "test2",
+					Args: []string{"2"},
+				},
+			},
+		},
+		{
+			Position: 10,
+			Functions: []FunctionStatement{
+				{
+					Name: "test3",
+					Args: []string{},
+				},
+			},
+		},
+	}
+
+	if err != nil || reflect.DeepEqual(stmt, expected) != true {
+		t.Errorf("Struct not equals expected %v got %v", expected, stmt)
+	}
+}
+
+func TestParsePositionsAndFunctionsWithUnvalidPosition(t *testing.T) {
+	parser := NewParser(bytes.NewBufferString("test1(\"hello\")"))
+	_, err := parser.ParsePositionsAndFunctions()
+
+	if err == nil || err.Error() != "found \"test1\", expected a number" {
+		t.Error("Must throw an error if position is not correct")
+	}
+}
+
+func TestParsePositionsAndFunctionsEndingWithUnauthorizedCharacter(t *testing.T) {
+	parser := NewParser(bytes.NewBufferString("8:test1|"))
+	_, err := parser.ParsePositionsAndFunctions()
+
+	if err == nil || err.Error() != "found \"|\", must be a comma" {
+		t.Error("Must throw an error if position is not correct")
+	}
+}
