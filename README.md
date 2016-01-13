@@ -30,6 +30,8 @@ Commands:
 
 ### Counter
 
+*Count number of time fields occured*
+
 ```bash
 usage: goller counter [<flags>] <positions>
 
@@ -46,6 +48,19 @@ Args:
   <positions>  Field positions
 ```
 
+For instance :
+
+```bash
+echo "hello world\nhello world\nhi everybody\nhello world" | goller counter 0,1
+```
+
+produces :
+
+```bash
+1 | hi | everybody
+3 | hello | world
+```
+
 ## Delimiter option (-d/--delimiter)
 
 *Change separator between counted fields*
@@ -53,13 +68,13 @@ Args:
 For instance :
 
 ```bash
-echo "1 2 3"|goller counter -d@ 0,1,2
+echo "hello world !" | goller counter -d@ 0,1,2
 ```
 
 produces :
 
 ```bash
-1@1@2@3
+1@hello@world@!
 ```
 
 ## Parser option (-p/--parser)
@@ -77,7 +92,7 @@ Available functions :
 For instance :
 
 ```bash
-echo "helloworld\!"|goller counter -p 'reg("(h.{4})(w.{4})(.)")' 0,1,2
+echo "helloworld\!" | goller counter -p 'reg("(h.{4})(w.{4})(.)")' 0,1,2
 ```
 
 produces :
@@ -95,7 +110,7 @@ produces :
 For instance :
 
 ```bash
-echo "test1 test2 test3"|goller counter -p whi 0,1,2
+echo "test1 test2 test3" | goller counter -p whi 0,1,2
 ```
 
 produces :
@@ -133,7 +148,7 @@ Available functions:
 For instance :
 
 ```bash
-echo "1 2 3"|goller counter -t '0:add("1")' -t '1:add("2")' -t '2:add("3")' 0,1,2
+echo "1 2 3" | goller counter -t '0:add("1")' -t '1:add("2")' -t '2:add("3")' 0,1,2
 ```
 
 produces :
@@ -149,7 +164,7 @@ produces :
 For instance :
 
 ```bash
-echo "ello orld"|goller counter -t '0:catl("h")' -t '1:catl("w")' 0,1
+echo "ello orld" | goller counter -t '0:catl("h")' -t '1:catl("w")' 0,1
 ```
 
 produces :
@@ -165,7 +180,7 @@ produces :
 For instance :
 
 ```bash
-echo "h w"|goller counter -t '0:catr("ello")' -t '1:catr("orld")' 0,1
+echo "h w" | goller counter -t '0:catr("ello")' -t '1:catr("orld")' 0,1
 ```
 
 produces :
@@ -181,7 +196,7 @@ produces :
 For instance :
 
 ```bash
-echo "123hello 12345world"|goller counter -t '0:dell("3")' -t '1:dell("5")' 0,1
+echo "123hello 12345world" | goller counter -t '0:dell("3")' -t '1:dell("5")' 0,1
 ```
 
 produces :
@@ -197,7 +212,7 @@ produces :
 For instance :
 
 ```bash
-echo "hello123 world12345"|goller counter -t '0:delr("3")' -t '1:delr("5")' 0,1
+echo "hello123 world12345" | goller counter -t '0:delr("3")' -t '1:delr("5")' 0,1
 ```
 
 produces :
@@ -213,7 +228,7 @@ produces :
 For instance :
 
 ```bash
-echo "hello world \!"|goller counter -t '0:len' -t '1:len' -t '2:len' 0,1,2
+echo "hello world \!" | goller counter -t '0:len' -t '1:len' -t '2:len' 0,1,2
 ```
 
 produces :
@@ -229,7 +244,7 @@ produces :
 For instance :
 
 ```bash
-echo "HELLO WORLD"|goller counter -t '0:low' -t '1:low' 0,1
+echo "HELLO WORLD" | goller counter -t '0:low' -t '1:low' 0,1
 ```
 
 produces :
@@ -245,7 +260,7 @@ produces :
 For instance :
 
 ```bash
-echo "hello world"|goller counter -t '0:match("hi")' -t '1:match("w.{4}")' 0,1
+echo "hello world" | goller counter -t '0:match("hi")' -t '1:match("w.{4}")' 0,1
 ```
 
 produces :
@@ -261,13 +276,13 @@ produces :
 For instance :
 
 ```bash
-echo "hello world"|goller counter -t '0:repl("hello","good bye")' -t '1:repl("world","everybody")' 0,1
+echo "hello world" | goller counter -t '0:repl("ello","i")' -t '1:repl("world","everybody")' 0,1
 ```
 
 produces :
 
 ```bash
-1 | good bye | everybody
+1 | hi | everybody
 ```
 
 ### sub
@@ -277,7 +292,7 @@ produces :
 For instance :
 
 ```bash
-echo "1 2 3"|goller counter -t '0:sub("1")' -t '1:sub("2")' -t '2:sub("3")' 0,1,2
+echo "1 2 3" | goller counter -t '0:sub("1")' -t '1:sub("2")' -t '2:sub("3")' 0,1,2
 ```
 
 produces :
@@ -293,7 +308,7 @@ produces :
 For instance :
 
 ```bash
-echo "@_@_@hello world\!*\!*"|goller counter -t '0:trim("@_")' -t '1:trim("!*")' 0,1
+echo "@_@_@hello world\!*\!*" | goller counter -t '0:trim("@_")' -t '1:trim("!*")' 0,1
 ```
 produces :
 
@@ -308,7 +323,7 @@ produces :
 For instance :
 
 ```bash
-echo "ooohello dddddworld"|goller counter -t '0:triml("o")' -t '1:triml("d")' 0,1
+echo "ooohello dddddworld" | goller counter -t '0:triml("o")' -t '1:triml("d")' 0,1
 ```
 produces :
 
@@ -323,7 +338,7 @@ produces :
 For instance :
 
 ```bash
-echo "hellohhhh worldwwww"|goller counter -t '0:trimr("h")' -t '1:trimr("w")' 0,1
+echo "hellohhhh worldwwww" | goller counter -t '0:trimr("h")' -t '1:trimr("w")' 0,1
 ```
 produces :
 
@@ -338,7 +353,7 @@ produces :
 For instance :
 
 ```bash
-echo "hello world"|goller counter -t '0:upp' -t '1:upp' 0,1
+echo "hello world" | goller counter -t '0:upp' -t '1:upp' 0,1
 ```
 
 produces :
