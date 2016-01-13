@@ -66,7 +66,7 @@ produces :
 
 *Change parsing strategy to tokenize log line*
 
-Available values :
+Available functions :
 * [reg](#reg)
 * [whi](#whi)
 
@@ -110,7 +110,7 @@ produces :
 
 *Change a field before being counted, transformers could be chained*
 
-Available values:
+Available functions:
 * [add](#add)
 * [catl](#catl)
 * [catr](#catr)
