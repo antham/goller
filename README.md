@@ -4,6 +4,10 @@ Agregate log fields to count occurence
 
 [![asciicast](https://asciinema.org/a/edltgo8u72khflco1ex77g65l.png)](https://asciinema.org/a/edltgo8u72khflco1ex77g65l)
 
+## Install
+
+From [release page](https://github.com/antham/goller/releases) download the binary according to your system architecture
+
 ## Usage
 
 ### Global

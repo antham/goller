@@ -16,7 +16,7 @@ var (
 	app = kingpin.New("goller", "Aggregate log fields and count occurences")
 
 	counter             = app.Command("counter", "Count occurence of field")
-	counterDelimiter    = counter.Flag("delimiter", "Separator bewteen results").Short('d').Default(" | ").String()
+	counterDelimiter    = counter.Flag("delimiter", "Separator between results").Short('d').Default(" | ").String()
 	counterTransformers = transformer.TransformersWrapper(counter.Flag("trans", "Transformers applied to every fields").Short('t'))
 	counterParser       = parser.Wrapper(counter.Flag("parser", "Log line parser to use").Short('p'))
 
