@@ -34,6 +34,7 @@ func NewParser(r io.Reader) *Parser {
 }
 
 // ParsePositionAndFunctions extract tokens from string
+// ex : position:test|test1("arg1","arg2")
 func (p *Parser) ParsePositionAndFunctions() (*PositionStatement, error) {
 	pos, err := p.parsePosition()
 
@@ -54,6 +55,7 @@ func (p *Parser) ParsePositionAndFunctions() (*PositionStatement, error) {
 }
 
 // ParseFunction extract tokens from string
+// ex : test1("arg1","arg2")
 func (p *Parser) ParseFunction() (*FunctionStatement, error) {
 	functionStmt, err := p.parseFunction()
 
