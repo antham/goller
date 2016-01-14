@@ -4,44 +4,12 @@ import (
 	"testing"
 )
 
-func TestSetValidArgument(t *testing.T) {
-	trans := &TransformersMap{}
-
-	if trans.Set("8:low") != nil {
-		t.Error("Must return no error")
-	}
-}
-
-func TestSetUnValidArgument(t *testing.T) {
-	trans := &TransformersMap{}
-
-	if trans.Set("8:low(test)").Error() != "found \"test\", arg must start with a quote" {
-		t.Error("Must return an error")
-	}
-}
-
-func TestIsCumulative(t *testing.T) {
-	trans := &TransformersMap{}
-
-	if trans.IsCumulative() != true {
-		t.Error("Must return true")
-	}
-}
-
-func TestString(t *testing.T) {
-	trans := &TransformersMap{}
-
-	if trans.String() != "" {
-		t.Error("Must return an empty string")
-	}
-}
-
 func TestLow(t *testing.T) {
-	transformers := &Transformers{}
+	transformers := NewTransformers()
 
-	transformers.Append("low", []string{})
+	transformers.Append(1, "low", []string{})
 
-	result := transformers.Apply("A RANDOM TEST")
+	result := transformers.Apply(1, "A RANDOM TEST")
 	expected := "a random test"
 
 	if result != expected {
@@ -50,11 +18,11 @@ func TestLow(t *testing.T) {
 }
 
 func TestUpp(t *testing.T) {
-	transformers := &Transformers{}
+	transformers := NewTransformers()
 
-	transformers.Append("upp", []string{})
+	transformers.Append(1, "upp", []string{})
 
-	result := transformers.Apply("a random test")
+	result := transformers.Apply(1, "a random test")
 	expected := "A RANDOM TEST"
 
 	if result != expected {
@@ -63,11 +31,11 @@ func TestUpp(t *testing.T) {
 }
 
 func TestTrim(t *testing.T) {
-	transformers := &Transformers{}
+	transformers := NewTransformers()
 
-	transformers.Append("trim", []string{"1"})
+	transformers.Append(1, "trim", []string{"1"})
 
-	result := transformers.Apply("11test11")
+	result := transformers.Apply(1, "11test11")
 	expected := "test"
 
 	if result != expected {
@@ -76,11 +44,11 @@ func TestTrim(t *testing.T) {
 }
 
 func TestTrimLeft(t *testing.T) {
-	transformers := &Transformers{}
+	transformers := NewTransformers()
 
-	transformers.Append("triml", []string{"1"})
+	transformers.Append(1, "triml", []string{"1"})
 
-	result := transformers.Apply("11test11")
+	result := transformers.Apply(1, "11test11")
 	expected := "test11"
 
 	if result != expected {
@@ -89,11 +57,11 @@ func TestTrimLeft(t *testing.T) {
 }
 
 func TestTrimRight(t *testing.T) {
-	transformers := &Transformers{}
+	transformers := NewTransformers()
 
-	transformers.Append("trimr", []string{"1"})
+	transformers.Append(1, "trimr", []string{"1"})
 
-	result := transformers.Apply("11test11")
+	result := transformers.Apply(1, "11test11")
 	expected := "11test"
 
 	if result != expected {
@@ -102,11 +70,11 @@ func TestTrimRight(t *testing.T) {
 }
 
 func TestReplace(t *testing.T) {
-	transformers := &Transformers{}
+	transformers := NewTransformers()
 
-	transformers.Append("repl", []string{"test", "hello world !"})
+	transformers.Append(1, "repl", []string{"test", "hello world !"})
 
-	result := transformers.Apply("test")
+	result := transformers.Apply(1, "test")
 	expected := "hello world !"
 
 	if result != expected {
@@ -115,11 +83,11 @@ func TestReplace(t *testing.T) {
 }
 
 func TestRightConcat(t *testing.T) {
-	transformers := &Transformers{}
+	transformers := NewTransformers()
 
-	transformers.Append("catr", []string{" world"})
+	transformers.Append(1, "catr", []string{" world"})
 
-	result := transformers.Apply("hello")
+	result := transformers.Apply(1, "hello")
 	expected := "hello world"
 
 	if result != expected {
@@ -128,11 +96,11 @@ func TestRightConcat(t *testing.T) {
 }
 
 func TestLeftConcat(t *testing.T) {
-	transformers := &Transformers{}
+	transformers := NewTransformers()
 
-	transformers.Append("catl", []string{"hello"})
+	transformers.Append(1, "catl", []string{"hello"})
 
-	result := transformers.Apply(" world")
+	result := transformers.Apply(1, " world")
 	expected := "hello world"
 
 	if result != expected {
@@ -141,11 +109,11 @@ func TestLeftConcat(t *testing.T) {
 }
 
 func TestStringLength(t *testing.T) {
-	transformers := &Transformers{}
+	transformers := NewTransformers()
 
-	transformers.Append("len", []string{})
+	transformers.Append(1, "len", []string{})
 
-	result := transformers.Apply("hello world")
+	result := transformers.Apply(1, "hello world")
 	expected := "11"
 
 	if result != expected {
@@ -154,11 +122,11 @@ func TestStringLength(t *testing.T) {
 }
 
 func TestMatchSuccessful(t *testing.T) {
-	transformers := &Transformers{}
+	transformers := NewTransformers()
 
-	transformers.Append("match", []string{"hello.*"})
+	transformers.Append(1, "match", []string{"hello.*"})
 
-	result := transformers.Apply("hello world")
+	result := transformers.Apply(1, "hello world")
 	expected := "true"
 
 	if result != expected {
@@ -167,11 +135,11 @@ func TestMatchSuccessful(t *testing.T) {
 }
 
 func TestMatchFailed(t *testing.T) {
-	transformers := &Transformers{}
+	transformers := NewTransformers()
 
-	transformers.Append("match", []string{"a"})
+	transformers.Append(1, "match", []string{"a"})
 
-	result := transformers.Apply("hello world")
+	result := transformers.Apply(1, "hello world")
 	expected := "false"
 
 	if result != expected {
@@ -180,11 +148,11 @@ func TestMatchFailed(t *testing.T) {
 }
 
 func TestAdd(t *testing.T) {
-	transformers := &Transformers{}
+	transformers := NewTransformers()
 
-	transformers.Append("add", []string{"1"})
+	transformers.Append(1, "add", []string{"1"})
 
-	result := transformers.Apply("2")
+	result := transformers.Apply(1, "2")
 	expected := "3"
 
 	if result != expected {
@@ -193,11 +161,11 @@ func TestAdd(t *testing.T) {
 }
 
 func TestSubstract(t *testing.T) {
-	transformers := &Transformers{}
+	transformers := NewTransformers()
 
-	transformers.Append("sub", []string{"1"})
+	transformers.Append(1, "sub", []string{"1"})
 
-	result := transformers.Apply("2")
+	result := transformers.Apply(1, "2")
 	expected := "1"
 
 	if result != expected {
@@ -206,11 +174,11 @@ func TestSubstract(t *testing.T) {
 }
 
 func TestDeleteNumberOfCharactersAtTheRightSide(t *testing.T) {
-	transformers := &Transformers{}
+	transformers := NewTransformers()
 
-	transformers.Append("delr", []string{"8"})
+	transformers.Append(1, "delr", []string{"8"})
 
-	result := transformers.Apply("Hello world !")
+	result := transformers.Apply(1, "Hello world !")
 	expected := "Hello"
 
 	if result != expected {
@@ -219,11 +187,11 @@ func TestDeleteNumberOfCharactersAtTheRightSide(t *testing.T) {
 }
 
 func TestDeleteNumberOfCharactersAtTheLeftSide(t *testing.T) {
-	transformers := &Transformers{}
+	transformers := NewTransformers()
 
-	transformers.Append("dell", []string{"6"})
+	transformers.Append(1, "dell", []string{"6"})
 
-	result := transformers.Apply("Hello world !")
+	result := transformers.Apply(1, "Hello world !")
 	expected := "world !"
 
 	if result != expected {
@@ -232,11 +200,11 @@ func TestDeleteNumberOfCharactersAtTheLeftSide(t *testing.T) {
 }
 
 func TestDeleteBiggerNumberOfCharactersTheLeftSide(t *testing.T) {
-	transformers := &Transformers{}
+	transformers := NewTransformers()
 
-	transformers.Append("dell", []string{"100"})
+	transformers.Append(1, "dell", []string{"100"})
 
-	result := transformers.Apply("Hello world !")
+	result := transformers.Apply(1, "Hello world !")
 	expected := ""
 
 	if result != expected {
@@ -245,11 +213,11 @@ func TestDeleteBiggerNumberOfCharactersTheLeftSide(t *testing.T) {
 }
 
 func TestDeleteBiggerNumberOfCharactersTheRightSide(t *testing.T) {
-	transformers := &Transformers{}
+	transformers := NewTransformers()
 
-	transformers.Append("delr", []string{"100"})
+	transformers.Append(1, "delr", []string{"100"})
 
-	result := transformers.Apply("Hello world !")
+	result := transformers.Apply(1, "Hello world !")
 	expected := ""
 
 	if result != expected {

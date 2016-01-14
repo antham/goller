@@ -28,10 +28,9 @@ func TestTokenizeLine(t *testing.T) {
 }
 
 func TestTokenizeLineWithAParser(t *testing.T) {
-	p := new(parser.Parser)
-	p.Create("whi", []string{})
+	p := parser.NewParser("whi", []string{})
 
-	tok := NewTokenizer(*p)
+	tok := NewTokenizer(p)
 
 	tokens := tok.Tokenize("[2016-01-08 20:16] [ALPM] transaction started")
 

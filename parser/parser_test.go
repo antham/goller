@@ -5,36 +5,10 @@ import (
 	"testing"
 )
 
-func TestSetValidArgument(t *testing.T) {
-	parser := new(Parser)
-
-	if parser.Set("whi") != nil {
-		t.Error("Must return no error")
-	}
-}
-
-func TestSetUnValidArgument(t *testing.T) {
-	parser := new(Parser)
-	err := parser.Set("whi(")
-
-	if err == nil || err.Error() != "found \"\", arg must start with a quote" {
-		t.Error("Must throw an error")
-	}
-}
-
-func TestString(t *testing.T) {
-	parser := new(Parser)
-
-	if parser.String() != "" {
-		t.Error("Must return an empty string")
-	}
-}
-
 func TestParseWhitespace(t *testing.T) {
-	parser := new(Parser)
-	parser.Create("whi", []string{})
+	p := NewParser("whi", []string{})
 
-	result := parser.Parse("hello world\t, a    testing  sentence !")
+	result := (*p)("hello world\t, a    testing  sentence !")
 	expected := []string{"hello", "world", ",", "a", "testing", "sentence", "!"}
 
 	if !reflect.DeepEqual(result, expected) {
@@ -43,10 +17,9 @@ func TestParseWhitespace(t *testing.T) {
 }
 
 func TestParseRegexpWithPatternMatchingWholeExpression(t *testing.T) {
-	parser := new(Parser)
-	parser.Create("reg", []string{"(h.{4}) (w.{4}), (a) (testing) (sentence) !"})
+	p := NewParser("reg", []string{"(h.{4}) (w.{4}), (a) (testing) (sentence) !"})
 
-	result := parser.Parse("hello world, a testing sentence !")
+	result := (*p)("hello world, a testing sentence !")
 	expected := []string{"hello", "world", "a", "testing", "sentence"}
 
 	if !reflect.DeepEqual(result, expected) {
@@ -55,10 +28,9 @@ func TestParseRegexpWithPatternMatchingWholeExpression(t *testing.T) {
 }
 
 func TestParseRegexpWithPatternNotMatchingExpression(t *testing.T) {
-	parser := new(Parser)
-	parser.Create("reg", []string{"(h.{4}) (w.{4}) (testing) (sentence)"})
+	p := NewParser("reg", []string{"(h.{4}) (w.{4}) (testing) (sentence)"})
 
-	result := parser.Parse("hello world, a testing sentence !")
+	result := (*p)("hello world, a testing sentence !")
 	expected := []string{}
 
 	if !reflect.DeepEqual(result, expected) {

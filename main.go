@@ -3,11 +3,10 @@ package main
 import (
 	"fmt"
 	"github.com/antham/goller/agregator"
+	"github.com/antham/goller/cli"
 	"github.com/antham/goller/dispatcher"
-	"github.com/antham/goller/parser"
 	"github.com/antham/goller/reader"
 	"github.com/antham/goller/tokenizer"
-	"github.com/antham/goller/transformer"
 	"gopkg.in/alecthomas/kingpin.v2"
 	"os"
 )
@@ -17,8 +16,8 @@ var (
 
 	counter             = app.Command("counter", "Count occurence of field")
 	counterDelimiter    = counter.Flag("delimiter", "Separator between results").Short('d').Default(" | ").String()
-	counterTransformers = transformer.TransformersWrapper(counter.Flag("trans", "Transformers applied to every fields").Short('t'))
-	counterParser       = parser.Wrapper(counter.Flag("parser", "Log line parser to use").Short('p'))
+	counterTransformers = cli.TransformersWrapper(counter.Flag("trans", "Transformers applied to every fields").Short('t'))
+	counterParser       = cli.ParserWrapper(counter.Flag("parser", "Log line parser to use").Short('p'))
 
 	counterPositions = counter.Arg("positions", "Field positions").Required().String()
 )
@@ -26,12 +25,12 @@ var (
 func main() {
 	switch kingpin.MustParse(app.Parse(os.Args[1:])) {
 	case counter.FullCommand():
-		count(*counterPositions, *counterDelimiter, *counterTransformers, *counterParser)
+		count(*counterPositions, *counterDelimiter, counterTransformers, counterParser)
 	}
 }
 
-func count(positionsString string, delimiter string, trans transformer.TransformersMap, pars parser.Parser) {
-	tok := tokenizer.NewTokenizer(pars)
+func count(positionsString string, delimiter string, trans *cli.Transformers, parser *cli.Parser) {
+	tok := tokenizer.NewTokenizer(parser.Get())
 
 	agregators := agregator.NewAgregators()
 
@@ -46,7 +45,7 @@ func count(positionsString string, delimiter string, trans transformer.Transform
 			os.Exit(1)
 		}
 
-		agregators.Agregate(positions, &tokens, trans)
+		agregators.Agregate(positions, &tokens, trans.Get())
 	})
 
 	d := dispatcher.NewTermDispatcher(delimiter)

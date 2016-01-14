@@ -8,14 +8,14 @@ import (
 // Tokenizer handle string tokenization
 type Tokenizer struct {
 	scanner *sequence.Scanner
-	parser  parser.Parser
+	parse   *parser.Parser
 }
 
-// Init instantiate sequence objects
-func NewTokenizer(pars parser.Parser) *Tokenizer {
+// NewTokenizer instantiate sequence objects
+func NewTokenizer(parse *parser.Parser) *Tokenizer {
 	return &Tokenizer{
 		scanner: sequence.NewScanner(),
-		parser:  pars,
+		parse:   parse,
 	}
 }
 
@@ -23,8 +23,8 @@ func NewTokenizer(pars parser.Parser) *Tokenizer {
 func (t *Tokenizer) Tokenize(line string) []sequence.Token {
 	var tokens []sequence.Token
 
-	if t.parser != nil {
-		for _, data := range t.parser.Parse(line) {
+	if t.parse != nil {
+		for _, data := range (*t.parse)(line) {
 			tokens = append(tokens, sequence.Token{Value: data})
 		}
 

@@ -91,7 +91,7 @@ func TestAgregateSingleValue(t *testing.T) {
 		},
 	}
 
-	agregators.Agregate([]int{0, 1, 3}, &tokens, transformer.TransformersMap{})
+	agregators.Agregate([]int{0, 1, 3}, &tokens, transformer.NewTransformers())
 
 	for key, agregator := range agregators.Get() {
 		id := fmt.Sprintf("%x", key)
@@ -136,11 +136,11 @@ func TestAgregateSeveralValues(t *testing.T) {
 		}
 
 		if i <= 2 {
-			agregators.Agregate([]int{0, 1}, &tokens, transformer.TransformersMap{})
+			agregators.Agregate([]int{0, 1}, &tokens, transformer.NewTransformers())
 		} else if i > 2 && i <= 5 {
-			agregators.Agregate([]int{2, 3}, &tokens, transformer.TransformersMap{})
+			agregators.Agregate([]int{2, 3}, &tokens, transformer.NewTransformers())
 		} else if i > 5 {
-			agregators.Agregate([]int{4, 5}, &tokens, transformer.TransformersMap{})
+			agregators.Agregate([]int{4, 5}, &tokens, transformer.NewTransformers())
 		}
 	}
 
@@ -185,13 +185,14 @@ func TestApplyPreTransformer(t *testing.T) {
 			},
 		}
 
-		trans := transformer.Transformers{}
-		trans.Append("upp", []string{})
+		trans := transformer.NewTransformers()
+		trans.Append(0, "upp", []string{})
+		trans.Append(2, "upp", []string{})
 
 		agregators.Agregate(
 			[]int{0, 1, 2},
 			&tokens,
-			transformer.TransformersMap{0: trans, 2: trans},
+			trans,
 		)
 	}
 

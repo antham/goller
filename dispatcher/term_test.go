@@ -34,7 +34,7 @@ func TestTermDispatcherDisplaying(t *testing.T) {
 		},
 	}
 
-	agregators.Agregate([]int{0, 1, 3}, &tokens, transformer.TransformersMap{})
+	agregators.Agregate([]int{0, 1, 3}, &tokens, transformer.NewTransformers())
 
 	old := os.Stdout
 	r, w, _ := os.Pipe()
