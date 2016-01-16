@@ -23,10 +23,10 @@ func (t *Transformers) Set(value string) error {
 		return err
 	}
 
-	trans := transformer.NewTransformers()
+	(*t).transformers = transformer.NewTransformers()
 
 	for _, stmt := range stmts.Functions {
-		trans.Append(stmts.Position, stmt.Name, stmt.Args)
+		(*t).transformers.Append(stmts.Position, stmt.Name, stmt.Args)
 	}
 
 	return nil
