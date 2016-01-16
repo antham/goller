@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -9,6 +10,19 @@ func TestTransformersSetValidArgument(t *testing.T) {
 
 	if trans.Set("8:low") != nil {
 		t.Error("Must return no error")
+	}
+
+	ts := trans.Get()
+
+	if len(*ts) != 1 {
+		t.Errorf("Must have a length of 1, got %d", len(*ts))
+	}
+
+	got := (*ts)[8][0]("TEST")
+	expected := "test"
+
+	if got != expected {
+		t.Errorf("Must return %s, got %s", expected, got)
 	}
 }
 
@@ -41,6 +55,15 @@ func TestParserSetValidArgument(t *testing.T) {
 
 	if parser.Set("whi") != nil {
 		t.Error("Must return no error")
+	}
+
+	p := parser.Get()
+
+	got := (*p)("hello world !")
+	expected := []string{"hello", "world", "!"}
+
+	if !reflect.DeepEqual(got, expected) {
+		t.Errorf("Got %v, expected %v", got, expected)
 	}
 }
 
