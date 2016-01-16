@@ -1,8 +1,8 @@
 package agregator
 
 import (
+	"github.com/antham/goller/tokenizer"
 	"github.com/antham/goller/transformer"
-	"github.com/trustpath/sequence"
 	"reflect"
 	"testing"
 )
@@ -68,7 +68,7 @@ func TestExtractPositionsFromStringContainingPositionOverLimit(t *testing.T) {
 func TestAgregateSingleValue(t *testing.T) {
 	agregators := NewAgregators()
 
-	tokens := []sequence.Token{
+	tokens := []tokenizer.Token{
 		{
 			Value: "test1",
 		},
@@ -106,7 +106,7 @@ func TestAgregateSeveralValues(t *testing.T) {
 	agregators := NewAgregators()
 
 	for i := 0; i < 10; i++ {
-		tokens := []sequence.Token{
+		tokens := []tokenizer.Token{
 			{
 				Value: "test1",
 			},
@@ -159,7 +159,7 @@ func TestApplyPreTransformer(t *testing.T) {
 	agregators := NewAgregators()
 
 	for i := 0; i < 10; i++ {
-		tokens := []sequence.Token{
+		tokens := []tokenizer.Token{
 			{
 				Value: "test1",
 			},

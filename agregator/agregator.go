@@ -3,8 +3,8 @@ package agregator
 import (
 	"crypto/sha1"
 	"fmt"
+	"github.com/antham/goller/tokenizer"
 	"github.com/antham/goller/transformer"
-	"github.com/trustpath/sequence"
 	"strconv"
 	"strings"
 )
@@ -28,7 +28,7 @@ func NewAgregators() *Agregators {
 }
 
 // Agregate agregate tokens according to positions
-func (a *Agregators) Agregate(positions []int, tokens *[]sequence.Token, trans *transformer.Transformers) {
+func (a *Agregators) Agregate(positions []int, tokens *[]tokenizer.Token, trans *transformer.Transformers) {
 	var accumulator string
 	var datas []string
 

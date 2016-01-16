@@ -17,7 +17,7 @@ var (
 	counter             = app.Command("counter", "Count occurence of field")
 	counterDelimiter    = counter.Flag("delimiter", "Separator between results").Short('d').Default(" | ").String()
 	counterTransformers = cli.TransformersWrapper(counter.Flag("trans", "Transformers applied to every fields").Short('t'))
-	counterParser       = cli.ParserWrapper(counter.Flag("parser", "Log line parser to use").Short('p'))
+	counterParser       = cli.ParserWrapper(counter.Flag("parser", "Log line parser to use").Short('p').Default("whi"))
 
 	counterPositions = counter.Arg("positions", "Field positions").Required().String()
 )

@@ -3,8 +3,8 @@ package dispatcher
 import (
 	"bytes"
 	"github.com/antham/goller/agregator"
+	"github.com/antham/goller/tokenizer"
 	"github.com/antham/goller/transformer"
-	"github.com/trustpath/sequence"
 	"io"
 	"os"
 	"testing"
@@ -13,7 +13,7 @@ import (
 func TestTermDispatcherDisplaying(t *testing.T) {
 	agregators := agregator.NewAgregators()
 
-	tokens := []sequence.Token{
+	tokens := []tokenizer.Token{
 		{
 			Value: "test1",
 		},
