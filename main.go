@@ -49,5 +49,5 @@ func count(positionsString string, delimiter string, trans *cli.Transformers, pa
 	})
 
 	d := dispatcher.NewTermDispatcher(delimiter)
-	d.RenderItems(agregators.Get())
+	d.RenderItems(agregators)
 }

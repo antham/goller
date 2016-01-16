@@ -48,7 +48,7 @@ func TestTermDispatcherDisplaying(t *testing.T) {
 	}()
 
 	d := NewTermDispatcher("|")
-	d.RenderItems(agregators.Get())
+	d.RenderItems(agregators)
 
 	w.Close()
 	os.Stdout = old

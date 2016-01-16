@@ -1,8 +1,6 @@
 package agregator
 
 import (
-	"crypto/sha1"
-	"fmt"
 	"github.com/antham/goller/transformer"
 	"github.com/trustpath/sequence"
 	"reflect"
@@ -93,13 +91,7 @@ func TestAgregateSingleValue(t *testing.T) {
 
 	agregators.Agregate([]int{0, 1, 3}, &tokens, transformer.NewTransformers())
 
-	for key, agregator := range agregators.Get() {
-		id := fmt.Sprintf("%x", key)
-
-		if id != "3f5b45cb95d336f2c9449ee6e716f736f24e6fd1" {
-			t.Error("Id must be 3f5b45cb95d336f2c9449ee6e716f736f24e6fd1 got", id)
-		}
-
+	for _, agregator := range *agregators {
 		if agregator.Count != 1 {
 			t.Error("Count must be 1 got", agregator.Count)
 		}
@@ -144,28 +136,22 @@ func TestAgregateSeveralValues(t *testing.T) {
 		}
 	}
 
-	datas := agregators.Get()
+	datas := *agregators
 
 	if len(datas) != 3 {
 		t.Error("Length must be 3 got", len(datas))
 	}
 
-	key := sha1.Sum([]byte("test1" + "test2"))
-
-	if datas[key].Count != 3 {
-		t.Errorf("Count for key %x must be 3 got %d", key, datas[key].Count)
+	if datas[0].Count != 3 {
+		t.Errorf("Count for key 0 must be 3 got %d", datas[0].Count)
 	}
 
-	key = sha1.Sum([]byte("test3" + "test4"))
-
-	if datas[key].Count != 3 {
-		t.Errorf("Count for key %x must be 3 got %d", key, datas[key].Count)
+	if datas[1].Count != 3 {
+		t.Errorf("Count for key 1 must be 3 got %d", datas[1].Count)
 	}
 
-	key = sha1.Sum([]byte("test5" + "test6"))
-
-	if datas[key].Count != 4 {
-		t.Errorf("Count for key %x must be 4 got %d", key, datas[key].Count)
+	if datas[2].Count != 4 {
+		t.Errorf("Count for key 2 must be 4 got %d", datas[2].Count)
 	}
 }
 
@@ -196,19 +182,13 @@ func TestApplyPreTransformer(t *testing.T) {
 		)
 	}
 
-	datas := agregators.Get()
+	datas := *agregators
 
 	if len(datas) != 1 {
 		t.Error("Length must be 1 got", len(datas))
 	}
 
-	key := sha1.Sum([]byte("TEST1" + "test2" + "TEST3"))
-
-	if _, ok := datas[key]; ok != true {
-		t.Error("Entry for TEST1 test2 TEST3 doesn't exist")
-	}
-
-	if datas[key].Count != 10 {
-		t.Errorf("Count for key %x must be 10, got %d", key, datas[key].Count)
+	if datas[0].Count != 10 {
+		t.Errorf("Count for key 0 must be 10, got %d", datas[0].Count)
 	}
 }

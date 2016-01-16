@@ -15,16 +15,16 @@ type Agregator struct {
 	Datas []string
 }
 
+var footprints map[[20]byte]*Agregator
+
 // Agregators contains a map of Agregator
-type Agregators struct {
-	agregators map[[20]byte]*Agregator
-}
+type Agregators []*Agregator
 
 // NewAgregators create agregators
 func NewAgregators() *Agregators {
-	return &Agregators{
-		agregators: make(map[[20]byte]*Agregator, 0),
-	}
+	footprints = make(map[[20]byte]*Agregator, 0)
+
+	return &Agregators{}
 }
 
 // Agregate agregate tokens according to positions
@@ -40,19 +40,17 @@ func (a *Agregators) Agregate(positions []int, tokens *[]sequence.Token, trans *
 
 	footprint := sha1.Sum([]byte(accumulator))
 
-	if _, ok := a.agregators[footprint]; ok {
-		a.agregators[footprint].Count = a.agregators[footprint].Count + 1
+	if _, ok := footprints[footprint]; ok {
+		footprints[footprint].Count = footprints[footprint].Count + 1
 	} else {
-		a.agregators[footprint] = &Agregator{
+		agregator := &Agregator{
 			Count: 1,
 			Datas: datas,
 		}
-	}
-}
 
-// Get return agregated values
-func (a *Agregators) Get() map[[20]byte]*Agregator {
-	return a.agregators
+		footprints[footprint] = agregator
+		*a = append(*a, agregator)
+	}
 }
 
 // ExtractPositions split positions fields from string
