@@ -33,7 +33,12 @@ func (a *Agregators) Agregate(positions []int, tokens *[]sequence.Token, trans *
 	var datas []string
 
 	for _, i := range positions {
-		result := trans.Apply(i, (*tokens)[i].Value)
+		result := (*tokens)[i].Value
+
+		if trans != nil {
+			result = trans.Apply(i, result)
+		}
+
 		datas = append(datas, result)
 		accumulator = accumulator + result
 	}

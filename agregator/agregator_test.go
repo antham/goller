@@ -89,7 +89,7 @@ func TestAgregateSingleValue(t *testing.T) {
 		},
 	}
 
-	agregators.Agregate([]int{0, 1, 3}, &tokens, transformer.NewTransformers())
+	agregators.Agregate([]int{0, 1, 3}, &tokens, nil)
 
 	for _, agregator := range *agregators {
 		if agregator.Count != 1 {
@@ -128,11 +128,11 @@ func TestAgregateSeveralValues(t *testing.T) {
 		}
 
 		if i <= 2 {
-			agregators.Agregate([]int{0, 1}, &tokens, transformer.NewTransformers())
+			agregators.Agregate([]int{0, 1}, &tokens, nil)
 		} else if i > 2 && i <= 5 {
-			agregators.Agregate([]int{2, 3}, &tokens, transformer.NewTransformers())
+			agregators.Agregate([]int{2, 3}, &tokens, nil)
 		} else if i > 5 {
-			agregators.Agregate([]int{4, 5}, &tokens, transformer.NewTransformers())
+			agregators.Agregate([]int{4, 5}, &tokens, nil)
 		}
 	}
 
