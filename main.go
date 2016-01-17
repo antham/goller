@@ -37,7 +37,7 @@ func count(positionsString string, delimiter string, trans *cli.Transformers, pa
 	reader.ReadStdin(func(line string) {
 		tokens := tok.Tokenize(line)
 
-		positions, err := agregator.ExtractPositions(positionsString, len(tokens))
+		positions, err := cli.ExtractPositions(positionsString, len(tokens))
 
 		if err != nil {
 			fmt.Println(err)
