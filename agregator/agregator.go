@@ -9,8 +9,9 @@ import (
 
 // Agregator represents a unique log line
 type Agregator struct {
-	Count int
-	Datas []string
+	Count        int
+	DatasOrdered map[int]*string
+	Datas        []string
 }
 
 // Agregators contains a slice of Agregator
@@ -40,6 +41,7 @@ func (b *Builder) Agregate(positions []int, tokens *[]tokenizer.Token, trans *tr
 	var accumulator string
 	var counterIndex = -1
 	datas := []string{}
+	datasOrdered := map[int]*string{}
 
 	for _, i := range positions {
 		var result string
@@ -60,6 +62,7 @@ func (b *Builder) Agregate(positions []int, tokens *[]tokenizer.Token, trans *tr
 		}
 
 		datas = append(datas, result)
+		datasOrdered[i] = &datas[len(datas)-1]
 	}
 
 	footprint := sha1.Sum([]byte(accumulator))
@@ -68,8 +71,9 @@ func (b *Builder) Agregate(positions []int, tokens *[]tokenizer.Token, trans *tr
 		(*b).footprints[footprint].Count = (*b).footprints[footprint].Count + 1
 	} else {
 		agregator := &Agregator{
-			Count: 1,
-			Datas: datas,
+			Count:        1,
+			DatasOrdered: datasOrdered,
+			Datas:        datas,
 		}
 
 		(*b).footprints[footprint] = agregator
@@ -78,6 +82,7 @@ func (b *Builder) Agregate(positions []int, tokens *[]tokenizer.Token, trans *tr
 
 	if counterIndex != -1 {
 		(*b).footprints[footprint].Datas[counterIndex] = strconv.Itoa((*b).footprints[footprint].Count)
+		(*b).footprints[footprint].DatasOrdered[counterIndex] = &(*b).footprints[footprint].Datas[counterIndex]
 	}
 }
 

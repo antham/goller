@@ -18,6 +18,7 @@ var (
 	counterDelimiter    = counter.Flag("delimiter", "Separator between results").Short('d').Default(" | ").String()
 	counterTransformers = cli.TransformersWrapper(counter.Flag("trans", "Transformers applied to every fields").Short('t'))
 	counterParser       = cli.ParserWrapper(counter.Flag("parser", "Log line parser to use").Short('p').Default("whi"))
+	counterSorter       = cli.SortersWrapper(counter.Flag("sort", "Sort lines").Short('s'))
 
 	counterPositions = counter.Arg("positions", "Field positions").Required().String()
 )
@@ -26,11 +27,11 @@ var (
 func main() {
 	switch kingpin.MustParse(app.Parse(os.Args[1:])) {
 	case counter.FullCommand():
-		count(*counterPositions, *counterDelimiter, counterTransformers, counterParser)
+		count(*counterPositions, *counterDelimiter, counterTransformers, counterParser, counterSorter)
 	}
 }
 
-func count(positionsString string, delimiter string, trans *cli.Transformers, parser *cli.Parser) {
+func count(positionsString string, delimiter string, trans *cli.Transformers, parser *cli.Parser, sorters *cli.Sorters) {
 	tok := tokenizer.NewTokenizer(parser.Get())
 
 	agrBuilder := agregator.NewBuilder()
@@ -53,6 +54,10 @@ func count(positionsString string, delimiter string, trans *cli.Transformers, pa
 
 		agrBuilder.Agregate(positions, &tokens, trans.Get())
 	})
+
+	if sorters.Get() != nil {
+		sorters.Get().Sort(agrBuilder.Get())
+	}
 
 	d := dispatcher.NewTermDispatcher(delimiter)
 	d.RenderItems(agrBuilder.Get())
