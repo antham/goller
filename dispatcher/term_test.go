@@ -11,7 +11,7 @@ import (
 )
 
 func TestTermDispatcherDisplaying(t *testing.T) {
-	agregators := agregator.NewAgregators()
+	builder := agregator.NewBuilder()
 
 	tokens := []tokenizer.Token{
 		{
@@ -34,7 +34,7 @@ func TestTermDispatcherDisplaying(t *testing.T) {
 		},
 	}
 
-	agregators.Agregate([]int{0, 1, 3}, &tokens, transformer.NewTransformers())
+	builder.Agregate([]int{0, 1, 3}, &tokens, transformer.NewTransformers())
 
 	old := os.Stdout
 	r, w, _ := os.Pipe()
@@ -48,13 +48,13 @@ func TestTermDispatcherDisplaying(t *testing.T) {
 	}()
 
 	d := NewTermDispatcher("|")
-	d.RenderItems(agregators)
+	d.RenderItems(builder.Get())
 
 	w.Close()
 	os.Stdout = old
 	out := <-outC
 
-	if out != "1|test1|test2|test4\n" {
+	if out != "1|test1|test3\n" {
 		t.Errorf("Must output %s got %s", "1|test1|test2|test4\n", out)
 	}
 }

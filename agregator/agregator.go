@@ -4,6 +4,7 @@ import (
 	"crypto/sha1"
 	"github.com/antham/goller/tokenizer"
 	"github.com/antham/goller/transformer"
+	"strconv"
 )
 
 // Agregator represents a unique log line
@@ -12,45 +13,75 @@ type Agregator struct {
 	Datas []string
 }
 
-var footprints map[[20]byte]*Agregator
-
-// Agregators contains a map of Agregator
+// Agregators contains a slice of Agregator
 type Agregators []*Agregator
 
 // NewAgregators create agregators
 func NewAgregators() *Agregators {
-	footprints = make(map[[20]byte]*Agregator, 0)
-
 	return &Agregators{}
 }
 
+// Builder wraps operations needed to manage agregators
+type Builder struct {
+	agregators *Agregators
+	footprints map[[20]byte]*Agregator
+}
+
+// NewBuilder create builder
+func NewBuilder() *Builder {
+	return &Builder{
+		NewAgregators(),
+		make(map[[20]byte]*Agregator, 0),
+	}
+}
+
 // Agregate agregate tokens according to positions
-func (a *Agregators) Agregate(positions []int, tokens *[]tokenizer.Token, trans *transformer.Transformers) {
+func (b *Builder) Agregate(positions []int, tokens *[]tokenizer.Token, trans *transformer.Transformers) {
 	var accumulator string
-	var datas []string
+	var counterIndex = -1
+	datas := []string{}
 
 	for _, i := range positions {
-		result := (*tokens)[i].Value
+		var result string
 
-		if trans != nil {
-			result = trans.Apply(i, result)
+		if i > 0 {
+			index := i - 1
+
+			result = (*tokens)[index].Value
+
+			if trans != nil {
+				result = trans.Apply(i, result)
+			}
+
+			accumulator = accumulator + result
+		} else {
+			result = ""
+			counterIndex = len(datas)
 		}
 
 		datas = append(datas, result)
-		accumulator = accumulator + result
 	}
 
 	footprint := sha1.Sum([]byte(accumulator))
 
-	if _, ok := footprints[footprint]; ok {
-		footprints[footprint].Count = footprints[footprint].Count + 1
+	if _, ok := (*b).footprints[footprint]; ok {
+		(*b).footprints[footprint].Count = (*b).footprints[footprint].Count + 1
 	} else {
 		agregator := &Agregator{
 			Count: 1,
 			Datas: datas,
 		}
 
-		footprints[footprint] = agregator
-		*a = append(*a, agregator)
+		(*b).footprints[footprint] = agregator
+		(*b.agregators) = append((*b.agregators), agregator)
 	}
+
+	if counterIndex != -1 {
+		(*b).footprints[footprint].Datas[counterIndex] = strconv.Itoa((*b).footprints[footprint].Count)
+	}
+}
+
+// Get retrieve agregators from builder
+func (b *Builder) Get() *Agregators {
+	return b.agregators
 }

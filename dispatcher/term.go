@@ -19,7 +19,7 @@ func NewTermDispatcher(delimiter string) Term {
 // RenderItems is called to render items in a terminal
 func (t Term) RenderItems(agregators *agregator.Agregators) {
 	for _, agregator := range *agregators {
-		fmt.Printf("%d%s%s\n", agregator.Count, t.delimiter, strings.Join(agregator.Datas, t.delimiter))
+		fmt.Println(strings.Join(agregator.Datas, t.delimiter))
 	}
 
 }

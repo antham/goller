@@ -34,6 +34,14 @@ func TestTransformersSetUnValidArgument(t *testing.T) {
 	}
 }
 
+func TestTransformersSetTransformerAtPosition0(t *testing.T) {
+	trans := &Transformers{}
+
+	if trans.Set("0:low").Error() != "You cannot add a transformer to position 0" {
+		t.Error("Must return an error")
+	}
+}
+
 func TestTransformersIsCumulative(t *testing.T) {
 	trans := &Transformers{}
 
@@ -129,15 +137,15 @@ func TestExtractPositionsFromStringContainingSomethingDifferentThanNumber(t *tes
 }
 
 func TestExtractPositionsFromStringContainingPositionOverLimit(t *testing.T) {
-	_, err := ExtractPositions("1,2,5,11,8,9", 11)
+	_, err := ExtractPositions("1,2,5,12,8,9", 11)
 
-	if err == nil || err.Error() != "Position 11 is greater or equal than maximum position 11" {
+	if err == nil || err.Error() != "Position 12 is greater or equal than maximum position 12" {
 		t.Error("An error must occur", err)
 	}
 
-	_, err = ExtractPositions("1,2,5,12,8,9", 11)
+	_, err = ExtractPositions("1,2,5,13,8,9", 11)
 
-	if err == nil || err.Error() != "Position 12 is greater or equal than maximum position 11" {
+	if err == nil || err.Error() != "Position 13 is greater or equal than maximum position 12" {
 		t.Error("An error must occur", err)
 	}
 }

@@ -22,6 +22,7 @@ var (
 	counterPositions = counter.Arg("positions", "Field positions").Required().String()
 )
 
+// main entry point
 func main() {
 	switch kingpin.MustParse(app.Parse(os.Args[1:])) {
 	case counter.FullCommand():
@@ -32,22 +33,27 @@ func main() {
 func count(positionsString string, delimiter string, trans *cli.Transformers, parser *cli.Parser) {
 	tok := tokenizer.NewTokenizer(parser.Get())
 
-	agregators := agregator.NewAgregators()
+	agrBuilder := agregator.NewBuilder()
+
+	var positions []int
 
 	reader.ReadStdin(func(line string) {
 		tokens := tok.Tokenize(line)
 
-		positions, err := cli.ExtractPositions(positionsString, len(tokens))
+		if len(positions) == 0 {
+			var err error
+			positions, err = cli.ExtractPositions(positionsString, len(tokens))
 
-		if err != nil {
-			fmt.Println(err)
+			if err != nil {
+				fmt.Println(err)
 
-			os.Exit(1)
+				os.Exit(1)
+			}
 		}
 
-		agregators.Agregate(positions, &tokens, trans.Get())
+		agrBuilder.Agregate(positions, &tokens, trans.Get())
 	})
 
 	d := dispatcher.NewTermDispatcher(delimiter)
-	d.RenderItems(agregators)
+	d.RenderItems(agrBuilder.Get())
 }

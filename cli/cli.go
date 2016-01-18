@@ -2,6 +2,7 @@ package cli
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"github.com/antham/goller/dsl"
 	"github.com/antham/goller/parser"
@@ -29,6 +30,10 @@ func (t *Transformers) Set(value string) error {
 	(*t).transformers = transformer.NewTransformers()
 
 	for _, stmt := range stmts.Functions {
+		if stmts.Position == 0 {
+			return errors.New("You cannot add a transformer to position 0")
+		}
+
 		(*t).transformers.Append(stmts.Position, stmt.Name, stmt.Args)
 	}
 
@@ -105,8 +110,8 @@ func ExtractPositions(fields string, size int) ([]int, error) {
 					return []int{}, fmt.Errorf("This element is duplicated : %d", position)
 				}
 
-				if position >= size {
-					return []int{}, fmt.Errorf("Position %d is greater or equal than maximum position %d", position, size)
+				if position >= size+1 {
+					return []int{}, fmt.Errorf("Position %d is greater or equal than maximum position %d", position, size+1)
 				}
 
 				positionDups[position] = true
