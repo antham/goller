@@ -24,6 +24,17 @@ type MockSettings struct {
 func (m MockSettings) SetValue(value kingpin.Value) {
 }
 
+func TestTransformersWrapper(t *testing.T) {
+	result := TransformersWrapper(MockSettings{})
+
+	got := reflect.TypeOf(result).String()
+	expected := "*cli.Transformers"
+
+	if got != expected {
+		t.Errorf("Must return %s, got %s", expected, got)
+	}
+}
+
 func TestTransformersSetValidArgument(t *testing.T) {
 	trans := &Transformers{}
 
@@ -74,6 +85,17 @@ func TestTransformersString(t *testing.T) {
 
 	if trans.String() != "" {
 		t.Error("Must return an empty string")
+	}
+}
+
+func TestParserWrapper(t *testing.T) {
+	result := ParserWrapper(MockSettings{})
+
+	got := reflect.TypeOf(result).String()
+	expected := "*cli.Parser"
+
+	if got != expected {
+		t.Errorf("Must return %s, got %s", expected, got)
 	}
 }
 
