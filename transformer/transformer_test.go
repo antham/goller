@@ -4,6 +4,16 @@ import (
 	"testing"
 )
 
+func TestAppendUnexistingFunction(t *testing.T) {
+	transformers := NewTransformers()
+
+	err := transformers.Append(1, "whatever", []string{})
+
+	if err == nil || err.Error() != "\"whatever\" doesn't exists or number of argument is wrong" {
+		t.Errorf("Must throws an error")
+	}
+}
+
 func TestLow(t *testing.T) {
 	transformers := NewTransformers()
 
@@ -121,6 +131,16 @@ func TestStringLength(t *testing.T) {
 	}
 }
 
+func TestMatchWithBadRegexp(t *testing.T) {
+	transformers := NewTransformers()
+
+	err := transformers.Append(1, "match", []string{"(."})
+
+	if err == nil || err.Error() != "An error occured when parsing regexp : \"error parsing regexp: missing closing ): `(.`\"" {
+		t.Errorf("Must throws an error")
+	}
+}
+
 func TestMatchSuccessful(t *testing.T) {
 	transformers := NewTransformers()
 
@@ -160,6 +180,16 @@ func TestAdd(t *testing.T) {
 	}
 }
 
+func TestAddWithNonIntegerArg(t *testing.T) {
+	transformers := NewTransformers()
+
+	err := transformers.Append(1, "add", []string{"a"})
+
+	if err == nil || err.Error() != "Argument must be an integer, \"a\" given" {
+		t.Errorf("Must throws an error")
+	}
+}
+
 func TestSubstract(t *testing.T) {
 	transformers := NewTransformers()
 
@@ -170,6 +200,16 @@ func TestSubstract(t *testing.T) {
 
 	if result != expected {
 		t.Errorf("%s got %s", expected, result)
+	}
+}
+
+func TestSubWithNonInteger(t *testing.T) {
+	transformers := NewTransformers()
+
+	err := transformers.Append(1, "sub", []string{"a"})
+
+	if err == nil || err.Error() != "Argument must be an integer, \"a\" given" {
+		t.Errorf("Must throws an error")
 	}
 }
 
@@ -186,6 +226,16 @@ func TestDeleteNumberOfCharactersAtTheRightSide(t *testing.T) {
 	}
 }
 
+func TestDeleteNumberOfCharactersAtTheRightSideWithNonInteger(t *testing.T) {
+	transformers := NewTransformers()
+
+	err := transformers.Append(1, "delr", []string{"a"})
+
+	if err == nil || err.Error() != "Argument must be an integer, \"a\" given" {
+		t.Errorf("Must throws an error")
+	}
+}
+
 func TestDeleteNumberOfCharactersAtTheLeftSide(t *testing.T) {
 	transformers := NewTransformers()
 
@@ -196,6 +246,16 @@ func TestDeleteNumberOfCharactersAtTheLeftSide(t *testing.T) {
 
 	if result != expected {
 		t.Errorf("%s got %s", expected, result)
+	}
+}
+
+func TestDeleteNumberOfCharactersAtTheLeftSideWithNonInteger(t *testing.T) {
+	transformers := NewTransformers()
+
+	err := transformers.Append(1, "dell", []string{"a"})
+
+	if err == nil || err.Error() != "Argument must be an integer, \"a\" given" {
+		t.Errorf("Must throws an error")
 	}
 }
 

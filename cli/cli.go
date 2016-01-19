@@ -20,6 +20,8 @@ type Transformers struct {
 
 // Set is used to populate statement from string
 func (t *Transformers) Set(value string) error {
+	var err error
+
 	parser := dsl.NewParser(bytes.NewBufferString(value))
 
 	stmts, err := parser.ParsePositionAndFunctions()
@@ -35,7 +37,11 @@ func (t *Transformers) Set(value string) error {
 			return errors.New("You cannot add a transformer to position 0")
 		}
 
-		(*t).transformers.Append(stmts.Position, stmt.Name, stmt.Args)
+		err = (*t).transformers.Append(stmts.Position, stmt.Name, stmt.Args)
+
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

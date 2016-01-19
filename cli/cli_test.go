@@ -1,10 +1,10 @@
 package cli
 
 import (
-	"reflect"
-	"testing"
 	"errors"
 	"gopkg.in/alecthomas/kingpin.v2"
+	"reflect"
+	"testing"
 )
 
 type MockValue struct {
@@ -56,10 +56,18 @@ func TestTransformersSetValidArgument(t *testing.T) {
 	}
 }
 
-func TestTransformersSetUnValidArgument(t *testing.T) {
+func TestTransformersSetUnValidFunction(t *testing.T) {
 	trans := &Transformers{}
 
 	if trans.Set("8:low(test)").Error() != "found \"test\", arg must start with a quote" {
+		t.Error("Must return an error")
+	}
+}
+
+func TestTransformersSetUnValidArgument(t *testing.T) {
+	trans := &Transformers{}
+
+	if trans.Set("8:add(\"a\")").Error() != "Argument must be an integer, \"a\" given" {
 		t.Error("Must return an error")
 	}
 }

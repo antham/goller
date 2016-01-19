@@ -1,6 +1,7 @@
 package transformer
 
 import (
+	"fmt"
 	"log"
 	"regexp"
 	"strconv"
@@ -19,7 +20,7 @@ func NewTransformers() *Transformers {
 }
 
 // Append transformer to transformer list
-func (t *Transformers) Append(position int, fun string, args []string) {
+func (t *Transformers) Append(position int, fun string, args []string) error {
 	var function transformer
 
 	switch len(args) {
@@ -49,13 +50,13 @@ func (t *Transformers) Append(position int, fun string, args []string) {
 				return strings.TrimRight(input, args[0])
 			}
 		case "dell":
+			size, err := strconv.Atoi(args[0])
+
+			if err != nil {
+				return fmt.Errorf("Argument must be an integer, \"%s\" given", args[0])
+			}
+
 			function = func(input string) string {
-				size, err := strconv.Atoi(args[0])
-
-				if err != nil {
-					log.Fatalf("Argument must be an integer : %s given", args[0])
-				}
-
 				if len(input) < size {
 					return ""
 				}
@@ -63,13 +64,13 @@ func (t *Transformers) Append(position int, fun string, args []string) {
 				return input[size:]
 			}
 		case "delr":
+			size, err := strconv.Atoi(args[0])
+
+			if err != nil {
+				return fmt.Errorf("Argument must be an integer, \"%s\" given", args[0])
+			}
+
 			function = func(input string) string {
-				size, err := strconv.Atoi(args[0])
-
-				if err != nil {
-					log.Fatalf("Argument must be an integer : %s given", args[0])
-				}
-
 				if len(input) < size {
 					return ""
 				}
@@ -85,43 +86,43 @@ func (t *Transformers) Append(position int, fun string, args []string) {
 				return args[0] + input
 			}
 		case "match":
+			reg, err := regexp.Compile(args[0])
+
+			if err != nil {
+				return fmt.Errorf("An error occured when parsing regexp : \"%s\"", err)
+			}
+
 			function = func(input string) string {
-				result, err := regexp.MatchString(args[0], input)
-
-				if err != nil {
-					log.Fatalf("An error occured when parsing regexp : %s", err)
-				}
-
-				return strconv.FormatBool(result)
+				return strconv.FormatBool(reg.MatchString(input))
 			}
 		case "add":
+			leftOp, err := strconv.Atoi(args[0])
+
+			if err != nil {
+				return fmt.Errorf("Argument must be an integer, \"%s\" given", args[0])
+			}
+
 			function = func(input string) string {
 				rightOp, err := strconv.Atoi(input)
 
 				if err != nil {
-					log.Fatalf("Argument must be an integer %s given", input)
-				}
-
-				leftOp, err := strconv.Atoi(args[0])
-
-				if err != nil {
-					log.Fatalf("Argument must be an integer : %s given", input)
+					log.Fatalf("Argument must be an integer, \"%s\" given", input)
 				}
 
 				return strconv.Itoa(rightOp + leftOp)
 			}
 		case "sub":
+			leftOp, err := strconv.Atoi(args[0])
+
+			if err != nil {
+				return fmt.Errorf("Argument must be an integer, \"%s\" given", args[0])
+			}
+
 			function = func(input string) string {
 				rightOp, err := strconv.Atoi(input)
 
 				if err != nil {
-					log.Fatalf("Argument must be an integer %s given", input)
-				}
-
-				leftOp, err := strconv.Atoi(args[0])
-
-				if err != nil {
-					log.Fatalf("Argument must be an integer : %s given", input)
+					log.Fatalf("Argument must be an integer, \"%s\" given", input)
 				}
 
 				return strconv.Itoa(rightOp - leftOp)
@@ -138,7 +139,11 @@ func (t *Transformers) Append(position int, fun string, args []string) {
 
 	if function != nil {
 		(*t)[position] = append((*t)[position], function)
+
+		return nil
 	}
+
+	return fmt.Errorf("\"%s\" doesn't exists or number of argument is wrong", fun)
 }
 
 // Apply transformers to a string
