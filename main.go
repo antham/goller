@@ -39,7 +39,13 @@ func count(positionsString string, delimiter string, trans *cli.Transformers, pa
 	var positions []int
 
 	reader.ReadStdin(func(line string) {
-		tokens := tok.Tokenize(line)
+		tokens, err := tok.Tokenize(line)
+
+		if err != nil {
+			fmt.Println(err)
+
+			os.Exit(1)
+		}
 
 		if len(positions) == 0 {
 			var err error

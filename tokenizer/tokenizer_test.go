@@ -10,10 +10,14 @@ func TestTokenizeLineWithAParser(t *testing.T) {
 
 	tok := NewTokenizer(p)
 
-	tokens := tok.Tokenize("[2016-01-08 20:16] [ALPM] transaction started")
+	tokens, err := tok.Tokenize("[2016-01-08 20:16] [ALPM] transaction started")
+
+	if err != nil {
+		t.Error("Must not throws an error")
+	}
 
 	if tokens == nil {
-		t.Error("tokens can't be nil")
+		t.Error("Tokens can't be nil")
 	}
 
 	if len(tokens) != 5 {
@@ -26,5 +30,33 @@ func TestTokenizeLineWithAParser(t *testing.T) {
 
 	if tokens[4].Value != "started" {
 		t.Errorf("We should retrieve %v at token 4, got %v", "started", tokens[4].Value)
+	}
+}
+
+func TestTokenizeALineWithLessTokensThanFirstLine(t *testing.T) {
+	p := parser.NewParser("whi", []string{})
+
+	tok := NewTokenizer(p)
+
+	tok.Tokenize("test1 test2 test3 test4")
+
+	_, err := tok.Tokenize("test1 test2 test3")
+
+	if err.Error() != "Wrong parsing strategy (based on first line tokenization), got 3 tokens instead of 4\nLine : test1 test2 test3\n" {
+		t.Error("We must have an error when we try to tokenize two lines with different sizes")
+	}
+}
+
+func TestTokenizeALineWithMoreTokensThanFirstLine(t *testing.T) {
+	p := parser.NewParser("whi", []string{})
+
+	tok := NewTokenizer(p)
+
+	tok.Tokenize("test1 test2 test3 test4")
+
+	_, err := tok.Tokenize("test1 test2 test3 test4 test5")
+
+	if err.Error() != "Wrong parsing strategy (based on first line tokenization), got 5 tokens instead of 4\nLine : test1 test2 test3 test4 test5\n" {
+		t.Error("We must have an error when we try to tokenize two lines with different sizes")
 	}
 }
