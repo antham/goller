@@ -117,11 +117,7 @@ func (p *Parser) parsePosition() (int, error) {
 		return -1, fmt.Errorf("found %q, expected a number", lit)
 	}
 
-	pos, err := strconv.Atoi(lit)
-
-	if err != nil {
-		return -1, err
-	}
+	pos, _ := strconv.Atoi(lit)
 
 	if tok, lit = p.scan(); tok != COLON {
 		return -1, fmt.Errorf("found %q, expected a colon", lit)
