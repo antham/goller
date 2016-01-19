@@ -85,6 +85,15 @@ func TestParsePositionAndFunctionsUnvalidFunction(t *testing.T) {
 	}
 }
 
+func TestParsePositionAndFunctionsNoPipe(t *testing.T) {
+	parser := NewParser(bytes.NewBufferString("8:test1|test2|test3(\"arg1\"),"))
+	stmt, err := parser.ParsePositionAndFunctions()
+
+	if stmt != nil || err == nil || err.Error() != "found \",\", function delimiter is a pipe" {
+		t.Error("Must throw an error if no colon is found")
+	}
+}
+
 func TestParseFunctionPositionAndFunctionsWithNoDoubleQuoteToStartArg(t *testing.T) {
 	parser := NewParser(bytes.NewBufferString("8:test1|test2(hello)|test3"))
 	stmt, err := parser.ParsePositionAndFunctions()
@@ -212,6 +221,15 @@ func TestParsePositionsAndFunctionsWithUnvalidPosition(t *testing.T) {
 
 	if err == nil || err.Error() != "found \"test1\", expected a number" {
 		t.Error("Must throw an error if position is not correct")
+	}
+}
+
+func TestParsePositionsAndFunctionsWithUnvalidFunction(t *testing.T) {
+	parser := NewParser(bytes.NewBufferString("8:test*(\"hello\")"))
+	_, err := parser.ParsePositionsAndFunctions()
+
+	if err == nil || err.Error() != "found \"test*\", function must have letter and number only" {
+		t.Error("Must throw an error if function is not correct")
 	}
 }
 
