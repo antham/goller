@@ -11,6 +11,8 @@ import (
 	"os"
 )
 
+const version = "1.4.0"
+
 var (
 	app = kingpin.New("goller", "Aggregate log fields and count occurences")
 
@@ -25,6 +27,8 @@ var (
 
 // main entry point
 func main() {
+	app.Version(version)
+
 	switch kingpin.MustParse(app.Parse(os.Args[1:])) {
 	case counter.FullCommand():
 		count(*counterPositions, *counterDelimiter, counterTransformers, counterParser, counterSorter)
