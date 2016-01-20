@@ -13,16 +13,31 @@ import (
 
 const version = "1.4.0"
 
+type groupCommand struct {
+	cmd          *kingpin.CmdClause
+	delimiter    *string
+	transformers *cli.Transformers
+	parser       *cli.Parser
+	sorters      *cli.Sorters
+	positions    *string
+}
+
+type command map[string]*kingpin.CmdClause
+
 var (
 	app = kingpin.New("goller", "Aggregate log fields and count occurences")
 
-	counter             = app.Command("counter", "Count occurence of field")
-	counterDelimiter    = counter.Flag("delimiter", "Separator between results").Short('d').Default(" | ").String()
-	counterTransformers = cli.TransformersWrapper(counter.Flag("trans", "Transformers applied to every fields").Short('t'))
-	counterParser       = cli.ParserWrapper(counter.Flag("parser", "Log line parser to use").Short('p').Default("whi"))
-	counterSorter       = cli.SortersWrapper(counter.Flag("sort", "Sort lines").Short('s'))
+	cmd = map[string]*kingpin.CmdClause{
+		"group": app.Command("group", "Group occurence of field"),
+	}
 
-	counterPositions = counter.Arg("positions", "Field positions").Required().String()
+	groupArgs = &groupCommand{
+		delimiter:    cmd["group"].Flag("delimiter", "Separator between results").Short('d').Default(" | ").String(),
+		transformers: cli.TransformersWrapper(cmd["group"].Flag("trans", "Transformers applied to every fields").Short('t')),
+		parser:       cli.ParserWrapper(cmd["group"].Flag("parser", "Log line parser to use").Short('p').Default("whi")),
+		sorters:      cli.SortersWrapper(cmd["group"].Flag("sort", "Sort lines").Short('s')),
+		positions:    cmd["group"].Arg("positions", "Field positions").Required().String(),
+	}
 )
 
 // main entry point
@@ -30,13 +45,14 @@ func main() {
 	app.Version(version)
 
 	switch kingpin.MustParse(app.Parse(os.Args[1:])) {
-	case counter.FullCommand():
-		count(*counterPositions, *counterDelimiter, counterTransformers, counterParser, counterSorter)
+	case cmd["group"].FullCommand():
+		group(groupArgs)
 	}
 }
 
-func count(positionsString string, delimiter string, trans *cli.Transformers, parser *cli.Parser, sorters *cli.Sorters) {
-	tok := tokenizer.NewTokenizer(parser.Get())
+// group run field agregation
+func group(args *groupCommand) {
+	tok := tokenizer.NewTokenizer(args.parser.Get())
 
 	agrBuilder := agregator.NewBuilder()
 
@@ -53,7 +69,7 @@ func count(positionsString string, delimiter string, trans *cli.Transformers, pa
 
 		if len(positions) == 0 {
 			var err error
-			positions, err = cli.ExtractPositions(positionsString, len(tokens))
+			positions, err = cli.ExtractPositions(*args.positions, len(tokens))
 
 			if err != nil {
 				fmt.Println(err)
@@ -62,13 +78,13 @@ func count(positionsString string, delimiter string, trans *cli.Transformers, pa
 			}
 		}
 
-		agrBuilder.Agregate(positions, &tokens, trans.Get())
+		agrBuilder.Agregate(positions, &tokens, args.transformers.Get())
 	})
 
-	if sorters.Get() != nil {
-		sorters.Get().Sort(agrBuilder.Get())
+	if args.sorters.Get() != nil {
+		args.sorters.Get().Sort(agrBuilder.Get())
 	}
 
-	d := dispatcher.NewTermDispatcher(delimiter)
+	d := dispatcher.NewTermDispatcher(*args.delimiter)
 	d.RenderItems(agrBuilder.Get())
 }
