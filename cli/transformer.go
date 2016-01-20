@@ -8,6 +8,12 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
+var transformerGlobal *transformer.Transformers
+
+func init() {
+	transformerGlobal = transformer.NewTransformers()
+}
+
 // Transformers is a map of statement sort by position
 type Transformers struct {
 	transformers *transformer.Transformers
@@ -25,7 +31,7 @@ func (t *Transformers) Set(value string) error {
 		return err
 	}
 
-	(*t).transformers = transformer.NewTransformers()
+	(*t).transformers = transformerGlobal
 
 	for _, stmt := range stmts.Functions {
 		if stmts.Position == 0 {
