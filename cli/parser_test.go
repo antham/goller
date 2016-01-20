@@ -1,12 +1,13 @@
 package cli
 
 import (
+	"gopkg.in/alecthomas/kingpin.v2"
 	"reflect"
 	"testing"
 )
 
 func TestParserWrapper(t *testing.T) {
-	result := ParserWrapper(MockSettings{})
+	result := ParserWrapper(&kingpin.ArgClause{})
 
 	got := reflect.TypeOf(result).String()
 	expected := "*cli.Parser"

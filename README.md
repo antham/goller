@@ -25,11 +25,8 @@ Commands:
   help [<command>...]
     Show help.
 
-  group [<flags>] <positions>
+  group [<flags>] <parser> <positions>
     Group occurence of field
-
-
-exit status 1
 ```
 
 ### Group
@@ -37,21 +34,21 @@ exit status 1
 *Group and count field occurences*
 
 ```bash
-usage: goller group [<flags>] <positions>
+usage: goller group [<flags>] <parser> <positions>
 
 Group occurence of field
 
 Flags:
-  --help            Show help (also see --help-long and --help-man).
-  --version         Show application version.
+  --help           Show help (also see --help-long and --help-man).
+  --version        Show application version.
   -d, --delimiter=" | "
-                    Separator between results
+                   Separator between results
   -t, --transformer=TRANSFORMER
-                    Transformers applied to every fields
-  -p, --parser=whi  Log line parser to use
-  -s, --sort=SORT   Sort lines
+                   Transformers applied to every fields
+  -s, --sort=SORT  Sort lines
 
 Args:
+  <parser>     Log line parser to use
   <positions>  Field positions
 ```
 
@@ -69,7 +66,7 @@ hello world
 we will do :
 
 ```bash
-echo "hello world\nhello world\nhi everybody\nhello world" | goller group 0,1,2
+echo "hello world\nhello world\nhi everybody\nhello world" | goller group whi 0,1,2
 ```
 
 it produces :
@@ -82,7 +79,7 @@ it produces :
 we can reorganize fields as we want :
 
 ```bash
-echo "hello world\nhello world\nhi everybody\nhello world" | goller group 2,1,0
+echo "hello world\nhello world\nhi everybody\nhello world" | goller group whi 2,1,0
 ```
 
 it produces :
@@ -95,7 +92,7 @@ everybody | hi | 1
 we can  keep only fields that matter :
 
 ```bash
-echo "hello world\nhello world\nhi everybody\nhello world" | goller group 1
+echo "hello world\nhello world\nhi everybody\nhello world" | goller group whi 1
 ```
 
 it produces :
@@ -105,25 +102,9 @@ hello
 hi
 ```
 
-## Delimiter option (-d/--delimiter)
+## Parser argument
 
-*Change separator between counted fields*
-
-For instance :
-
-```bash
-echo "hello world \!" | goller group -d@ 1,2,3
-```
-
-produces :
-
-```bash
-hello@world@!
-```
-
-## Parser option (-p/--parser)
-
-*Change parsing strategy to tokenize log line*
+*Parsing strategy used to tokenize log line*
 
 Available functions :
 * [reg](#reg)
@@ -136,7 +117,7 @@ Available functions :
 For instance :
 
 ```bash
-echo "helloworld\!" | goller group -p 'reg("(h.{4})(w.{4})(.)")' 1,2,3
+echo "helloworld\!" | goller group 'reg("(h.{4})(w.{4})(.)")' 1,2,3
 ```
 
 produces :
@@ -154,7 +135,7 @@ hello | world | !
 For instance :
 
 ```bash
-echo "test1 test2 test3" | goller group -p whi 1,2,3
+echo "test1 test2 test3" | goller group whi 1,2,3
 ```
 
 produces :
@@ -163,6 +144,22 @@ produces :
 ```bash
 test1 | test2 | test3
 
+```
+
+## Delimiter option (-d/--delimiter)
+
+*Change separator between counted fields*
+
+For instance :
+
+```bash
+echo "hello world \!" | goller group whi -d@ 1,2,3
+```
+
+produces :
+
+```bash
+hello@world@!
 ```
 
 ## Transformer option (-t/--transformer)
@@ -192,7 +189,7 @@ Available functions:
 For instance :
 
 ```bash
-echo "1 2 3" | goller group -t '1:add("1")' -t '2:add("2")' -t '3:add("3")' 1,2,3
+echo "1 2 3" | goller group whi -t '1:add("1")' -t '2:add("2")' -t '3:add("3")' 1,2,3
 ```
 
 produces :
@@ -208,7 +205,7 @@ produces :
 For instance :
 
 ```bash
-echo "ello orld" | goller group -t '1:catl("h")' -t '2:catl("w")' 1,2
+echo "ello orld" | goller group whi -t '1:catl("h")' -t '2:catl("w")' 1,2
 ```
 
 produces :
@@ -224,7 +221,7 @@ hello | world
 For instance :
 
 ```bash
-echo "h w" | goller group -t '1:catr("ello")' -t '2:catr("orld")' 1,2
+echo "h w" | goller group whi -t '1:catr("ello")' -t '2:catr("orld")' 1,2
 ```
 
 produces :
@@ -240,7 +237,7 @@ hello | world
 For instance :
 
 ```bash
-echo "123hello 12345world" | goller group -t '1:dell("3")' -t '2:dell("5")' 1,2
+echo "123hello 12345world" | goller group whi -t '1:dell("3")' -t '2:dell("5")' 1,2
 ```
 
 produces :
@@ -256,7 +253,7 @@ hello | world
 For instance :
 
 ```bash
-echo "hello123 world12345" | goller group -t '1:delr("3")' -t '2:delr("5")' 1,2
+echo "hello123 world12345" | goller group whi -t '1:delr("3")' -t '2:delr("5")' 1,2
 ```
 
 produces :
@@ -273,7 +270,7 @@ hello | world
 For instance :
 
 ```bash
-echo "hello world \!" | goller group -t '1:len' -t '2:len' -t '3:len' 1,2,3
+echo "hello world \!" | goller group whi -t '1:len' -t '2:len' -t '3:len' 1,2,3
 ```
 
 produces :
@@ -289,7 +286,7 @@ produces :
 For instance :
 
 ```bash
-echo "HELLO WORLD" | goller group -t '1:low' -t '2:low' 1,2
+echo "HELLO WORLD" | goller group whi -t '1:low' -t '2:low' 1,2
 ```
 
 produces :
@@ -305,7 +302,7 @@ hello | world
 For instance :
 
 ```bash
-echo "hello world" | goller group -t '1:match("hi")' -t '2:match("w.{4}")' 1,2
+echo "hello world" | goller group whi -t '1:match("hi")' -t '2:match("w.{4}")' 1,2
 ```
 
 produces :
@@ -321,7 +318,7 @@ false | true
 For instance :
 
 ```bash
-echo "hello world" | goller group -t '1:repl("ello","i")' -t '2:repl("world","everybody")' 1,2
+echo "hello world" | goller group whi -t '1:repl("ello","i")' -t '2:repl("world","everybody")' 1,2
 ```
 
 produces :
@@ -337,7 +334,7 @@ hi | everybody
 For instance :
 
 ```bash
-echo "1 2 3" | goller group -t '1:sub("1")' -t '2:sub("2")' -t '3:sub("3")' 1,2,3
+echo "1 2 3" | goller group whi -t '1:sub("1")' -t '2:sub("2")' -t '3:sub("3")' 1,2,3
 ```
 
 produces :
@@ -353,7 +350,7 @@ produces :
 For instance :
 
 ```bash
-echo "@_@_@hello world\!*\!*" | goller group -t '1:trim("@_")' -t '2:trim("!*")' 1,2
+echo "@_@_@hello world\!*\!*" | goller group whi -t '1:trim("@_")' -t '2:trim("!*")' 1,2
 ```
 produces :
 
@@ -368,7 +365,7 @@ hello | world
 For instance :
 
 ```bash
-echo "ooohello dddddworld" | goller group -t '1:triml("o")' -t '2:triml("d")' 1,2
+echo "ooohello dddddworld" | goller group whi -t '1:triml("o")' -t '2:triml("d")' 1,2
 ```
 produces :
 
@@ -383,7 +380,7 @@ hello | world
 For instance :
 
 ```bash
-echo "hellohhhh worldwwww" | goller group -t '1:trimr("h")' -t '2:trimr("w")' 1,2
+echo "hellohhhh worldwwww" | goller group whi -t '1:trimr("h")' -t '2:trimr("w")' 1,2
 ```
 produces :
 
@@ -398,7 +395,7 @@ hello | world
 For instance :
 
 ```bash
-echo "hello world" | goller group -t '1:upp' -t '2:upp' 1,2
+echo "hello world" | goller group whi -t '1:upp' -t '2:upp' 1,2
 ```
 
 produces :
@@ -423,7 +420,7 @@ Available functions:
 For instance :
 
 ```bash
-echo "5\n7\n9\n10\n6\n1\n5" | goller group -s "1:int" 1
+echo "5\n7\n9\n10\n6\n1\n5" | goller group whi -s "1:int" 1
 ```
 produces :
 
@@ -443,7 +440,7 @@ produces :
 For instance :
 
 ```bash
-echo "eeeee\ndddd\nbb\na\nccc" | goller group -s "1:strl" 1
+echo "eeeee\ndddd\nbb\na\nccc" | goller group whi -s "1:strl" 1
 ```
 
 produces :
@@ -463,7 +460,7 @@ eeeee
 For instance :
 
 ```bash
-echo "e\nd\nb\nf\na\ng\nc" | goller group -s "1:str" 1
+echo "e\nd\nb\nf\na\ng\nc" | goller group whi -s "1:str" 1
 ```
 
 produces :

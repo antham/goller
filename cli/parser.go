@@ -36,7 +36,7 @@ func (p *Parser) String() string {
 }
 
 // ParserWrapper is used to transform argument from command line
-func ParserWrapper(s kingpin.Settings) (target *Parser) {
+func ParserWrapper(s *kingpin.ArgClause) (target *Parser) {
 	target = new(Parser)
 	s.SetValue((*Parser)(target))
 	return

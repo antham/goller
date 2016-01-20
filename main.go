@@ -34,8 +34,8 @@ var (
 	groupArgs = &groupCommand{
 		delimiter:    cmd["group"].Flag("delimiter", "Separator between results").Short('d').Default(" | ").String(),
 		transformers: cli.TransformersWrapper(cmd["group"].Flag("transformer", "Transformers applied to every fields").Short('t')),
-		parser:       cli.ParserWrapper(cmd["group"].Flag("parser", "Log line parser to use").Short('p').Default("whi")),
 		sorters:      cli.SortersWrapper(cmd["group"].Flag("sort", "Sort lines").Short('s')),
+		parser:       cli.ParserWrapper(cmd["group"].Arg("parser", "Log line parser to use").Required()),
 		positions:    cmd["group"].Arg("positions", "Field positions").Required().String(),
 	}
 )
