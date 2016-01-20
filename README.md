@@ -15,50 +15,94 @@ From [release page](https://github.com/antham/goller/releases) download the bina
 ```bash
 usage: goller [<flags>] <command> [<args> ...]
 
-Logger parser
+Aggregate log fields and count occurences
 
 Flags:
-  --help  Show help (also see --help-long and --help-man).
+  --help     Show help (also see --help-long and --help-man).
+  --version  Show application version.
 
 Commands:
   help [<command>...]
     Show help.
 
-  counter [<flags>] <positions>
-    Count occurence of field
+  group [<flags>] <positions>
+    Group occurence of field
+
+
+exit status 1
 ```
 
-### Counter
+### Group
 
-*Count number of time fields occured*
+*Group and count field occurences*
 
 ```bash
-usage: goller counter [<flags>] <positions>
+usage: goller group [<flags>] <positions>
 
-Count occurence of field
+Group occurence of field
 
 Flags:
-  --help               Show help (also see --help-long and --help-man).
+  --help            Show help (also see --help-long and --help-man).
+  --version         Show application version.
   -d, --delimiter=" | "
-                       Separator bewteen results
-  -t, --trans=TRANS    Transformers applied to every fields
-  -p, --parser=PARSER  Log line parser to use
+                    Separator between results
+  -t, --transformer=TRANSFORMER
+                    Transformers applied to every fields
+  -p, --parser=whi  Log line parser to use
+  -s, --sort=SORT   Sort lines
 
 Args:
   <positions>  Field positions
 ```
 
-For instance :
+*A log line is splitted according to given parsing strategy, you can then refer every field using its position number. 0 position is a special position, it counts number of time a field occured*
+
+If we want to parse thoses lines :
 
 ```bash
-echo "hello world\nhello world\nhi everybody\nhello world" | goller counter 0,1
+hello world
+hello world
+hi everybody
+hello world
 ```
 
-produces :
+we will do :
 
 ```bash
-1 | hi | everybody
+echo "hello world\nhello world\nhi everybody\nhello world" | goller group 0,1,2
+```
+
+it produces :
+
+```bash
 3 | hello | world
+1 | hi | everybody
+```
+
+we can reorganize fields as we want :
+
+```bash
+echo "hello world\nhello world\nhi everybody\nhello world" | goller group 2,1,0
+```
+
+it produces :
+
+```bash
+world | hello | 3
+everybody | hi | 1
+```
+
+we can  keep only fields that matter :
+
+```bash
+echo "hello world\nhello world\nhi everybody\nhello world" | goller group 1
+```
+
+it produces :
+
+```bash
+hello
+hi
 ```
 
 ## Delimiter option (-d/--delimiter)
@@ -68,13 +112,13 @@ produces :
 For instance :
 
 ```bash
-echo "hello world !" | goller counter -d@ 0,1,2
+echo "hello world \!" | goller group -d@ 1,2,3
 ```
 
 produces :
 
 ```bash
-1@hello@world@!
+hello@world@!
 ```
 
 ## Parser option (-p/--parser)
@@ -92,14 +136,14 @@ Available functions :
 For instance :
 
 ```bash
-echo "helloworld\!" | goller counter -p 'reg("(h.{4})(w.{4})(.)")' 0,1,2
+echo "helloworld\!" | goller group -p 'reg("(h.{4})(w.{4})(.)")' 1,2,3
 ```
 
 produces :
 
 
 ```bash
-1 | hello | world | !
+hello | world | !
 
 ```
 
@@ -110,18 +154,18 @@ produces :
 For instance :
 
 ```bash
-echo "test1 test2 test3" | goller counter -p whi 0,1,2
+echo "test1 test2 test3" | goller group -p whi 1,2,3
 ```
 
 produces :
 
 
 ```bash
-1 | test1 | test2 | test3
+test1 | test2 | test3
 
 ```
 
-## Transformer option (-t/--trans)
+## Transformer option (-t/--transformer)
 
 *Change a field before being counted, transformers could be chained*
 
@@ -148,13 +192,13 @@ Available functions:
 For instance :
 
 ```bash
-echo "1 2 3" | goller counter -t '0:add("1")' -t '1:add("2")' -t '2:add("3")' 0,1,2
+echo "1 2 3" | goller group -t '1:add("1")' -t '2:add("2")' -t '3:add("3")' 1,2,3
 ```
 
 produces :
 
 ```bash
-1 | 2 | 4 | 6
+2 | 4 | 6
 ```
 
 ### catl
@@ -164,13 +208,13 @@ produces :
 For instance :
 
 ```bash
-echo "ello orld" | goller counter -t '0:catl("h")' -t '1:catl("w")' 0,1
+echo "ello orld" | goller group -t '1:catl("h")' -t '2:catl("w")' 1,2
 ```
 
 produces :
 
 ```bash
-1 | hello | world
+hello | world
 ```
 
 ### catr
@@ -180,13 +224,13 @@ produces :
 For instance :
 
 ```bash
-echo "h w" | goller counter -t '0:catr("ello")' -t '1:catr("orld")' 0,1
+echo "h w" | goller group -t '1:catr("ello")' -t '2:catr("orld")' 1,2
 ```
 
 produces :
 
 ```bash
-1 | hello | world
+hello | world
 ```
 
 ### dell
@@ -196,13 +240,13 @@ produces :
 For instance :
 
 ```bash
-echo "123hello 12345world" | goller counter -t '0:dell("3")' -t '1:dell("5")' 0,1
+echo "123hello 12345world" | goller group -t '1:dell("3")' -t '2:dell("5")' 1,2
 ```
 
 produces :
 
 ```bash
-1 | hello | world
+hello | world
 ```
 
 ### delr
@@ -212,13 +256,14 @@ produces :
 For instance :
 
 ```bash
-echo "hello123 world12345" | goller counter -t '0:delr("3")' -t '1:delr("5")' 0,1
+echo "hello123 world12345" | goller group -t '1:delr("3")' -t '2:delr("5")' 1,2
 ```
 
 produces :
 
 ```bash
-1 | hello | world
+hello | world
+
 ```
 
 ### len
@@ -228,13 +273,13 @@ produces :
 For instance :
 
 ```bash
-echo "hello world \!" | goller counter -t '0:len' -t '1:len' -t '2:len' 0,1,2
+echo "hello world \!" | goller group -t '1:len' -t '2:len' -t '3:len' 1,2,3
 ```
 
 produces :
 
 ```bash
-1 | 5 | 5 | 1
+5 | 5 | 2
 ```
 
 ### low
@@ -244,13 +289,13 @@ produces :
 For instance :
 
 ```bash
-echo "HELLO WORLD" | goller counter -t '0:low' -t '1:low' 0,1
+echo "HELLO WORLD" | goller group -t '1:low' -t '2:low' 1,2
 ```
 
 produces :
 
 ```bash
-1 | hello | world
+hello | world
 ```
 
 ### match
@@ -260,13 +305,13 @@ produces :
 For instance :
 
 ```bash
-echo "hello world" | goller counter -t '0:match("hi")' -t '1:match("w.{4}")' 0,1
+echo "hello world" | goller group -t '1:match("hi")' -t '2:match("w.{4}")' 1,2
 ```
 
 produces :
 
 ```bash
-1 | false | true
+false | true
 ```
 
 ### repl
@@ -276,13 +321,13 @@ produces :
 For instance :
 
 ```bash
-echo "hello world" | goller counter -t '0:repl("ello","i")' -t '1:repl("world","everybody")' 0,1
+echo "hello world" | goller group -t '1:repl("ello","i")' -t '2:repl("world","everybody")' 1,2
 ```
 
 produces :
 
 ```bash
-1 | hi | everybody
+hi | everybody
 ```
 
 ### sub
@@ -292,13 +337,13 @@ produces :
 For instance :
 
 ```bash
-echo "1 2 3" | goller counter -t '0:sub("1")' -t '1:sub("2")' -t '2:sub("3")' 0,1,2
+echo "1 2 3" | goller group -t '1:sub("1")' -t '2:sub("2")' -t '3:sub("3")' 1,2,3
 ```
 
 produces :
 
 ```bash
-1 | 0 | 0 | 0
+0 | 0 | 0
 ```
 
 ### trim
@@ -308,12 +353,12 @@ produces :
 For instance :
 
 ```bash
-echo "@_@_@hello world\!*\!*" | goller counter -t '0:trim("@_")' -t '1:trim("!*")' 0,1
+echo "@_@_@hello world\!*\!*" | goller group -t '1:trim("@_")' -t '2:trim("!*")' 1,2
 ```
 produces :
 
 ```bash
-1 | hello | world
+hello | world
 ```
 
 ### triml
@@ -323,12 +368,12 @@ produces :
 For instance :
 
 ```bash
-echo "ooohello dddddworld" | goller counter -t '0:triml("o")' -t '1:triml("d")' 0,1
+echo "ooohello dddddworld" | goller group -t '1:triml("o")' -t '2:triml("d")' 1,2
 ```
 produces :
 
 ```bash
-1 | hello | world
+hello | world
 ```
 
 ### trimr
@@ -338,12 +383,12 @@ produces :
 For instance :
 
 ```bash
-echo "hellohhhh worldwwww" | goller counter -t '0:trimr("h")' -t '1:trimr("w")' 0,1
+echo "hellohhhh worldwwww" | goller group -t '1:trimr("h")' -t '2:trimr("w")' 1,2
 ```
 produces :
 
 ```bash
-1 | hello | world
+hello | world
 ```
 
 ### upp
@@ -353,11 +398,82 @@ produces :
 For instance :
 
 ```bash
-echo "hello world" | goller counter -t '0:upp' -t '1:upp' 0,1
+echo "hello world" | goller group -t '1:upp' -t '2:upp' 1,2
 ```
 
 produces :
 
 ```bash
-1 | HELLO | WORLD
+HELLO | WORLD
+```
+
+## Sort option (-s/--sort)
+
+*Sort a field according to given function*
+
+Available functions:
+* [int](#int)
+* [strl](#strl)
+* [str](#str)
+
+### int
+
+*Sort integer fields*
+
+For instance :
+
+```bash
+echo "5\n7\n9\n10\n6\n1\n5" | goller group -s "1:int" 1
+```
+produces :
+
+```bash
+1
+5
+6
+7
+9
+10
+```
+
+### strl
+
+*Sort using size string*
+
+For instance :
+
+```bash
+echo "eeeee\ndddd\nbb\na\nccc" | goller group -s "1:strl" 1
+```
+
+produces :
+
+```bash
+a
+bb
+ccc
+dddd
+eeeee
+```
+
+### str
+
+*Sort using lexicographic order*
+
+For instance :
+
+```bash
+echo "e\nd\nb\nf\na\ng\nc" | goller group -s "1:str" 1
+```
+
+produces :
+
+```bash
+a
+b
+c
+d
+e
+f
+g
 ```
