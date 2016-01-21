@@ -108,6 +108,7 @@ hi
 
 Available functions :
 * [reg](#reg)
+* [spl](#spl)
 * [whi](#whi)
 
 ### reg
@@ -140,6 +141,22 @@ echo "test1 test2 test3" | goller group whi 1,2,3
 
 produces :
 
+
+```bash
+test1 | test2 | test3
+```
+
+### spl
+
+*Split lines using given string*
+
+For instance :
+
+```bash
+echo "test1_test2_test3" | goller group 'spl("_")' 1,2,3
+```
+
+produces :
 
 ```bash
 test1 | test2 | test3

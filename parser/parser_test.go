@@ -37,3 +37,14 @@ func TestParseRegexpWithPatternNotMatchingExpression(t *testing.T) {
 		t.Errorf("%s got %s", expected, result)
 	}
 }
+
+func TestParseSplit(t *testing.T) {
+	p := NewParser("spl", []string{"separator"})
+
+	result := (*p)("helloseparatorworld,separatoraseparatortestingseparatorsentenceseparator!")
+	expected := []string{"hello", "world,", "a", "testing", "sentence", "!"}
+
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("%s got %s", expected, result)
+	}
+}

@@ -22,6 +22,12 @@ func NewParser(fun string, args []string) *Parser {
 		}
 	case 1:
 		switch fun {
+		case "spl":
+			{
+				function = func(input string) []string {
+					return strings.Split(input, args[0])
+				}
+			}
 		case "reg":
 			{
 				{
