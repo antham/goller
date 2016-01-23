@@ -85,6 +85,8 @@ func group(args *groupCommand) {
 		args.sorters.Get().Sort(agrBuilder.Get())
 	}
 
-	d := dispatcher.NewTermDispatcher(*args.delimiter)
+	var d dispatcher.Dispatcher
+
+	d = dispatcher.NewTermDispatch(*args.delimiter)
 	d.RenderItems(agrBuilder.Get())
 }

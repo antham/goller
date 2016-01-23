@@ -47,7 +47,7 @@ func TestTermDispatcherDisplaying(t *testing.T) {
 		outC <- buf.String()
 	}()
 
-	d := NewTermDispatcher("|")
+	d := NewTermDispatch("|")
 	d.RenderItems(builder.Get())
 
 	w.Close()

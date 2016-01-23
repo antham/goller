@@ -12,7 +12,7 @@ type Term struct {
 }
 
 // NewTermDispatcher create a new terminal renderer
-func NewTermDispatcher(delimiter string) Term {
+func NewTermDispatch(delimiter string) Term {
 	return Term{delimiter: delimiter}
 }
 
@@ -21,5 +21,4 @@ func (t Term) RenderItems(agregators *agregator.Agregators) {
 	for _, agregator := range *agregators {
 		fmt.Println(strings.Join(agregator.Datas, t.delimiter))
 	}
-
 }
