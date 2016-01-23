@@ -423,7 +423,24 @@ HELLO | WORLD
 
 ## Sort option (-s/--sort)
 
-*Sort a field according to given function*
+*Sort a field according to given function, sorters could be used with several fields*
+
+For instance :
+
+```bash
+echo "3 8 2\n4 9 3\n3 8 0\n3 1 10\n3 9 1\n1 9 1\n2 9 1"| go run main.go group -s "1:int,2:int,3:int" whi 1,2,3
+```
+produces
+
+```bash
+1 | 9 | 1
+2 | 9 | 1
+3 | 1 | 10
+3 | 8 | 0
+3 | 8 | 2
+3 | 9 | 1
+4 | 9 | 3
+```
 
 Available functions:
 * [int](#int)

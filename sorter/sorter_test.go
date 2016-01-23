@@ -2,8 +2,59 @@ package sorter
 
 import (
 	"github.com/antham/goller/agregator"
+	"github.com/antham/goller/tokenizer"
 	"testing"
 )
+
+func TestIntMultiSort(t *testing.T) {
+	datas := [][]string{
+		{"3", "8", "2"},
+		{"4", "9", "3"},
+		{"3", "8", "0"},
+		{"3", "1", "10"},
+		{"3", "9", "1"},
+		{"1", "9", "1"},
+		{"2", "9", "1"},
+	}
+
+	builder := agregator.NewBuilder()
+
+	for _, data := range datas {
+		tokens := []tokenizer.Token{}
+
+		for _, item := range data {
+			tokens = append(tokens, tokenizer.Token{Value: item})
+		}
+
+		builder.Agregate([]int{1, 2, 3}, &tokens, nil)
+	}
+
+	agregators := builder.Get()
+
+	sorters := NewSorters()
+	sorters.Append(1, "int", []string{})
+	sorters.Append(2, "int", []string{})
+	sorters.Append(3, "int", []string{})
+	sorters.Sort(agregators)
+
+	expected := [][]string{
+		{"1", "9", "1"},
+		{"2", "9", "1"},
+		{"3", "1", "10"},
+		{"3", "8", "0"},
+		{"3", "8", "2"},
+		{"3", "9", "1"},
+		{"4", "9", "3"},
+	}
+
+	for i := 0; i < len(expected); i++ {
+		for j := 0; j < 3; j++ {
+			if (*agregators)[i].Datas[j] != expected[i][j] {
+				t.Errorf("Got %v, expected %v", (*agregators)[i].Datas, expected[i])
+			}
+		}
+	}
+}
 
 func TestInt(t *testing.T) {
 	datas1 := []string{"5", "8"}
@@ -38,7 +89,7 @@ func TestInt(t *testing.T) {
 	}
 
 	sorters := NewSorters()
-	sorters.Append(-1, 1, "int", []string{})
+	sorters.Append(1, "int", []string{})
 	sorters.Sort(&agregators)
 
 	if *agregators[0].DatasOrdered[1] != "1" ||
@@ -81,7 +132,7 @@ func TestStrl(t *testing.T) {
 	}
 
 	sorters := NewSorters()
-	sorters.Append(-1, 1, "strl", []string{})
+	sorters.Append(1, "strl", []string{})
 	sorters.Sort(&agregators)
 
 	if *agregators[0].DatasOrdered[1] != "!" ||
@@ -124,7 +175,7 @@ func TestStr(t *testing.T) {
 	}
 
 	sorters := NewSorters()
-	sorters.Append(-1, 1, "str", []string{})
+	sorters.Append(1, "str", []string{})
 	sorters.Sort(&agregators)
 
 	if *agregators[0].DatasOrdered[1] != "!" ||

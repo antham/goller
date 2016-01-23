@@ -44,9 +44,9 @@ func (s *Sorters) Append(currentPosition int, sorterName string, args []string) 
 
 // Sort agregators using provided sorters
 func (s *Sorters) Sort(agregators *agregator.Agregators) {
-	for _, sor := range *s {
-		sor.SetAgregators(agregators)
-		sort.Sort(sor)
+	for i := len(*s) - 1; i >= 0; i-- {
+		(*s)[i].SetAgregators(agregators)
+		sort.Sort((*s)[i])
 	}
 }
 
