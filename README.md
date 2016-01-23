@@ -183,6 +183,18 @@ hello@world@!
 
 *Change a field before being counted, transformers could be chained*
 
+For instance :
+
+```bash
+echo "1 2 3" | goller group whi -t '1:add("1").sub("1").add("10")' -t '2:add("2").sub("1").add("10")' -t '3:add("3").sub("1").add("10")' 1,2,3
+```
+
+produces :
+
+```bash
+11 | 13 | 15
+```
+
 Available functions:
 * [add](#add)
 * [catl](#catl)

@@ -168,8 +168,8 @@ func (p *Parser) parseFunctions() ([]FunctionStatement, error) {
 			break
 		}
 
-		if tok != PIPE {
-			return []FunctionStatement{}, fmt.Errorf("found %q, function delimiter is a pipe", lit)
+		if tok != DOT {
+			return []FunctionStatement{}, fmt.Errorf("found %q, chainer must be a dot", lit)
 		}
 	}
 

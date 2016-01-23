@@ -50,6 +50,8 @@ func (s *Scanner) Scan() (tok Token, lit string) {
 		return DQUOTE, string(ch)
 	case ',':
 		return COMMA, string(ch)
+	case '.':
+		return DOT, string(ch)
 	case '\\':
 		if s.read() == '"' {
 			return EDQUOTE, string('"')
@@ -72,7 +74,7 @@ func (s *Scanner) scanString() (token Token, data string) {
 	hasSpecialChar := false
 
 	for c := s.read(); ; c = s.read() {
-		if c == '"' || c == '|' || c == ')' || c == '(' || c == ',' || c == ':' || c == eof {
+		if c == '"' || c == '|' || c == ')' || c == '(' || c == ',' || c == ':' || c == '.' || c == eof {
 			s.unread()
 			break
 		} else if isLetter(c) {

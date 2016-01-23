@@ -17,4 +17,5 @@ const (
 	DQUOTE
 	EDQUOTE
 	PIPE
+	DOT
 )
