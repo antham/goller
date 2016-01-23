@@ -8,10 +8,10 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
-var transformerGlobal *transformer.Transformers
+var transformersGlobal *transformer.Transformers
 
 func init() {
-	transformerGlobal = transformer.NewTransformers()
+	transformersGlobal = transformer.NewTransformers()
 }
 
 // Transformers is a map of statement sort by position
@@ -31,7 +31,7 @@ func (t *Transformers) Set(value string) error {
 		return err
 	}
 
-	(*t).transformers = transformerGlobal
+	(*t).transformers = transformersGlobal
 
 	for _, stmt := range stmts.Functions {
 		if stmts.Position == 0 {
