@@ -1,4 +1,4 @@
-# Goller [![Build Status](https://travis-ci.org/antham/goller.svg)](https://travis-ci.org/antham/goller) [![Coverage Status](https://coveralls.io/repos/antham/goller/badge.svg?branch=master&service=github)](https://coveralls.io/github/antham/goller?branch=master) #
+# Goller [![Build Status](https://travis-ci.org/antham/goller.svg)](https://travis-ci.org/antham/goller) [![codecov.io](https://codecov.io/github/antham/goller/coverage.svg?branch=master)](https://codecov.io/github/antham/goller?branch=master)
 
 Agregate log fields to count occurence
 

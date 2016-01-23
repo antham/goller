@@ -3,6 +3,14 @@ language: go
 go:
   - 1.5
 
+before_install:
+  - go get github.com/onsi/gomega
+  - go get github.com/onsi/ginkgo
+
 install: go get ./...
 
-script: make check
+script:
+  make run-tests
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
