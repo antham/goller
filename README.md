@@ -486,17 +486,17 @@ produces :
 For instance :
 
 ```bash
-echo "eeeee\ndddd\nbb\na\nccc" | goller group whi -s "1:strl" 1
+echo "aaaaa\naaaa\naa\na\naaa" | goller group whi -s "1:strl" 1
 ```
 
 produces :
 
 ```bash
 a
-bb
-ccc
-dddd
-eeeee
+aa
+aaa
+aaaa
+aaaaa
 ```
 
 ### str
