@@ -7,7 +7,13 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
-// Sorter is a map of statement sort by position
+var sortersGlobal *sorter.Sorters
+
+func init() {
+	sortersGlobal = sorter.NewSorters()
+}
+
+// Sorters is a map of statement sort by position
 type Sorters struct {
 	sorters *sorter.Sorters
 }
@@ -22,8 +28,8 @@ func (s *Sorters) Set(value string) error {
 		return err
 	}
 
-	(*s).sorters = sorter.NewSorters()
 	var previousPosition int
+	(*s).sorters = sortersGlobal
 
 	for _, stmt := range *stmts {
 		(*s).sorters.Append(previousPosition, stmt.Position, stmt.Functions[0].Name, stmt.Functions[0].Args)
