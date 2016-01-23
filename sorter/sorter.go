@@ -17,7 +17,7 @@ func NewSorters() *Sorters {
 }
 
 // Append sort operation
-func (s *Sorters) Append(previousPosition int, currentPosition int, sorterName string, args []string) {
+func (s *Sorters) Append(currentPosition int, sorterName string, args []string) {
 	var fun less
 
 	switch len(args) {
@@ -33,11 +33,9 @@ func (s *Sorters) Append(previousPosition int, currentPosition int, sorterName s
 	}
 
 	if fun != nil {
-
 		sorter := &Sorter{
-			previousPosition: previousPosition,
-			currentPosition:  currentPosition,
-			less:             fun,
+			currentPosition: currentPosition,
+			less:            fun,
 		}
 
 		*s = append(*s, sorter)
@@ -54,10 +52,9 @@ func (s *Sorters) Sort(agregators *agregator.Agregators) {
 
 // Sorter represents a sorter applied to agregators
 type Sorter struct {
-	agregators       *agregator.Agregators
-	previousPosition int
-	currentPosition  int
-	less             less
+	agregators      *agregator.Agregators
+	currentPosition int
+	less            less
 }
 
 // SetAgregators populate agregators

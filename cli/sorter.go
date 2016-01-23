@@ -28,12 +28,10 @@ func (s *Sorters) Set(value string) error {
 		return err
 	}
 
-	var previousPosition int
 	(*s).sorters = sortersGlobal
 
 	for _, stmt := range *stmts {
-		(*s).sorters.Append(previousPosition, stmt.Position, stmt.Functions[0].Name, stmt.Functions[0].Args)
-		previousPosition = stmt.Position
+		(*s).sorters.Append(stmt.Position, stmt.Functions[0].Name, stmt.Functions[0].Args)
 	}
 
 	return nil
