@@ -1,8 +1,8 @@
 # Goller [![Build Status](https://travis-ci.org/antham/goller.svg)](https://travis-ci.org/antham/goller) [![codecov.io](https://codecov.io/github/antham/goller/coverage.svg?branch=master)](https://codecov.io/github/antham/goller?branch=master)
 
-Agregate log fields to count occurence
+Agregate log fields, count field occurence
 
-[![asciicast](https://asciinema.org/a/edltgo8u72khflco1ex77g65l.png)](https://asciinema.org/a/edltgo8u72khflco1ex77g65l)
+[![asciicast](https://asciinema.org/a/d5o27yx3kclnluwaan2p46fki.png)](https://asciinema.org/a/d5o27yx3kclnluwaan2p46fki)
 
 ## Install
 
