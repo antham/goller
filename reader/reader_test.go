@@ -6,7 +6,7 @@ import (
 )
 
 func TestReadStdin(t *testing.T) {
-	input = strings.NewReader("test1\ntest2\ntest3")
+	input := strings.NewReader("test1\ntest2\ntest3")
 
 	entries := []string{
 		"test1",
@@ -14,7 +14,11 @@ func TestReadStdin(t *testing.T) {
 		"test3",
 	}
 
-	ReadStdin(func(line string) {
+	r := Reader{
+		Input: input,
+	}
+
+	r.Read(func(line string) {
 		expected := entries[0]
 
 		if expected != line {

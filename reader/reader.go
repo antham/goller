@@ -6,16 +6,21 @@ import (
 	"os"
 )
 
-var input io.Reader
-
-// init initialize variables
-func init() {
-	input = os.Stdin
+// Reader
+type Reader struct {
+	Input io.Reader
 }
 
-// ReadStdin split stdin per line
-func ReadStdin(rowReader func(line string)) {
-	scanner := bufio.NewScanner(input)
+// NewStdinReader create a reader tied to stdin
+func NewStdinReader() Reader {
+	return Reader{
+		Input: os.Stdin,
+	}
+}
+
+// Read split entries per line
+func (r Reader) Read(rowReader func(line string)) {
+	scanner := bufio.NewScanner(r.Input)
 	for scanner.Scan() {
 		rowReader(scanner.Text())
 	}

@@ -2,12 +2,13 @@ package cli
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 )
 
-// ExtractPositions split positions fields from string
-func ExtractPositions(fields string, size int) ([]int, error) {
+// extractPositions split positions fields from string
+func extractPositions(fields string, size int) ([]int, error) {
 	var positions []int
 
 	if fields != "" {
@@ -34,4 +35,12 @@ func ExtractPositions(fields string, size int) ([]int, error) {
 	}
 
 	return positions, nil
+}
+
+func checkFatalError(err error) {
+	if err != nil {
+		fmt.Println(err)
+
+		os.Exit(1)
+	}
 }
