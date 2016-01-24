@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-// transformer reprents a transformer function to apply to a string
+// transformer represents a transformer function to apply to a string
 type transformer func(string) string
 
 // Transformers list
