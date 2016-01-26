@@ -23,60 +23,12 @@ type MockSettings struct {
 func (m MockSettings) SetValue(value kingpin.Value) {
 }
 
-func TestextractPositionsFromString(t *testing.T) {
-	positions, err := extractPositions("2,5,0,8,16,12", 17)
+func TestPositionFoundWithUnexistingPosition(t *testing.T) {
+	positions := []int{1, 2, 3}
 
-	if err != nil {
-		t.Error("Got an error", err)
-	}
+	result := positionFound(&positions, 4)
 
-	if len(positions) != 6 {
-		t.Error("Expected slice length of 6, got", len(positions))
-	}
-
-	if positions[0] != 2 {
-		t.Error("First element must be 2, got", positions[0])
-	}
-
-	if positions[5] != 12 {
-		t.Error("First element must be 12, got", positions[5])
-	}
-}
-
-func TestextractPositionsMustReturnUniquePositions(t *testing.T) {
-	_, err := extractPositions("2,5,5,8,16,12", 17)
-
-	if err == nil || err.Error() != "This element is duplicated : 5" {
-		t.Error("An error must occur", err)
-	}
-}
-
-func TestextractPositionsFromEmptyString(t *testing.T) {
-	_, err := extractPositions("", 17)
-
-	if err == nil || err.Error() != "At least 1 element is required" {
-		t.Error("An error must occur", err)
-	}
-}
-
-func TestextractPositionsFromStringContainingSomethingDifferentThanNumber(t *testing.T) {
-	_, err := extractPositions("1,2,a,b,c", 17)
-
-	if err == nil || err.Error() != "a is not a number" {
-		t.Error("An error must occur", err)
-	}
-}
-
-func TestextractPositionsFromStringContainingPositionOverLimit(t *testing.T) {
-	_, err := extractPositions("1,2,5,12,8,9", 11)
-
-	if err == nil || err.Error() != "Position 12 is greater or equal than maximum position 12" {
-		t.Error("An error must occur", err)
-	}
-
-	_, err = extractPositions("1,2,5,13,8,9", 11)
-
-	if err == nil || err.Error() != "Position 13 is greater or equal than maximum position 12" {
-		t.Error("An error must occur", err)
+	if result != false {
+		t.Error("Position 4 must not exists")
 	}
 }

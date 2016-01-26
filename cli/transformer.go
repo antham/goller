@@ -3,6 +3,7 @@ package cli
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"github.com/antham/goller/dsl"
 	"github.com/antham/goller/transformer"
 	"gopkg.in/alecthomas/kingpin.v2"
@@ -17,6 +18,7 @@ func init() {
 // Transformers is a map of statement sort by position
 type Transformers struct {
 	transformers *transformer.Transformers
+	positions    *[]int
 }
 
 // Set is used to populate statement from string
@@ -38,6 +40,10 @@ func (t *Transformers) Set(value string) error {
 			return errors.New("You cannot add a transformer to position 0")
 		}
 
+		if !positionFound(t.positions, stmts.Position) {
+			return fmt.Errorf("Transformer is wrong : position %d doesn't exist", stmts.Position)
+		}
+
 		err = (*t).transformers.Append(stmts.Position, stmt.Name, stmt.Args)
 
 		if err != nil {
@@ -46,6 +52,11 @@ func (t *Transformers) Set(value string) error {
 	}
 
 	return nil
+}
+
+// SetPositions define positions
+func (t *Transformers) SetPositions(positions *[]int) {
+	t.positions = positions
 }
 
 // Get transformers
@@ -64,8 +75,9 @@ func (t *Transformers) IsCumulative() bool {
 }
 
 // TransformersWrapper is used to transform argument from command line
-func TransformersWrapper(s kingpin.Settings) (target *Transformers) {
+func TransformersWrapper(s kingpin.Settings, positions *[]int) (target *Transformers) {
 	target = &Transformers{}
+	target.SetPositions(positions)
 	s.SetValue((*Transformers)(target))
 	return
 }

@@ -6,7 +6,8 @@ import (
 )
 
 func TestSortersWrapper(t *testing.T) {
-	result := SortersWrapper(MockSettings{})
+	positions := []int{}
+	result := SortersWrapper(MockSettings{}, &positions)
 
 	got := reflect.TypeOf(result).String()
 	expected := "*cli.Sorters"
@@ -17,7 +18,11 @@ func TestSortersWrapper(t *testing.T) {
 }
 
 func TestSortersSetValidArgument(t *testing.T) {
-	sorter := &Sorters{}
+	positions := []int{8}
+
+	sorter := &Sorters{
+		positions: &positions,
+	}
 
 	if sorter.Set("8:str") != nil {
 		t.Error("Must return no error")
@@ -34,7 +39,18 @@ func TestSortersSetUnValidArgument(t *testing.T) {
 	sorter := &Sorters{}
 
 	if sorter.Set("8:str(test)").Error() != "found \"test\", arg must start with a quote" {
-		t.Error("Must return no error")
+		t.Error("Must return an error")
+	}
+}
+
+func TestSortersSetUnexistingPosition(t *testing.T) {
+	positions := []int{8}
+	sorter := &Sorters{
+		positions: &positions,
+	}
+
+	if sorter.Set("9:str").Error() != "Sort is wrong : position 9 doesn't exist" {
+		t.Error("Must return an error")
 	}
 }
 

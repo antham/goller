@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"fmt"
 	"github.com/antham/goller/agregator"
 	"github.com/antham/goller/dispatcher"
 	"github.com/antham/goller/reader"
@@ -14,7 +15,7 @@ type group struct {
 	dispatcher dispatcher.Dispatcher
 	agregators *agregator.Agregators
 	reader     reader.Reader
-	positions  []int
+	positions  *[]int
 	args       *groupCommand
 }
 
@@ -25,6 +26,7 @@ func NewGroup(args *groupCommand) *group {
 		agrBuilder: *agregator.NewBuilder(),
 		dispatcher: dispatcher.NewTermDispatch(*args.delimiter),
 		reader:     reader.NewStdinReader(),
+		positions:  args.positions,
 		args:       args,
 	}
 }
@@ -36,14 +38,11 @@ func (g *group) Consume() {
 
 		checkFatalError(err)
 
-		if len(g.positions) == 0 {
-			var err error
-			g.positions, err = extractPositions(*g.args.positions, len(tokens))
-
-			checkFatalError(err)
+		if positionsOutOfBoundary(g.positions, len(tokens)) {
+			checkFatalError(fmt.Errorf("A position is greater or equal than maximum position %d", len(tokens)))
 		}
 
-		g.agrBuilder.Agregate(g.positions, &tokens, g.args.transformers.Get())
+		g.agrBuilder.Agregate(*g.positions, &tokens, g.args.transformers.Get())
 	})
 
 	g.agregators = g.agrBuilder.Get()

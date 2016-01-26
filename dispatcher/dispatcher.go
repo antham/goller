@@ -8,4 +8,3 @@ import (
 type Dispatcher interface {
 	RenderItems(agregators *agregator.Agregators)
 }
-

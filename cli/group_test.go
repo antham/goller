@@ -12,6 +12,7 @@ import (
 )
 
 func TestGroup(t *testing.T) {
+	positions := []int{0, 1, 2, 3}
 
 	input := strings.NewReader("hello world !\nhello world !\nHi everybody !")
 	r := reader.Reader{
@@ -25,6 +26,7 @@ func TestGroup(t *testing.T) {
 			agrBuilder: *agregator.NewBuilder(),
 			dispatcher: dispatcher.NewTermDispatch(*groupArgs.delimiter),
 			reader:     r,
+			positions:  &positions,
 			args:       groupArgs,
 		}
 
@@ -61,5 +63,6 @@ func TestGroup(t *testing.T) {
 		if !reflect.DeepEqual(got, expected) {
 			t.Errorf("Got %v, expected %v", got, expected)
 		}
+
 	}
 }

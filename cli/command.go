@@ -12,7 +12,7 @@ type groupCommand struct {
 	transformers *Transformers
 	parser       *Parser
 	sorters      *Sorters
-	positions    *string
+	positions    *[]int
 }
 
 // command list all available cli commands
@@ -25,12 +25,15 @@ var (
 		"group": app.Command("group", "Group occurence of field"),
 	}
 
+	parserArg    = ParserWrapper(cmd["group"].Arg("parser", "Log line parser to use").Required())
+	positionsArg = PositionsWrapper(cmd["group"].Arg("positions", "Field positions").Required()).Get()
+
 	groupArgs = &groupCommand{
 		delimiter:    cmd["group"].Flag("delimiter", "Separator between results").Short('d').Default(" | ").String(),
-		transformers: TransformersWrapper(cmd["group"].Flag("transformer", "Transformers applied to every fields").Short('t')),
-		sorters:      SortersWrapper(cmd["group"].Flag("sort", "Sort lines").Short('s')),
-		parser:       ParserWrapper(cmd["group"].Arg("parser", "Log line parser to use").Required()),
-		positions:    cmd["group"].Arg("positions", "Field positions").Required().String(),
+		transformers: TransformersWrapper(cmd["group"].Flag("transformer", "Transformers applied to every fields").Short('t'), positionsArg),
+		sorters:      SortersWrapper(cmd["group"].Flag("sort", "Sort lines").Short('s'), positionsArg),
+		parser:       parserArg,
+		positions:    positionsArg,
 	}
 )
 

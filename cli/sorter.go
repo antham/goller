@@ -2,6 +2,7 @@ package cli
 
 import (
 	"bytes"
+	"fmt"
 	"github.com/antham/goller/dsl"
 	"github.com/antham/goller/sorter"
 	"gopkg.in/alecthomas/kingpin.v2"
@@ -15,7 +16,8 @@ func init() {
 
 // Sorters is a map of statement sort by position
 type Sorters struct {
-	sorters *sorter.Sorters
+	sorters   *sorter.Sorters
+	positions *[]int
 }
 
 // Set is used to populate statement from string
@@ -31,10 +33,19 @@ func (s *Sorters) Set(value string) error {
 	(*s).sorters = sortersGlobal
 
 	for _, stmt := range *stmts {
+		if !positionFound(s.positions, stmt.Position) {
+			return fmt.Errorf("Sort is wrong : position %d doesn't exist", stmt.Position)
+		}
+
 		(*s).sorters.Append(stmt.Position, stmt.Functions[0].Name, stmt.Functions[0].Args)
 	}
 
 	return nil
+}
+
+// SetPositions define positions
+func (s *Sorters) SetPositions(positions *[]int) {
+	s.positions = positions
 }
 
 // Get sorters
@@ -48,8 +59,9 @@ func (s *Sorters) String() string {
 }
 
 // SortersWrapper is used to transform argument from command line
-func SortersWrapper(s kingpin.Settings) (target *Sorters) {
+func SortersWrapper(s kingpin.Settings, positions *[]int) (target *Sorters) {
 	target = &Sorters{}
+	target.SetPositions(positions)
 	s.SetValue((*Sorters)(target))
 	return
 }
