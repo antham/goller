@@ -6,9 +6,7 @@ import (
 )
 
 func TestTransformersWrapper(t *testing.T) {
-	positions := []int{}
-
-	result := TransformersWrapper(MockSettings{}, &positions)
+	result := TransformersWrapper(MockSettings{})
 
 	got := reflect.TypeOf(result).String()
 	expected := "*cli.Transformers"
@@ -19,11 +17,7 @@ func TestTransformersWrapper(t *testing.T) {
 }
 
 func TestTransformersSetValidArgument(t *testing.T) {
-	positions := []int{8}
-
-	trans := &Transformers{
-		positions: &positions,
-	}
+	trans := &Transformers{}
 
 	if trans.Set("8:low") != nil {
 		t.Error("Must return no error")
@@ -52,11 +46,7 @@ func TestTransformersSetUnValidFunction(t *testing.T) {
 }
 
 func TestTransformersSetUnValidArgument(t *testing.T) {
-	positions := []int{8}
-
-	trans := &Transformers{
-		positions: &positions,
-	}
+	trans := &Transformers{}
 
 	if trans.Set("8:add(\"a\")").Error() != "Argument must be an integer, \"a\" given" {
 		t.Error("Must return an error")
@@ -65,11 +55,14 @@ func TestTransformersSetUnValidArgument(t *testing.T) {
 
 func TestTransformersSetUnexistingPosition(t *testing.T) {
 	positions := []int{8}
-	trans := &Transformers{
-		positions: &positions,
+
+	trans := &Transformers{}
+
+	if trans.Set("9:low") != nil {
+		t.Error("Must return no error")
 	}
 
-	if trans.Set("9:low").Error() != "Transformer is wrong : position 9 doesn't exist" {
+	if trans.ValidatePositions(&positions) != nil && trans.ValidatePositions(&positions).Error() != "Transformer is wrong : position 9 doesn't exist" {
 		t.Error("Must return an error")
 	}
 }

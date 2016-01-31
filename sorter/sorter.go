@@ -17,7 +17,7 @@ func NewSorters() *Sorters {
 }
 
 // Append sort operation
-func (s *Sorters) Append(currentPosition int, sorterName string, args []string) {
+func (s *Sorters) Append(position int, sorterName string, args []string) {
 	var fun less
 
 	switch len(args) {
@@ -34,8 +34,8 @@ func (s *Sorters) Append(currentPosition int, sorterName string, args []string) 
 
 	if fun != nil {
 		sorter := &Sorter{
-			currentPosition: currentPosition,
-			less:            fun,
+			position: position,
+			less:     fun,
 		}
 
 		*s = append(*s, sorter)
@@ -52,9 +52,9 @@ func (s *Sorters) Sort(agregators *agregator.Agregators) {
 
 // Sorter represents a sorter applied to agregators
 type Sorter struct {
-	agregators      *agregator.Agregators
-	currentPosition int
-	less            less
+	agregators *agregator.Agregators
+	position   int
+	less       less
 }
 
 // SetAgregators populate agregators
@@ -67,11 +67,19 @@ func (s *Sorter) Len() int {
 }
 
 func (s *Sorter) Less(i, j int) bool {
-	return s.less(*(*s.agregators)[i].DatasOrdered[s.currentPosition], *(*s.agregators)[j].DatasOrdered[s.currentPosition])
+	return s.less(*(*s.agregators)[i].DatasOrdered[s.position], *(*s.agregators)[j].DatasOrdered[s.position])
 }
 
 func (s *Sorter) Swap(i, j int) {
 	(*s.agregators)[i], (*s.agregators)[j] = (*s.agregators)[j], (*s.agregators)[i]
+}
+
+func (s *Sorter) HasPosition(position int) bool {
+	return s.position == position
+}
+
+func (s *Sorter) GetPosition() int {
+	return s.position
 }
 
 // less represents a function used in sorting

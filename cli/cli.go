@@ -5,17 +5,7 @@ import (
 	"os"
 )
 
-// positionFound check a position is defined positions
-func positionFound(positions *[]int, position int) bool {
-	for _, i := range *positions {
-		if position == i {
-			return true
-		}
-	}
-
-	return false
-}
-
+// positionsOutOfBoundary check if positions don't overflow boundaries
 func positionsOutOfBoundary(positions *[]int, max int) bool {
 	for _, i := range *positions {
 		if i > max {

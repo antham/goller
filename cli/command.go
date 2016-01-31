@@ -12,37 +12,45 @@ type groupCommand struct {
 	transformers *Transformers
 	parser       *Parser
 	sorters      *Sorters
-	positions    *[]int
+	positions    *Positions
 }
 
 // command list all available cli commands
 type command map[string]*kingpin.CmdClause
 
-var (
-	app = kingpin.New("goller", "Aggregate log fields and count occurences")
+func initApp() *kingpin.Application {
+	return kingpin.New("goller", "Aggregate log fields and count occurences")
+}
 
-	cmd = map[string]*kingpin.CmdClause{
+func initCmd(app *kingpin.Application) map[string]*kingpin.CmdClause {
+	return map[string]*kingpin.CmdClause{
 		"group": app.Command("group", "Group occurence of field"),
 	}
+}
 
-	parserArg    = ParserWrapper(cmd["group"].Arg("parser", "Log line parser to use").Required())
-	positionsArg = PositionsWrapper(cmd["group"].Arg("positions", "Field positions").Required()).Get()
-
-	groupArgs = &groupCommand{
-		delimiter:    cmd["group"].Flag("delimiter", "Separator between results").Short('d').Default(" | ").String(),
-		transformers: TransformersWrapper(cmd["group"].Flag("transformer", "Transformers applied to every fields").Short('t'), positionsArg),
-		sorters:      SortersWrapper(cmd["group"].Flag("sort", "Sort lines").Short('s'), positionsArg),
-		parser:       parserArg,
-		positions:    positionsArg,
+func initGroupArgs(groupCmd *kingpin.CmdClause) *groupCommand {
+	return &groupCommand{
+		delimiter:    groupCmd.Flag("delimiter", "Separator between results").Short('d').Default(" | ").String(),
+		transformers: TransformersWrapper(groupCmd.Flag("transformer", "Transformers applied to every fields").Short('t')),
+		sorters:      SortersWrapper(groupCmd.Flag("sort", "Sort lines").Short('s')),
+		parser:       ParserWrapper(groupCmd.Arg("parser", "Log line parser to use").Required()),
+		positions:    PositionsWrapper(groupCmd.Arg("positions", "Field positions").Required()),
 	}
-)
+}
 
 // Run commmand line arguments parsing
 func Run(version string) {
+	app := initApp()
+	cmd := initCmd(app)
+	groupArgs := initGroupArgs(cmd["group"])
+
 	app.Version(version)
 
 	switch kingpin.MustParse(app.Parse(os.Args[1:])) {
 	case cmd["group"].FullCommand():
+		checkFatalError(groupArgs.sorters.ValidatePositions(groupArgs.positions.Get()))
+		checkFatalError(groupArgs.transformers.ValidatePositions(groupArgs.positions.Get()))
+
 		group := NewGroup(groupArgs)
 		group.Consume()
 		group.Sort()

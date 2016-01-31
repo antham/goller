@@ -23,12 +23,18 @@ type MockSettings struct {
 func (m MockSettings) SetValue(value kingpin.Value) {
 }
 
-func TestPositionFoundWithUnexistingPosition(t *testing.T) {
-	positions := []int{1, 2, 3}
+func TestPositionsOutOfBoundariesWithAnIntegerInferiorToOnePosition(t *testing.T) {
+	positions := []int{4, 5, 1, 7, 0, 2}
 
-	result := positionFound(&positions, 4)
+	if !positionsOutOfBoundary(&positions, 6) {
+		t.Error("Must return true")
+	}
+}
 
-	if result != false {
-		t.Error("Position 4 must not exists")
+func TestPositionsOutOfBoundariesWithAnIntegerSuperiorToAllPositions(t *testing.T) {
+	positions := []int{4, 5, 1, 7, 0, 2}
+
+	if positionsOutOfBoundary(&positions, 8) {
+		t.Error("Must return false")
 	}
 }

@@ -26,7 +26,7 @@ func NewGroup(args *groupCommand) *group {
 		agrBuilder: *agregator.NewBuilder(),
 		dispatcher: dispatcher.NewTermDispatch(*args.delimiter),
 		reader:     reader.NewStdinReader(),
-		positions:  args.positions,
+		positions:  args.positions.Get(),
 		args:       args,
 	}
 }

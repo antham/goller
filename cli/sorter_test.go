@@ -6,8 +6,7 @@ import (
 )
 
 func TestSortersWrapper(t *testing.T) {
-	positions := []int{}
-	result := SortersWrapper(MockSettings{}, &positions)
+	result := SortersWrapper(MockSettings{})
 
 	got := reflect.TypeOf(result).String()
 	expected := "*cli.Sorters"
@@ -20,11 +19,13 @@ func TestSortersWrapper(t *testing.T) {
 func TestSortersSetValidArgument(t *testing.T) {
 	positions := []int{8}
 
-	sorter := &Sorters{
-		positions: &positions,
-	}
+	sorter := &Sorters{}
 
 	if sorter.Set("8:str") != nil {
+		t.Error("Must return no error")
+	}
+
+	if sorter.ValidatePositions(&positions) != nil {
 		t.Error("Must return no error")
 	}
 
@@ -45,11 +46,13 @@ func TestSortersSetUnValidArgument(t *testing.T) {
 
 func TestSortersSetUnexistingPosition(t *testing.T) {
 	positions := []int{8}
-	sorter := &Sorters{
-		positions: &positions,
+	sorter := &Sorters{}
+
+	if sorter.Set("9:str") != nil {
+		t.Error("Must return no error")
 	}
 
-	if sorter.Set("9:str").Error() != "Sort is wrong : position 9 doesn't exist" {
+	if sorter.ValidatePositions(&positions) != nil && sorter.ValidatePositions(&positions).Error() != "Sort is wrong : position 9 doesn't exist" {
 		t.Error("Must return an error")
 	}
 }
