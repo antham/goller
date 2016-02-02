@@ -29,6 +29,7 @@ func TestIntMultiSort(t *testing.T) {
 		builder.Agregate([]int{1, 2, 3}, &tokens, nil)
 	}
 
+	builder.SetCounterIfAny()
 	agregators := builder.Get()
 
 	sorters := NewSorters()
@@ -37,7 +38,9 @@ func TestIntMultiSort(t *testing.T) {
 	sorters.Append(3, "int", []string{})
 	sorters.Sort(agregators)
 
-	expected := [][]string{
+	expected := [][]*string{}
+
+	for i, row := range [][]string{
 		{"1", "9", "1"},
 		{"2", "9", "1"},
 		{"3", "1", "10"},
@@ -45,45 +48,61 @@ func TestIntMultiSort(t *testing.T) {
 		{"3", "8", "2"},
 		{"3", "9", "1"},
 		{"4", "9", "3"},
+	} {
+		expected = append(expected, []*string{})
+
+		for _, element := range row {
+			e := element
+			expected[i] = append(expected[i], &e)
+		}
 	}
 
 	for i := 0; i < len(expected); i++ {
 		for j := 0; j < 3; j++ {
-			if (*agregators)[i].Datas[j] != expected[i][j] {
-				t.Errorf("Got %v, expected %v", (*agregators)[i].Datas, expected[i])
+			if *(*agregators)[i].Datas[j] != *expected[i][j] {
+				t.Errorf("Got %s, expected %s", *(*agregators)[i].Datas[j], *expected[i][j])
 			}
 		}
 	}
 }
 
 func TestInt(t *testing.T) {
-	datas1 := []string{"5", "8"}
-	datas2 := []string{"4", "9"}
-	datas3 := []string{"3", "1"}
+	var datas1 []*string
+	var datas2 []*string
+	var datas3 []*string
+
+	for _, row := range [][]string{
+		{"5", "4", "3"},
+		{"8", "9", "1"},
+	} {
+		datas1 = append(datas1, &row[0])
+		datas2 = append(datas2, &row[1])
+		datas3 = append(datas3, &row[2])
+	}
 
 	agregators := agregator.Agregators{
 		0: &agregator.Agregator{
 			Count: 5,
 			Datas: datas1,
 			DatasOrdered: map[int]*string{
-				0: &datas1[0],
-				1: &datas1[1],
+				0: datas1[0],
+				1: datas1[1],
 			},
 		},
 		1: &agregator.Agregator{
 			Count: 5,
 			Datas: datas2,
 			DatasOrdered: map[int]*string{
-				0: &datas2[0],
-				1: &datas2[1],
+				0: datas2[0],
+				1: datas2[1],
 			},
 		},
 		2: &agregator.Agregator{
 			Count: 5,
 			Datas: datas3,
 			DatasOrdered: map[int]*string{
-				0: &datas3[0],
-				1: &datas3[1],
+				0: datas3[0],
+				1: datas3[1],
 			},
 		},
 	}
@@ -100,33 +119,42 @@ func TestInt(t *testing.T) {
 }
 
 func TestStrl(t *testing.T) {
-	datas1 := []string{"5", "hello"}
-	datas2 := []string{"4", "everybody"}
-	datas3 := []string{"3", "!"}
+	var datas1 []*string
+	var datas2 []*string
+	var datas3 []*string
+
+	for _, row := range [][]string{
+		{"5", "4", "3"},
+		{"hello", "everybody", "!"},
+	} {
+		datas1 = append(datas1, &row[0])
+		datas2 = append(datas2, &row[1])
+		datas3 = append(datas3, &row[2])
+	}
 
 	agregators := agregator.Agregators{
 		0: &agregator.Agregator{
 			Count: 5,
 			Datas: datas1,
 			DatasOrdered: map[int]*string{
-				0: &datas1[0],
-				1: &datas1[1],
+				0: datas1[0],
+				1: datas1[1],
 			},
 		},
 		1: &agregator.Agregator{
 			Count: 5,
 			Datas: datas2,
 			DatasOrdered: map[int]*string{
-				0: &datas2[0],
-				1: &datas2[1],
+				0: datas2[0],
+				1: datas2[1],
 			},
 		},
 		2: &agregator.Agregator{
 			Count: 5,
 			Datas: datas3,
 			DatasOrdered: map[int]*string{
-				0: &datas3[0],
-				1: &datas3[1],
+				0: datas3[0],
+				1: datas3[1],
 			},
 		},
 	}
@@ -143,33 +171,42 @@ func TestStrl(t *testing.T) {
 }
 
 func TestStr(t *testing.T) {
-	datas1 := []string{"5", "hello"}
-	datas2 := []string{"4", "everybody"}
-	datas3 := []string{"3", "!"}
+	var datas1 []*string
+	var datas2 []*string
+	var datas3 []*string
+
+	for _, row := range [][]string{
+		{"5", "4", "3"},
+		{"hello", "everybody", "!"},
+	} {
+		datas1 = append(datas1, &row[0])
+		datas2 = append(datas2, &row[1])
+		datas3 = append(datas3, &row[2])
+	}
 
 	agregators := agregator.Agregators{
 		0: &agregator.Agregator{
 			Count: 5,
 			Datas: datas1,
 			DatasOrdered: map[int]*string{
-				0: &datas1[0],
-				1: &datas1[1],
+				0: datas1[0],
+				1: datas1[1],
 			},
 		},
 		1: &agregator.Agregator{
 			Count: 5,
 			Datas: datas2,
 			DatasOrdered: map[int]*string{
-				0: &datas2[0],
-				1: &datas2[1],
+				0: datas2[0],
+				1: datas2[1],
 			},
 		},
 		2: &agregator.Agregator{
 			Count: 5,
 			Datas: datas3,
 			DatasOrdered: map[int]*string{
-				0: &datas3[0],
-				1: &datas3[1],
+				0: datas3[0],
+				1: datas3[1],
 			},
 		},
 	}

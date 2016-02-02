@@ -42,32 +42,45 @@ func TestGroup(t *testing.T) {
 			t.Errorf("Got %d length, expected %d", len(*agregators), 2)
 		}
 
-		expected := []string{
-			"2",
-			"hello",
-			"world",
-			"!",
+		test1 := "2"
+		test2 := "hello"
+		test3 := "world"
+		test4 := "!"
+
+		expected := []*string{
+			&test1,
+			&test2,
+			&test3,
+			&test4,
 		}
 
 		got := (*agregators)[0].Datas
 
-		if !reflect.DeepEqual(got, expected) {
-			t.Errorf("Got %v, expected %v", got, expected)
+		for i := 0; i < len(got); i++ {
+			if !reflect.DeepEqual(got[i], expected[i]) {
+				t.Errorf("Got %s, expected %s", *got[i], *expected[i])
+			}
 		}
 
-		expected = []string{
-			"1",
-			"Hi",
-			"everybody",
-			"!",
+		test1 = "1"
+		test2 = "Hi"
+		test3 = "everybody"
+		test4 = "!"
+
+		expected = []*string{
+			&test1,
+			&test2,
+			&test3,
+			&test4,
 		}
 
 		got = (*agregators)[1].Datas
 
-		if !reflect.DeepEqual(got, expected) {
-			t.Errorf("Got %v, expected %v", got, expected)
+		for i := 0; i < len(got); i++ {
+			if !reflect.DeepEqual(got[i], expected[i]) {
+				t.Errorf("Got %s, expected %s", *got[i], *expected[i])
+			}
 		}
-
 	}
 }
 
@@ -102,17 +115,24 @@ func TestGroupWithTransformers(t *testing.T) {
 			t.Errorf("Got %d length, expected %d", len(*agregators), 1)
 		}
 
-		expected := []string{
-			"3",
-			"2",
-			"4",
-			"6",
+		test1 := "3"
+		test2 := "2"
+		test3 := "4"
+		test4 := "6"
+
+		expected := []*string{
+			&test1,
+			&test2,
+			&test3,
+			&test4,
 		}
 
 		got := (*agregators)[0].Datas
 
-		if !reflect.DeepEqual(got, expected) {
-			t.Errorf("Got %v, expected %v", got, expected)
+		for i := 0; i < len(got); i++ {
+			if !reflect.DeepEqual(got[i], expected[i]) {
+				t.Errorf("Got %s, expected %s", *got[i], *expected[i])
+			}
 		}
 	}
 }
@@ -148,24 +168,36 @@ func TestGroupWithSorters(t *testing.T) {
 			t.Errorf("Got %d length, expected %d", len(*agregators), 1)
 		}
 
-		expected := []string{
-			"1",
-			"3",
-			"2",
-			"1",
+		test1 := "1"
+		test2 := "3"
+		test3 := "2"
+		test4 := "1"
+
+		expected := []*string{
+			&test1,
+			&test2,
+			&test3,
+			&test4,
 		}
 
 		got := (*agregators)[0].Datas
 
-		if !reflect.DeepEqual(got, expected) {
-			t.Errorf("Got %v, expected %v", got, expected)
+		for i := 0; i < len(got); i++ {
+			if !reflect.DeepEqual(got[i], expected[i]) {
+				t.Errorf("Got %s, expected %s", *got[i], *expected[i])
+			}
 		}
 
-		expected = []string{
-			"1",
-			"9",
-			"8",
-			"7",
+		test1 = "1"
+		test2 = "9"
+		test3 = "8"
+		test4 = "7"
+
+		expected = []*string{
+			&test1,
+			&test2,
+			&test3,
+			&test4,
 		}
 
 		got = (*agregators)[2].Datas

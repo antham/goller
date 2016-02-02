@@ -45,6 +45,7 @@ func (g *group) Consume() {
 		g.agrBuilder.Agregate(*g.positions, &tokens, g.args.transformers.Get())
 	})
 
+	g.agrBuilder.SetCounterIfAny()
 	g.agregators = g.agrBuilder.Get()
 }
 

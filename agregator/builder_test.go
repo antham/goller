@@ -23,11 +23,13 @@ func TestAgregateSingleTokenWithNoVisibleCounter(t *testing.T) {
 			t.Error("Count must be 1 got", agregator.Count)
 		}
 
+		test1 := "test1"
+
 		got := agregator.Datas
-		expected := []string{"test1"}
+		expected := []*string{&test1}
 
 		if !reflect.DeepEqual(got, expected) {
-			t.Errorf("Got %s, expected %s", got, expected)
+			t.Errorf("Got %v, expected %v", got, expected)
 		}
 	}
 }
@@ -63,11 +65,19 @@ func TestAgregateSingleToken(t *testing.T) {
 			t.Error("Count must be 1 got", agregator.Count)
 		}
 
-		got := agregator.Datas
-		expected := []string{"test3", "test6", "1", "test1"}
+		test1 := "test3"
+		test2 := "test6"
+		test3 := "1"
+		test4 := "test1"
 
-		if !reflect.DeepEqual(got, expected) {
-			t.Errorf("Got %s, expected %s", got, expected)
+		got := agregator.Datas
+		expected := []*string{&test1, &test2, &test3, &test4}
+
+		if *got[0] == *expected[0] &&
+			*got[1] == *expected[1] &&
+			*got[2] == *expected[2] &&
+			*got[3] == *expected[3] {
+			t.Errorf("Wrong value fetched")
 		}
 	}
 }
@@ -152,6 +162,8 @@ func TestApplyPreTransformer(t *testing.T) {
 		)
 	}
 
+	builder.SetCounterIfAny()
+
 	datas := *builder.Get()
 
 	if len(datas) != 1 {
@@ -162,10 +174,16 @@ func TestApplyPreTransformer(t *testing.T) {
 		t.Errorf("Count for key 0 must be 10, got %d", datas[0].Count)
 	}
 
-	got := datas[0].Datas
-	expected := []string{"10", "TEST1", "TEST2"}
+	test1 := "10"
+	test2 := "TEST1"
+	test3 := "TEST2"
 
-	if !reflect.DeepEqual(got, expected) {
-		t.Errorf("Got %v, expected %v", got, expected)
+	got := datas[0].Datas
+	expected := []*string{&test1, &test2, &test3}
+
+	for i := 0; i < len(got); i++ {
+		if !reflect.DeepEqual(got[i], expected[i]) {
+			t.Errorf("Got %s, expected %s", *got[i], *expected[i])
+		}
 	}
 }

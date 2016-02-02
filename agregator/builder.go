@@ -24,8 +24,7 @@ func NewBuilder() *Builder {
 // Agregate agregate tokens according to positions
 func (b *Builder) Agregate(positions []int, tokens *[]tokenizer.Token, trans *transformer.Transformers) {
 	var accumulator string
-	var counterIndex = -1
-	datas := []string{}
+	datas := []*string{}
 	datasOrdered := map[int]*string{}
 
 	for _, i := range positions {
@@ -43,11 +42,10 @@ func (b *Builder) Agregate(positions []int, tokens *[]tokenizer.Token, trans *tr
 			accumulator = accumulator + result
 		} else {
 			result = ""
-			counterIndex = len(datas)
 		}
 
-		datas = append(datas, result)
-		datasOrdered[i] = &datas[len(datas)-1]
+		datas = append(datas, &result)
+		datasOrdered[i] = &result
 	}
 
 	footprint := sha1.Sum([]byte(accumulator))
@@ -64,10 +62,14 @@ func (b *Builder) Agregate(positions []int, tokens *[]tokenizer.Token, trans *tr
 		(*b).footprints[footprint] = agregator
 		(*b.agregators) = append((*b.agregators), agregator)
 	}
+}
 
-	if counterIndex != -1 {
-		(*b).footprints[footprint].Datas[counterIndex] = strconv.Itoa((*b).footprints[footprint].Count)
-		(*b).footprints[footprint].DatasOrdered[counterIndex] = &(*b).footprints[footprint].Datas[counterIndex]
+// SetCounterIfAny set counter value among other value fields
+func (b *Builder) SetCounterIfAny() {
+	for _, agregator := range *b.agregators {
+		if _, ok := (*agregator).DatasOrdered[0]; ok == true {
+			*((*agregator).DatasOrdered[0]) = strconv.Itoa((*agregator).Count)
+		}
 	}
 }
 

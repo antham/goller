@@ -4,7 +4,7 @@ package agregator
 type Agregator struct {
 	Count        int
 	DatasOrdered map[int]*string
-	Datas        []string
+	Datas        []*string
 }
 
 // Agregators contains a slice of Agregator
