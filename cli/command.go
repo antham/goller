@@ -15,6 +15,12 @@ type groupCommand struct {
 	positions    *Positions
 }
 
+//  tokenizeCommand describe all dependencies of a tokenize command
+type tokenizeCommand struct {
+	cmd    *kingpin.CmdClause
+	parser *Parser
+}
+
 // command list all available cli commands
 type command map[string]*kingpin.CmdClause
 
@@ -24,7 +30,8 @@ func initApp() *kingpin.Application {
 
 func initCmd(app *kingpin.Application) map[string]*kingpin.CmdClause {
 	return map[string]*kingpin.CmdClause{
-		"group": app.Command("group", "Group occurence of field"),
+		"group":    app.Command("group", "Group occurence of field"),
+		"tokenize": app.Command("tokenize", "Show how first log line is tokenized"),
 	}
 }
 
@@ -38,11 +45,18 @@ func initGroupArgs(groupCmd *kingpin.CmdClause) *groupCommand {
 	}
 }
 
+func initTokenizeArgs(tokenizeCmd *kingpin.CmdClause) *tokenizeCommand {
+	return &tokenizeCommand{
+		parser: ParserWrapper(tokenizeCmd.Arg("parser", "Log line parser to use").Required()),
+	}
+}
+
 // Run commmand line arguments parsing
 func Run(version string) {
 	app := initApp()
 	cmd := initCmd(app)
 	groupArgs := initGroupArgs(cmd["group"])
+	tokenizeArgs := initTokenizeArgs(cmd["tokenize"])
 
 	app.Version(version)
 
@@ -55,5 +69,9 @@ func Run(version string) {
 		group.Consume()
 		group.Sort()
 		group.Dispatch()
+	case cmd["tokenize"].FullCommand():
+		tokenize := NewTokenize(tokenizeArgs)
+		tokenize.Tokenize()
+		tokenize.Render()
 	}
 }

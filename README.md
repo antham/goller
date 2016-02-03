@@ -27,6 +27,26 @@ Commands:
 
   group [<flags>] <parser> <positions>
     Group occurence of field
+
+  tokenize <parser>
+    Show how first log line is tokenized
+```
+
+### Tokenize
+
+*Show how first log line is parsed using given parsing strategy and display tokens with their positions*
+
+```bash
+usage: goller tokenize <parser>
+
+Show how first log line is tokenized
+
+Flags:
+  --help     Show help (also see --help-long and --help-man).
+  --version  Show application version.
+
+Args:
+  <parser>  Log line parser to use
 ```
 
 ### Group

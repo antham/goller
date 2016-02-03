@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestReadStdin(t *testing.T) {
+func TestRead(t *testing.T) {
 	input := strings.NewReader("test1\ntest2\ntest3")
 
 	entries := []string{
@@ -27,6 +27,22 @@ func TestReadStdin(t *testing.T) {
 
 		if len(entries) > 0 {
 			entries = entries[1:]
+		}
+	})
+}
+
+func TestReadFirstLine(t *testing.T) {
+	input := strings.NewReader("test1\ntest2\ntest3")
+
+	expected := "test1"
+
+	r := Reader{
+		Input: input,
+	}
+
+	r.ReadFirstLine(func(line string) {
+		if expected != line {
+			t.Errorf("Line must be %s, got %s", expected, line)
 		}
 	})
 }
