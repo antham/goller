@@ -62,8 +62,8 @@ func Run(version string) {
 
 	switch kingpin.MustParse(app.Parse(os.Args[1:])) {
 	case cmd["group"].FullCommand():
-		checkFatalError(groupArgs.sorters.ValidatePositions(groupArgs.positions.Get()))
-		checkFatalError(groupArgs.transformers.ValidatePositions(groupArgs.positions.Get()))
+		triggerFatalError(groupArgs.sorters.ValidatePositions(groupArgs.positions.Get()))
+		triggerFatalError(groupArgs.transformers.ValidatePositions(groupArgs.positions.Get()))
 
 		group := NewGroup(groupArgs)
 		group.Consume()

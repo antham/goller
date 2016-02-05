@@ -16,8 +16,8 @@ func positionsOutOfBoundary(positions *[]int, max int) bool {
 	return false
 }
 
-// checkFatalError is an helper to print an error and exit
-func checkFatalError(err error) {
+// triggerFatalError is an helper to print an error and exit
+func triggerFatalError(err error) {
 	if err != nil {
 		fmt.Println(err)
 

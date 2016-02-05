@@ -36,10 +36,10 @@ func (g *group) Consume() {
 	g.reader.Read(func(line string) {
 		tokens, err := g.tokenizer.Tokenize(line)
 
-		checkFatalError(err)
+		triggerFatalError(err)
 
 		if positionsOutOfBoundary(g.positions, len(tokens)) {
-			checkFatalError(fmt.Errorf("A position is greater or equal than maximum position %d", len(tokens)))
+			triggerFatalError(fmt.Errorf("A position is greater or equal than maximum position %d", len(tokens)))
 		}
 
 		g.agrBuilder.Agregate(*g.positions, &tokens, g.args.transformers.Get())
