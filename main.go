@@ -4,7 +4,7 @@ import (
 	"github.com/antham/goller/cli"
 )
 
-const version = "2.2.0"
+const version = "2.2.1"
 
 // main entry point
 func main() {
