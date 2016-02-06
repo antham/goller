@@ -52,21 +52,19 @@ func (t *Transformers) Set(value string) error {
 
 // ValidatePositions against extracted transformers
 func (t *Transformers) ValidatePositions(positions *[]int) error {
-	if t.transformers == nil {
-		return nil
-	}
+	if t.transformers != nil {
+		for transPosition := range *t.transformers {
+			positionMatch := false
 
-	for transPosition := range *t.transformers {
-		positionMatch := false
-
-		for _, position := range *positions {
-			if transPosition == position {
-				positionMatch = true
+			for _, position := range *positions {
+				if transPosition == position {
+					positionMatch = true
+				}
 			}
-		}
 
-		if !positionMatch {
-			return fmt.Errorf("Transformer is wrong : position %d doesn't exist", transPosition)
+			if !positionMatch {
+				return fmt.Errorf("Transformer is wrong : position %d doesn't exist", transPosition)
+			}
 		}
 	}
 

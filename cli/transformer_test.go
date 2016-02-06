@@ -67,6 +67,16 @@ func TestTransformersSetUnexistingPosition(t *testing.T) {
 	}
 }
 
+func TestTransformersSetNoTransformers(t *testing.T) {
+	positions := []int{8}
+
+	trans := &Transformers{}
+
+	if trans.ValidatePositions(&positions) != nil && trans.ValidatePositions(&positions).Error() != "Transformer is wrong : position 9 doesn't exist" {
+		t.Error("Must return an error")
+	}
+}
+
 func TestTransformersSetTransformerAtPosition0(t *testing.T) {
 	trans := &Transformers{}
 
