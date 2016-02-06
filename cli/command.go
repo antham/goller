@@ -5,54 +5,6 @@ import (
 	"os"
 )
 
-// groupCommand describe all dependencies of a group command
-type groupCommand struct {
-	cmd          *kingpin.CmdClause
-	delimiter    *string
-	transformers *Transformers
-	parser       *Parser
-	sorters      *Sorters
-	positions    *Positions
-	ignore       *bool
-}
-
-//  tokenizeCommand describe all dependencies of a tokenize command
-type tokenizeCommand struct {
-	cmd    *kingpin.CmdClause
-	parser *Parser
-}
-
-// command list all available cli commands
-type command map[string]*kingpin.CmdClause
-
-func initApp() *kingpin.Application {
-	return kingpin.New("goller", "Aggregate log fields and count occurences")
-}
-
-func initCmd(app *kingpin.Application) map[string]*kingpin.CmdClause {
-	return map[string]*kingpin.CmdClause{
-		"group":    app.Command("group", "Group occurence of field"),
-		"tokenize": app.Command("tokenize", "Show how first log line is tokenized"),
-	}
-}
-
-func initGroupArgs(groupCmd *kingpin.CmdClause) *groupCommand {
-	return &groupCommand{
-		delimiter:    groupCmd.Flag("delimiter", "Separator between results").Short('d').Default(" | ").String(),
-		ignore:       groupCmd.Flag("ignore", "Ignore lines wrongly parsed").Short('i').Bool(),
-		transformers: TransformersWrapper(groupCmd.Flag("transformer", "Transformers applied to every fields").Short('t')),
-		sorters:      SortersWrapper(groupCmd.Flag("sort", "Sort lines").Short('s')),
-		parser:       ParserWrapper(groupCmd.Arg("parser", "Log line parser to use").Required()),
-		positions:    PositionsWrapper(groupCmd.Arg("positions", "Field positions").Required()),
-	}
-}
-
-func initTokenizeArgs(tokenizeCmd *kingpin.CmdClause) *tokenizeCommand {
-	return &tokenizeCommand{
-		parser: ParserWrapper(tokenizeCmd.Arg("parser", "Log line parser to use").Required()),
-	}
-}
-
 // Run commmand line arguments parsing
 func Run(version string) {
 	app := initApp()
@@ -75,5 +27,57 @@ func Run(version string) {
 		tokenize := NewTokenize(tokenizeArgs)
 		tokenize.Tokenize()
 		tokenize.Render()
+	}
+}
+
+// command list all available cli commands
+type command map[string]*kingpin.CmdClause
+
+// initAp create a new command line app
+func initApp() *kingpin.Application {
+	return kingpin.New("goller", "Aggregate log fields and count occurences")
+}
+
+// initCmd defines first command level visible from cli
+func initCmd(app *kingpin.Application) map[string]*kingpin.CmdClause {
+	return map[string]*kingpin.CmdClause{
+		"group":    app.Command("group", "Group occurence of field"),
+		"tokenize": app.Command("tokenize", "Show how first log line is tokenized"),
+	}
+}
+
+// groupCommand describe all dependencies of a group command
+type groupCommand struct {
+	cmd          *kingpin.CmdClause
+	delimiter    *string
+	transformers *Transformers
+	parser       *Parser
+	sorters      *Sorters
+	positions    *Positions
+	ignore       *bool
+}
+
+// initGroupArgs setup everything needed for group command
+func initGroupArgs(groupCmd *kingpin.CmdClause) *groupCommand {
+	return &groupCommand{
+		delimiter:    groupCmd.Flag("delimiter", "Separator between results").Short('d').Default(" | ").String(),
+		ignore:       groupCmd.Flag("ignore", "Ignore lines wrongly parsed").Short('i').Bool(),
+		transformers: TransformersWrapper(groupCmd.Flag("transformer", "Transformers applied to every fields").Short('t')),
+		sorters:      SortersWrapper(groupCmd.Flag("sort", "Sort lines").Short('s')),
+		parser:       ParserWrapper(groupCmd.Arg("parser", "Log line parser to use").Required()),
+		positions:    PositionsWrapper(groupCmd.Arg("positions", "Field positions").Required()),
+	}
+}
+
+//  tokenizeCommand describe all dependencies of a tokenize command
+type tokenizeCommand struct {
+	cmd    *kingpin.CmdClause
+	parser *Parser
+}
+
+// initTokenizeArgs setup everything needed for tokenize command
+func initTokenizeArgs(tokenizeCmd *kingpin.CmdClause) *tokenizeCommand {
+	return &tokenizeCommand{
+		parser: ParserWrapper(tokenizeCmd.Arg("parser", "Log line parser to use").Required()),
 	}
 }
