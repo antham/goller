@@ -2,9 +2,18 @@ package reader
 
 import (
 	"errors"
+	"os"
 	"strings"
 	"testing"
 )
+
+func TestNewRead(t *testing.T) {
+	r := NewStdinReader()
+
+	if r.Input != os.Stdin {
+		t.Error("r.input is plugged on os.Stdin")
+	}
+}
 
 func TestRead(t *testing.T) {
 	input := strings.NewReader("test1\ntest2\ntest3")
