@@ -161,6 +161,7 @@ func TestGroupWithSorters(t *testing.T) {
 		}
 
 		group.Consume()
+		group.Sort()
 
 		agregators := group.agrBuilder.Get()
 
