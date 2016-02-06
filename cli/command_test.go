@@ -10,3 +10,9 @@ func TestRunGroup(t *testing.T) {
 
 	Run("0.0.1")
 }
+
+func TestRunTokenize(t *testing.T) {
+	os.Args = []string{"goller", "tokenize", "whi"}
+
+	Run("0.0.1")
+}
