@@ -48,7 +48,6 @@ func initCmd(app *kingpin.Application) map[string]*kingpin.CmdClause {
 
 // groupCommand describe all dependencies of a group command
 type groupCommand struct {
-	cmd          *kingpin.CmdClause
 	delimiter    *string
 	transformers *Transformers
 	parser       *Parser
@@ -71,7 +70,6 @@ func initGroupArgs(groupCmd *kingpin.CmdClause) *groupCommand {
 
 //  tokenizeCommand describe all dependencies of a tokenize command
 type tokenizeCommand struct {
-	cmd    *kingpin.CmdClause
 	parser *Parser
 }
 
