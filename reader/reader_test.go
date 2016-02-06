@@ -59,9 +59,11 @@ func TestReadFirstLine(t *testing.T) {
 		Input: input,
 	}
 
-	r.ReadFirstLine(func(line string) {
+	r.ReadFirstLine(func(line string) error {
 		if expected != line {
 			t.Errorf("Line must be %s, got %s", expected, line)
 		}
+
+		return nil
 	})
 }

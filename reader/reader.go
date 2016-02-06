@@ -33,8 +33,8 @@ func (r Reader) Read(rowReader func(line string) error) error {
 }
 
 // ReadFirstLine split entries per line
-func (r Reader) ReadFirstLine(rowReader func(line string)) {
+func (r Reader) ReadFirstLine(rowReader func(line string) error) error {
 	scanner := bufio.NewScanner(r.Input)
 	scanner.Scan()
-	rowReader(scanner.Text())
+	return rowReader(scanner.Text())
 }
