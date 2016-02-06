@@ -84,6 +84,114 @@ func TestGroup(t *testing.T) {
 	}
 }
 
+func TestGroupWithDifferenteSizeLines(t *testing.T) {
+	app := initApp()
+	cmd := initCmd(app)
+	groupArgs := initGroupArgs(cmd["group"])
+
+	triggerFatalError = func(err error) {
+		if err == nil || err.Error() != "Wrong parsing strategy (based on first line tokenization), got 1 tokens instead of 3\nLine : 1\n" {
+			t.Error("Must return an error, lines are not parsed with the same number of tokens")
+		}
+	}
+
+	positions := []int{1}
+
+	input := strings.NewReader("1 2 3\n1\n1 2 3 4 5\n4 5 6")
+	r := reader.Reader{
+		Input: input,
+	}
+
+	ignore := false
+
+	switch kingpin.MustParse(app.Parse([]string{"group", "whi", "1"})) {
+	case cmd["group"].FullCommand():
+		group := &group{
+			tokenizer:  *tokenizer.NewTokenizer(groupArgs.parser.Get()),
+			agrBuilder: *agregator.NewBuilder(),
+			dispatcher: dispatcher.NewTermDispatch(*groupArgs.delimiter),
+			reader:     r,
+			positions:  &positions,
+			ignore:     &ignore,
+			args:       groupArgs,
+		}
+
+		group.Consume()
+	}
+}
+
+func TestGroupWithNoTokenParsed(t *testing.T) {
+	app := initApp()
+	cmd := initCmd(app)
+	groupArgs := initGroupArgs(cmd["group"])
+
+	triggerFatalError = func(err error) {
+		if err == nil || err.Error() != "No tokens found" {
+			t.Error("Must return an error, no tokens are extracted")
+		}
+	}
+
+	positions := []int{1}
+
+	input := strings.NewReader("1 2 3")
+	r := reader.Reader{
+		Input: input,
+	}
+
+	ignore := false
+
+	switch kingpin.MustParse(app.Parse([]string{"group", `reg("whatever")`, "1"})) {
+	case cmd["group"].FullCommand():
+		group := &group{
+			tokenizer:  *tokenizer.NewTokenizer(groupArgs.parser.Get()),
+			agrBuilder: *agregator.NewBuilder(),
+			dispatcher: dispatcher.NewTermDispatch(*groupArgs.delimiter),
+			reader:     r,
+			positions:  &positions,
+			ignore:     &ignore,
+			args:       groupArgs,
+		}
+
+		group.Consume()
+	}
+}
+
+func TestGroupWithAPositionGreaterThanExistingPosition(t *testing.T) {
+	app := initApp()
+	cmd := initCmd(app)
+	groupArgs := initGroupArgs(cmd["group"])
+
+	triggerFatalError = func(err error) {
+		if err == nil || err.Error() != "A position is greater or equal than maximum position 3" {
+			t.Error("Must return an error, position is greater than max position")
+		}
+	}
+
+	positions := []int{1, 2, 3, 4}
+
+	input := strings.NewReader("1 2 3")
+	r := reader.Reader{
+		Input: input,
+	}
+
+	ignore := false
+
+	switch kingpin.MustParse(app.Parse([]string{"group", `whi`, "1,2,3,4"})) {
+	case cmd["group"].FullCommand():
+		group := &group{
+			tokenizer:  *tokenizer.NewTokenizer(groupArgs.parser.Get()),
+			agrBuilder: *agregator.NewBuilder(),
+			dispatcher: dispatcher.NewTermDispatch(*groupArgs.delimiter),
+			reader:     r,
+			positions:  &positions,
+			ignore:     &ignore,
+			args:       groupArgs,
+		}
+
+		group.Consume()
+	}
+}
+
 func TestGroupWithTransformers(t *testing.T) {
 	app := initApp()
 	cmd := initCmd(app)

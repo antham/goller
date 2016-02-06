@@ -35,21 +35,31 @@ func NewGroup(args *groupCommand) *group {
 
 // Consume tokenize every line from reader
 func (g *group) Consume() {
-	g.reader.Read(func(line string) {
+	err := g.reader.Read(func(line string) error {
 		tokens, err := g.tokenizer.Tokenize(line)
 
 		if err != nil && *g.ignore {
-			return
+			return nil
+		} else if err != nil {
+			return err
+		} else if len(tokens) == 0 {
+			err = fmt.Errorf("No tokens found")
+		} else if positionsOutOfBoundary(g.positions, len(tokens)) {
+			err = fmt.Errorf("A position is greater or equal than maximum position %d", len(tokens))
 		}
 
-		triggerFatalError(err)
-
-		if positionsOutOfBoundary(g.positions, len(tokens)) {
-			triggerFatalError(fmt.Errorf("A position is greater or equal than maximum position %d", len(tokens)))
+		if err != nil {
+			return err
 		}
 
 		g.agrBuilder.Agregate(*g.positions, &tokens, g.args.transformers.Get())
+
+		return nil
 	})
+
+	if err != nil {
+		triggerFatalError(err)
+	}
 
 	g.agrBuilder.SetCounterIfAny()
 	g.agregators = g.agrBuilder.Get()

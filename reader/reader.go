@@ -19,11 +19,17 @@ func NewStdinReader() Reader {
 }
 
 // Read split entries per line
-func (r Reader) Read(rowReader func(line string)) {
+func (r Reader) Read(rowReader func(line string) error) error {
 	scanner := bufio.NewScanner(r.Input)
 	for scanner.Scan() {
-		rowReader(scanner.Text())
+		err := rowReader(scanner.Text())
+
+		if err != nil {
+			return err
+		}
 	}
+
+	return nil
 }
 
 // ReadFirstLine split entries per line
