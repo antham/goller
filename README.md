@@ -63,6 +63,7 @@ Flags:
   --version        Show application version.
   -d, --delimiter=" | "
                    Separator between results
+  -i, --ignore     Ignore lines wrongly parsed
   -t, --transformer=TRANSFORMER
                    Transformers applied to every fields
   -s, --sort=SORT  Sort lines
@@ -181,6 +182,36 @@ produces :
 ```bash
 test1 | test2 | test3
 
+```
+## Ignore option (-i/--ignore)
+
+*Ignore lines wrongly tokenized by parser*
+
+For instance :
+
+```bash
+echo "hello world\nHi there\nHi everybody\nHi" | goller group whi 1,2
+```
+
+produces :
+
+```bash
+Wrong parsing strategy (based on first line tokenization), got 1 tokens instead of 2
+Line : Hi
+```
+
+If we set the flag :
+
+```bash
+echo "hello world\nHi there\nHi everybody\nHi" | goller group -i whi 1,2
+```
+
+it produces :
+
+```bash
+hello | world
+Hi | there
+Hi | everybody
 ```
 
 ## Delimiter option (-d/--delimiter)

@@ -13,6 +13,7 @@ type groupCommand struct {
 	parser       *Parser
 	sorters      *Sorters
 	positions    *Positions
+	ignore       *bool
 }
 
 //  tokenizeCommand describe all dependencies of a tokenize command
@@ -38,6 +39,7 @@ func initCmd(app *kingpin.Application) map[string]*kingpin.CmdClause {
 func initGroupArgs(groupCmd *kingpin.CmdClause) *groupCommand {
 	return &groupCommand{
 		delimiter:    groupCmd.Flag("delimiter", "Separator between results").Short('d').Default(" | ").String(),
+		ignore:       groupCmd.Flag("ignore", "Ignore lines wrongly parsed").Short('i').Bool(),
 		transformers: TransformersWrapper(groupCmd.Flag("transformer", "Transformers applied to every fields").Short('t')),
 		sorters:      SortersWrapper(groupCmd.Flag("sort", "Sort lines").Short('s')),
 		parser:       ParserWrapper(groupCmd.Arg("parser", "Log line parser to use").Required()),

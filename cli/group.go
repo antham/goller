@@ -15,6 +15,7 @@ type group struct {
 	dispatcher dispatcher.Dispatcher
 	agregators *agregator.Agregators
 	reader     reader.Reader
+	ignore     *bool
 	positions  *[]int
 	args       *groupCommand
 }
@@ -27,6 +28,7 @@ func NewGroup(args *groupCommand) *group {
 		dispatcher: dispatcher.NewTermDispatch(*args.delimiter),
 		reader:     reader.NewStdinReader(),
 		positions:  args.positions.Get(),
+		ignore:     args.ignore,
 		args:       args,
 	}
 }
@@ -35,6 +37,10 @@ func NewGroup(args *groupCommand) *group {
 func (g *group) Consume() {
 	g.reader.Read(func(line string) {
 		tokens, err := g.tokenizer.Tokenize(line)
+
+		if err != nil && *g.ignore {
+			return
+		}
 
 		triggerFatalError(err)
 

@@ -207,3 +207,55 @@ func TestGroupWithSorters(t *testing.T) {
 		}
 	}
 }
+
+func TestGroupWithIgnoreFlag(t *testing.T) {
+	app := initApp()
+	cmd := initCmd(app)
+	groupArgs := initGroupArgs(cmd["group"])
+
+	positions := []int{1}
+
+	input := strings.NewReader("1 2 3\n1\n1 2 3 4 5\n4 5 6")
+	r := reader.Reader{
+		Input: input,
+	}
+
+	ignore := true
+
+	switch kingpin.MustParse(app.Parse([]string{"group", "-i", "whi", "1"})) {
+	case cmd["group"].FullCommand():
+		group := &group{
+			tokenizer:  *tokenizer.NewTokenizer(groupArgs.parser.Get()),
+			agrBuilder: *agregator.NewBuilder(),
+			dispatcher: dispatcher.NewTermDispatch(*groupArgs.delimiter),
+			reader:     r,
+			positions:  &positions,
+			ignore:     &ignore,
+			args:       groupArgs,
+		}
+
+		group.Consume()
+
+		agregators := group.agrBuilder.Get()
+
+		if len(*agregators) != 2 {
+			t.Errorf("Got %d length, expected %d", len(*agregators), 1)
+		}
+
+		test1 := "1"
+		test2 := "4"
+
+		expected := []*string{
+			&test1,
+			&test2,
+		}
+
+		got := (*agregators)[0].Datas
+
+		for i := 0; i < len(got); i++ {
+			if !reflect.DeepEqual(got[i], expected[i]) {
+				t.Errorf("Got %s, expected %s", *got[i], *expected[i])
+			}
+		}
+	}
+}
