@@ -128,9 +128,26 @@ hi
 *Parsing strategy used to tokenize log line*
 
 Available functions :
+* [clf](#clf)
 * [reg](#reg)
 * [spl](#spl)
 * [whi](#whi)
+
+### clf
+
+*Parse line following Common Log Format (NCSA Common log format)*
+
+For instance :
+
+```bash
+echo '127.0.0.1 user-identifier frank [10/Oct/2000:13:55:36 -0700] "GET /apache_pb.gif HTTP/1.0" 200 2326'| goller group clf 1,2,3,4,5,6,7
+```
+
+produces :
+
+```bash
+127.0.0.1 | user-identifier | frank | 10/Oct/2000:13:55:36 -0700 | GET /apache_pb.gif HTTP/1.0 | 200 | 2326
+```
 
 ### reg
 

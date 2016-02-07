@@ -19,6 +19,10 @@ func NewParser(fun string, args []string) *Parser {
 			{
 				function = strings.Fields
 			}
+		case "clf":
+			{
+				function = clf
+			}
 		}
 	case 1:
 		switch fun {
@@ -31,17 +35,7 @@ func NewParser(fun string, args []string) *Parser {
 		case "reg":
 			{
 				{
-					function = func(input string) []string {
-						re := regexp.MustCompile(args[0])
-
-						matches := re.FindStringSubmatch(input)
-
-						if len(matches) > 1 {
-							return matches[1:]
-						}
-
-						return []string{}
-					}
+					function = reg(args[0])
 				}
 
 			}
@@ -49,4 +43,32 @@ func NewParser(fun string, args []string) *Parser {
 	}
 
 	return &function
+}
+
+// reg implements regexp parser
+func reg(r string) Parser {
+	return func(input string) []string {
+		re := regexp.MustCompile(r)
+
+		matches := re.FindStringSubmatch(input)
+
+		if len(matches) > 1 {
+			return matches[1:]
+		}
+
+		return []string{}
+	}
+}
+
+// clf implements Common Log Format (NCSA Common log format) parser
+func clf(input string) []string {
+	re := regexp.MustCompile(`(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+(.+?)\s+(.+?)\s+\[(.+?)\]\s+"(.+?)"\s+(\d{3})\s+(\d+)`)
+
+	matches := re.FindStringSubmatch(input)
+
+	if len(matches) == 8 {
+		return matches[1:]
+	}
+
+	return []string{}
 }
