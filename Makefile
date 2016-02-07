@@ -1,4 +1,5 @@
 compile:
+	git stash -u
 	gox -output "build/{{.Dir}}_{{.OS}}_{{.Arch}}"
 test-unary:
 	go test -race -cover github.com/antham/goller/$(pkg)
