@@ -32,6 +32,8 @@ Commands:
     Show how first log line is tokenized
 ```
 
+***
+
 ### Tokenize
 
 *Show how first log line is parsed using given parsing strategy and display tokens with their positions*
@@ -48,6 +50,8 @@ Flags:
 Args:
   <parser>  Log line parser to use
 ```
+
+***
 
 ### Group
 
@@ -123,7 +127,7 @@ hello
 hi
 ```
 
-## Parser argument
+#### Parser argument
 
 *Parsing strategy used to tokenize log line*
 
@@ -133,7 +137,7 @@ Available functions :
 * [spl](#spl)
 * [whi](#whi)
 
-### clf
+##### clf
 
 *Parse line following Common Log Format (NCSA Common log format)*
 
@@ -149,7 +153,7 @@ produces :
 127.0.0.1 | user-identifier | frank | 10/Oct/2000:13:55:36 -0700 | GET /apache_pb.gif HTTP/1.0 | 200 | 2326
 ```
 
-### reg
+##### reg
 
 *Parse line according to regexp*
 
@@ -167,7 +171,7 @@ hello | world | !
 
 ```
 
-### whi
+##### whi
 
 *Parse line following whitespaces*
 
@@ -184,7 +188,7 @@ produces :
 test1 | test2 | test3
 ```
 
-### spl
+##### spl
 
 *Split lines using given string*
 
@@ -200,7 +204,7 @@ produces :
 test1 | test2 | test3
 
 ```
-## Ignore option (-i/--ignore)
+#### Ignore option (-i/--ignore)
 
 *Ignore lines wrongly tokenized by parser*
 
@@ -231,7 +235,7 @@ Hi | there
 Hi | everybody
 ```
 
-## Delimiter option (-d/--delimiter)
+#### Delimiter option (-d/--delimiter)
 
 *Change separator between counted fields*
 
@@ -247,7 +251,7 @@ produces :
 hello@world@!
 ```
 
-## Transformer option (-t/--transformer)
+#### Transformer option (-t/--transformer)
 
 *Change a field before being counted, transformers could be chained*
 
@@ -279,7 +283,7 @@ Available functions:
 * [trimr](#trimr)
 * [upp](#upp)
 
-### add
+##### add
 
 *Add given integer to field, field must be an integer*
 
@@ -295,7 +299,7 @@ produces :
 2 | 4 | 6
 ```
 
-### catl
+##### catl
 
 *Concat a string on left side of field*
 
@@ -311,7 +315,7 @@ produces :
 hello | world
 ```
 
-### catr
+##### catr
 
 *Concat a string on right side of field*
 
@@ -327,7 +331,7 @@ produces :
 hello | world
 ```
 
-### dell
+##### dell
 
 *Delete n number of characters on left side of field*
 
@@ -343,7 +347,7 @@ produces :
 hello | world
 ```
 
-### delr
+##### delr
 
 *Delete n number of characters on right side of field*
 
@@ -360,7 +364,7 @@ hello | world
 
 ```
 
-### len
+##### len
 
 *Return number of characters in field*
 
@@ -376,7 +380,7 @@ produces :
 5 | 5 | 2
 ```
 
-### low
+##### low
 
 *Lowercase field*
 
@@ -392,7 +396,7 @@ produces :
 hello | world
 ```
 
-### match
+##### match
 
 *Return true if field match regexp, false otherwise*
 
@@ -408,7 +412,7 @@ produces :
 false | true
 ```
 
-### repl
+##### repl
 
 *Replace pattern with string in field*
 
@@ -424,7 +428,7 @@ produces :
 hi | everybody
 ```
 
-### sub
+##### sub
 
 *Substract given integer to field, field must be an integer*
 
@@ -440,7 +444,7 @@ produces :
 0 | 0 | 0
 ```
 
-### trim
+##### trim
 
 *Trim all characters given as argument on right and left side of field*
 
@@ -455,7 +459,7 @@ produces :
 hello | world
 ```
 
-### triml
+##### triml
 
 *Trim all characters given as argument on left side of field*
 
@@ -470,7 +474,7 @@ produces :
 hello | world
 ```
 
-### trimr
+##### trimr
 
 *Trim all characters given as argument on right side of field*
 
@@ -485,7 +489,7 @@ produces :
 hello | world
 ```
 
-### upp
+##### upp
 
 *Uppercase field*
 
@@ -501,7 +505,7 @@ produces :
 HELLO | WORLD
 ```
 
-## Sort option (-s/--sort)
+#### Sort option (-s/--sort)
 
 *Sort a field according to given function, sorters could be used with several fields*
 
@@ -527,7 +531,7 @@ Available functions:
 * [strl](#strl)
 * [str](#str)
 
-### int
+##### int
 
 *Sort integer fields*
 
@@ -547,7 +551,7 @@ produces :
 10
 ```
 
-### strl
+##### strl
 
 *Sort using size string*
 
@@ -567,7 +571,7 @@ aaaa
 aaaaa
 ```
 
-### str
+##### str
 
 *Sort using lexicographic order*
 
