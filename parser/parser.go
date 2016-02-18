@@ -5,50 +5,54 @@ import (
 	"strings"
 )
 
+var functions = []map[string]parserEntry{
+	{
+		"whi": whitespace,
+		"clf": clf,
+	},
+	{
+		"spl": split,
+		"reg": regexpParser,
+	},
+}
+
+// parserEntry describe a map entry
+type parserEntry func([]string) (Parser, error)
+
 // Parser represents a function to explode a string in sub part
 type Parser func(string) []string
 
 // NewParser from specified arguments
 func NewParser(fun string, args []string) *Parser {
 	var function Parser
+	var ok bool
+	i := len(args)
 
-	switch len(args) {
-	case 0:
-		switch fun {
-		case "whi":
-			{
-				function = strings.Fields
-			}
-		case "clf":
-			{
-				function = clf
-			}
-		}
-	case 1:
-		switch fun {
-		case "spl":
-			{
-				function = func(input string) []string {
-					return strings.Split(input, args[0])
-				}
-			}
-		case "reg":
-			{
-				{
-					function = reg(args[0])
-				}
-
-			}
-		}
+	if _, ok = functions[i][fun]; ok == true {
+		function, _ = functions[i][fun](args)
 	}
 
 	return &function
 }
 
-// reg implements regexp parser
-func reg(r string) Parser {
+// split lines following given string
+func split(args []string) (Parser, error) {
 	return func(input string) []string {
-		re := regexp.MustCompile(r)
+		return strings.Split(input, args[0])
+	}, nil
+}
+
+// whitespace split lines following whitespaces
+func whitespace(args []string) (Parser, error) {
+	return func(input string) []string {
+		return strings.Fields(input)
+	}, nil
+}
+
+// regexp implements regexp parser
+func regexpParser(args []string) (Parser, error) {
+	return func(input string) []string {
+		re := regexp.MustCompile(args[0])
 
 		matches := re.FindStringSubmatch(input)
 
@@ -57,18 +61,20 @@ func reg(r string) Parser {
 		}
 
 		return []string{}
-	}
+	}, nil
 }
 
 // clf implements Common Log Format (NCSA Common log format) parser
-func clf(input string) []string {
-	re := regexp.MustCompile(`(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+(.+?)\s+(.+?)\s+\[(.+?)\]\s+"(.+?)"\s+(\d{3})\s+(\d+)`)
+func clf(args []string) (Parser, error) {
+	return func(input string) []string {
+		re := regexp.MustCompile(`(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+(.+?)\s+(.+?)\s+\[(.+?)\]\s+"(.+?)"\s+(\d{3})\s+(\d+)`)
 
-	matches := re.FindStringSubmatch(input)
+		matches := re.FindStringSubmatch(input)
 
-	if len(matches) == 8 {
-		return matches[1:]
-	}
+		if len(matches) == 8 {
+			return matches[1:]
+		}
 
-	return []string{}
+		return []string{}
+	}, nil
 }
