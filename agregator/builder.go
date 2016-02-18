@@ -21,6 +21,24 @@ func NewBuilder() *Builder {
 	}
 }
 
+// iterate create a new agregator or increase existing agregator counter
+func (b *Builder) iterate(datas []*string, datasOrdered map[int]*string, accumulator string) {
+	footprint := sha1.Sum([]byte(accumulator))
+
+	if _, ok := (*b).footprints[footprint]; ok {
+		(*b).footprints[footprint].Count = (*b).footprints[footprint].Count + 1
+	} else {
+		agregator := &Agregator{
+			Count:        1,
+			DatasOrdered: datasOrdered,
+			Datas:        datas,
+		}
+
+		(*b).footprints[footprint] = agregator
+		(*b.agregators) = append((*b.agregators), agregator)
+	}
+}
+
 // Agregate agregate tokens according to positions
 func (b *Builder) Agregate(positions []int, tokens *[]tokenizer.Token, trans *transformer.Transformers) {
 	var accumulator string
@@ -48,20 +66,7 @@ func (b *Builder) Agregate(positions []int, tokens *[]tokenizer.Token, trans *tr
 		datasOrdered[i] = &result
 	}
 
-	footprint := sha1.Sum([]byte(accumulator))
-
-	if _, ok := (*b).footprints[footprint]; ok {
-		(*b).footprints[footprint].Count = (*b).footprints[footprint].Count + 1
-	} else {
-		agregator := &Agregator{
-			Count:        1,
-			DatasOrdered: datasOrdered,
-			Datas:        datas,
-		}
-
-		(*b).footprints[footprint] = agregator
-		(*b.agregators) = append((*b.agregators), agregator)
-	}
+	b.iterate(datas, datasOrdered, accumulator)
 }
 
 // SetCounterIfAny set counter value among other value fields
