@@ -9,7 +9,7 @@ func TestAppendUnexistingFunction(t *testing.T) {
 
 	err := transformers.Append(1, "whatever", []string{})
 
-	if err == nil || err.Error() != "\"whatever\" doesn't exists or number of argument is wrong" {
+	if err == nil || err.Error() != `"whatever" doesn't exist or number of arguments "0" is wrong` {
 		t.Errorf("Must throws an error")
 	}
 }
