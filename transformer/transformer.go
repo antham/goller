@@ -49,15 +49,11 @@ func NewTransformers() *Transformers {
 func (t *Transformers) Append(position int, fun string, args []string) error {
 	var function transformer
 	var err error
-	var ok bool
-	i := len(args)
 
-	if _, ok = functions[i][fun]; ok == true {
-		function, err = functions[i][fun](args)
-	}
-
-	if err != nil {
-		return err
+	if _, ok := functions[len(args)][fun]; ok == true {
+		if function, err = functions[len(args)][fun](args); err != nil {
+			return err
+		}
 	}
 
 	if function == nil {
