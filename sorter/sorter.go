@@ -74,10 +74,12 @@ func (s *Sorter) Swap(i, j int) {
 	(*s.agregators)[i], (*s.agregators)[j] = (*s.agregators)[j], (*s.agregators)[i]
 }
 
+// HasPosition check if position exists
 func (s *Sorter) HasPosition(position int) bool {
 	return s.position == position
 }
 
+// GetPosition return element position
 func (s *Sorter) GetPosition() int {
 	return s.position
 }
