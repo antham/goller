@@ -46,7 +46,7 @@ func (s *Sorters) Append(position int, sorterName string, args []string) {
 func (s *Sorters) Sort(agregators *agregator.Agregators) {
 	for i := len(*s) - 1; i >= 0; i-- {
 		(*s)[i].SetAgregators(agregators)
-		sort.Sort((*s)[i])
+		sort.Stable((*s)[i])
 	}
 }
 
