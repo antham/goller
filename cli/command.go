@@ -30,9 +30,6 @@ func Run(version string) {
 	}
 }
 
-// command list all available cli commands
-type command map[string]*kingpin.CmdClause
-
 // initAp create a new command line app
 func initApp() *kingpin.Application {
 	return kingpin.New("goller", "Aggregate log fields and count occurences")
