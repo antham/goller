@@ -65,7 +65,7 @@ func initGroupArgs(groupCmd *kingpin.CmdClause) *groupCommand {
 	}
 }
 
-//  tokenizeCommand describe all dependencies of a tokenize command
+// tokenizeCommand describe all dependencies of a tokenize command
 type tokenizeCommand struct {
 	parser *Parser
 }
