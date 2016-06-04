@@ -13,6 +13,7 @@ type Token struct {
 type Tokenizer struct {
 	parse         *parser.Parser
 	maxTokensSize int
+	tokens        []Token
 }
 
 // NewTokenizer instantiate sequence objects
@@ -22,23 +23,40 @@ func NewTokenizer(parse *parser.Parser) *Tokenizer {
 	}
 }
 
+// reset all data structures involved in tokenization
+func (t *Tokenizer) reset() {
+	t.tokens = t.tokens[:0]
+}
+
 // Tokenize split a line to tokens
-func (t *Tokenizer) Tokenize(line *[]byte) ([]Token, error) {
-	var tokens []Token
+func (t *Tokenizer) Tokenize(line *[]byte) error {
+	t.reset()
 
 	for _, data := range (*t.parse)(string((*line)[:])) {
-		tokens = append(tokens, Token{Value: data})
+		t.tokens = append(t.tokens, Token{Value: data})
 	}
+
+	size := len(t.tokens)
 
 	if (*t).maxTokensSize == 0 {
-		(*t).maxTokensSize = len(tokens)
+		(*t).maxTokensSize = size
 	}
 
-	if len(tokens) != (*t).maxTokensSize {
-		err := fmt.Errorf("Wrong parsing strategy (based on first line tokenization), got %d tokens instead of %d\nLine : %s\n", len(tokens), (*t).maxTokensSize, *line)
+	if size != (*t).maxTokensSize {
+		err := fmt.Errorf("Wrong parsing strategy (based on first line tokenization), got %d tokens instead of %d\nLine : %s\n", size, (*t).maxTokensSize, *line)
 
-		return []Token{}, err
+		return err
 	}
 
-	return tokens, nil
+	return nil
+}
+
+// Get token accumulator
+func (t *Tokenizer) Get() *[]Token {
+	return &(t.tokens)
+}
+
+// Length return token count
+func (t *Tokenizer) Length() int {
+	return len(t.tokens)
 }

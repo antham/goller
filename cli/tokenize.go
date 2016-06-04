@@ -26,7 +26,8 @@ func NewTokenize(args *tokenizeCommand) *tokenize {
 func (p *tokenize) Tokenize() {
 	p.reader.ReadFirstLine(func(line string) error {
 		data := []byte(line)
-		p.tokens, _ = p.tokenizer.Tokenize(&data)
+		_ = p.tokenizer.Tokenize(&data)
+		p.tokens = *(p.tokenizer.Get())
 
 		return nil
 	})
