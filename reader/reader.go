@@ -3,6 +3,7 @@ package reader
 import (
 	"bufio"
 	"io"
+	"io/ioutil"
 	"os"
 )
 
@@ -20,12 +21,29 @@ func NewStdinReader() Reader {
 
 // Read split entries per line
 func (r Reader) Read(rowReader func(line string) error) error {
-	scanner := bufio.NewScanner(r.Input)
-	for scanner.Scan() {
-		err := rowReader(scanner.Text())
+	accumulator := []byte{}
 
-		if err != nil {
-			return err
+	datas, err := ioutil.ReadAll(r.Input)
+
+	if err != nil {
+		return err
+	}
+
+	size := len(datas)
+
+	for i, data := range datas {
+		if data != '\n' {
+			accumulator = append(accumulator, data)
+		}
+
+		if data == '\n' || i == size-1 {
+			err := rowReader(string(accumulator[:]))
+
+			if err != nil {
+				return err
+			}
+
+			accumulator = []byte{}
 		}
 	}
 
