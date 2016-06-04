@@ -23,10 +23,10 @@ func NewTokenizer(parse *parser.Parser) *Tokenizer {
 }
 
 // Tokenize split a line to tokens
-func (t *Tokenizer) Tokenize(line string) ([]Token, error) {
+func (t *Tokenizer) Tokenize(line *[]byte) ([]Token, error) {
 	var tokens []Token
 
-	for _, data := range (*t.parse)(line) {
+	for _, data := range (*t.parse)(string((*line)[:])) {
 		tokens = append(tokens, Token{Value: data})
 	}
 
@@ -35,7 +35,7 @@ func (t *Tokenizer) Tokenize(line string) ([]Token, error) {
 	}
 
 	if len(tokens) != (*t).maxTokensSize {
-		err := fmt.Errorf("Wrong parsing strategy (based on first line tokenization), got %d tokens instead of %d\nLine : %s\n", len(tokens), (*t).maxTokensSize, line)
+		err := fmt.Errorf("Wrong parsing strategy (based on first line tokenization), got %d tokens instead of %d\nLine : %s\n", len(tokens), (*t).maxTokensSize, *line)
 
 		return []Token{}, err
 	}

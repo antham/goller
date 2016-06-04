@@ -1,6 +1,7 @@
 package reader
 
 import (
+	"bytes"
 	"errors"
 	"os"
 	"strings"
@@ -18,21 +19,21 @@ func TestNewRead(t *testing.T) {
 func TestRead(t *testing.T) {
 	input := strings.NewReader("test1\ntest2\ntest3")
 
-	entries := []string{
-		"test1",
-		"test2",
-		"test3",
+	entries := [][]byte{
+		[]byte("test1"),
+		[]byte("test2"),
+		[]byte("test3"),
 	}
 
 	r := Reader{
 		Input: input,
 	}
 
-	r.Read(func(line string) error {
+	r.Read(func(line *[]byte) error {
 		expected := entries[0]
 
-		if expected != line {
-			t.Errorf("Line must be %s, got %s", expected, line)
+		if bytes.Compare(expected, *line) != 0 {
+			t.Errorf("Line must be %s, got %s", string(expected), string(*line))
 		}
 
 		if len(entries) > 0 {
@@ -50,7 +51,7 @@ func TestReadWithAnError(t *testing.T) {
 		Input: input,
 	}
 
-	err := r.Read(func(line string) error {
+	err := r.Read(func(line *[]byte) error {
 		return errors.New("Error from inner function")
 	})
 

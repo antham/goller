@@ -20,9 +20,7 @@ func NewStdinReader() Reader {
 }
 
 // Read split entries per line
-func (r Reader) Read(rowReader func(line string) error) error {
-	accumulator := []byte{}
-
+func (r Reader) Read(rowReader func(line *[]byte) error) error {
 	datas, err := ioutil.ReadAll(r.Input)
 
 	if err != nil {
@@ -31,19 +29,26 @@ func (r Reader) Read(rowReader func(line string) error) error {
 
 	size := len(datas)
 
+	var lineStartPos int
+	var lineEndPos int
+
 	for i, data := range datas {
-		if data != '\n' {
-			accumulator = append(accumulator, data)
+		if i == size-1 {
+			lineEndPos = i + 1
+		} else {
+			lineEndPos = i
 		}
 
 		if data == '\n' || i == size-1 {
-			err := rowReader(string(accumulator[:]))
+			l := datas[lineStartPos:lineEndPos]
+
+			err := rowReader(&l)
 
 			if err != nil {
 				return err
 			}
 
-			accumulator = []byte{}
+			lineStartPos = lineEndPos + 1
 		}
 	}
 
