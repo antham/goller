@@ -1,7 +1,6 @@
 package agregator
 
 import (
-	"crypto/sha1"
 	"github.com/antham/goller/tokenizer"
 	"github.com/antham/goller/transformer"
 	"strconv"
@@ -10,23 +9,21 @@ import (
 // Builder wraps operations needed to manage agregators
 type Builder struct {
 	agregators *Agregators
-	footprints map[[20]byte]*Agregator
+	footprints map[string]*Agregator
 }
 
 // NewBuilder create builder
 func NewBuilder() *Builder {
 	return &Builder{
 		NewAgregators(),
-		make(map[[20]byte]*Agregator, 0),
+		make(map[string]*Agregator, 0),
 	}
 }
 
 // iterate create a new agregator or increase existing agregator counter
 func (b *Builder) iterate(datas []*string, datasOrdered map[int]*string, accumulator string) {
-	footprint := sha1.Sum([]byte(accumulator))
-
-	if _, ok := (*b).footprints[footprint]; ok {
-		(*b).footprints[footprint].Count = (*b).footprints[footprint].Count + 1
+	if _, ok := (*b).footprints[accumulator]; ok {
+		(*b).footprints[accumulator].Count = (*b).footprints[accumulator].Count + 1
 	} else {
 		agregator := &Agregator{
 			Count:        1,
@@ -34,7 +31,7 @@ func (b *Builder) iterate(datas []*string, datasOrdered map[int]*string, accumul
 			Datas:        datas,
 		}
 
-		(*b).footprints[footprint] = agregator
+		(*b).footprints[accumulator] = agregator
 		(*b.agregators) = append((*b.agregators), agregator)
 	}
 }
