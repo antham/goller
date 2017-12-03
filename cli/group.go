@@ -35,7 +35,7 @@ func NewGroup(args *groupCommand) *group {
 
 // Consume tokenize every line from reader
 func (g *group) Consume() {
-	err := g.reader.Read(func(line *[]byte) error {
+	err := g.reader.Read(func(line []byte) error {
 		err := g.tokenizer.Tokenize(line)
 
 		size := g.tokenizer.Length()
