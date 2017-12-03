@@ -1,3 +1,4 @@
 */*.test
 /build/*
 /coverage.txt
+/vendor/*

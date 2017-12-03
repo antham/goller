@@ -1,13 +1,12 @@
 language: go
 
 go:
-  - 1.6
+  - master
 
 before_install:
-  - go get github.com/onsi/gomega
-  - go get github.com/onsi/ginkgo
+  - go get -u github.com/golang/dep/cmd/dep
 
-install: go get ./...
+install: dep ensure -v
 
 script:
   make run-tests
