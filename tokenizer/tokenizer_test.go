@@ -12,7 +12,7 @@ func TestTokenizeLineWithAParser(t *testing.T) {
 
 	data := []byte("[2016-01-08 20:16] [ALPM] transaction started")
 
-	err := tok.Tokenize(&data)
+	err := tok.Tokenize(data)
 
 	tokens := *(tok.Get())
 
@@ -44,11 +44,11 @@ func TestTokenizeALineWithLessTokensThanFirstLine(t *testing.T) {
 
 	data1 := []byte("test1 test2 test3 test4")
 
-	tok.Tokenize(&data1)
+	tok.Tokenize(data1)
 
 	data2 := []byte("test1 test2 test3")
 
-	err := tok.Tokenize(&data2)
+	err := tok.Tokenize(data2)
 
 	if err.Error() != "Wrong parsing strategy (based on first line tokenization), got 3 tokens instead of 4\nLine : test1 test2 test3\n" {
 		t.Error("We must have an error when we try to tokenize two lines with different sizes")
@@ -62,11 +62,11 @@ func TestTokenizeALineWithMoreTokensThanFirstLine(t *testing.T) {
 
 	data1 := []byte("test1 test2 test3 test4")
 
-	tok.Tokenize(&data1)
+	tok.Tokenize(data1)
 
 	data2 := []byte("test1 test2 test3 test4 test5")
 
-	err := tok.Tokenize(&data2)
+	err := tok.Tokenize(data2)
 
 	if err.Error() != "Wrong parsing strategy (based on first line tokenization), got 5 tokens instead of 4\nLine : test1 test2 test3 test4 test5\n" {
 		t.Error("We must have an error when we try to tokenize two lines with different sizes")
