@@ -29,11 +29,11 @@ func TestRead(t *testing.T) {
 		Input: input,
 	}
 
-	r.Read(func(line *[]byte) error {
+	r.Read(func(line []byte) error {
 		expected := entries[0]
 
-		if bytes.Compare(expected, *line) != 0 {
-			t.Errorf("Line must be %s, got %s", string(expected), string(*line))
+		if bytes.Compare(expected, line) != 0 {
+			t.Errorf("Line must be %s, got %s", string(expected), string(line))
 		}
 
 		if len(entries) > 0 {
@@ -51,7 +51,7 @@ func TestReadWithAnError(t *testing.T) {
 		Input: input,
 	}
 
-	err := r.Read(func(line *[]byte) error {
+	err := r.Read(func(line []byte) error {
 		return errors.New("Error from inner function")
 	})
 
@@ -63,14 +63,14 @@ func TestReadWithAnError(t *testing.T) {
 func TestReadFirstLine(t *testing.T) {
 	input := strings.NewReader("test1\ntest2\ntest3")
 
-	expected := "test1"
+	expected := []byte("test1")
 
 	r := Reader{
 		Input: input,
 	}
 
-	r.ReadFirstLine(func(line string) error {
-		if expected != line {
+	r.ReadFirstLine(func(line []byte) error {
+		if bytes.Compare(expected, line) != 0 {
 			t.Errorf("Line must be %s, got %s", expected, line)
 		}
 
