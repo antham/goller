@@ -10,7 +10,8 @@ gometalinter:
 doc-hunt:
 	doc-hunt check -e
 
-run-tests: ./test.sh
+run-tests:
+	./test.sh
 
 run-quick-tests: setup-test-fixtures
 	go test -v $(PKGS)
