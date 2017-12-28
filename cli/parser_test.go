@@ -38,7 +38,7 @@ func TestParserSetUnValidArgument(t *testing.T) {
 	parser := new(Parser)
 	err := parser.Set("whi(")
 
-	if err == nil || err.Error() != "found \"\", arg must start with a quote" {
+	if err == nil || err.Error() != `found "\x00", arg must start with a quote` {
 		t.Error("Must throw an error")
 	}
 }

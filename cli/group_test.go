@@ -90,7 +90,7 @@ func TestGroupWithDifferenteSizeLines(t *testing.T) {
 	groupArgs := initGroupArgs(cmd["group"])
 
 	triggerFatalError = func(err error) {
-		if err == nil || err.Error() != "Wrong parsing strategy (based on first line tokenization), got 1 tokens instead of 3\nLine : 1\n" {
+		if err == nil || err.Error() != "Wrong parsing strategy (based on first line tokenization), got 1 tokens instead of 3\nLine : 1" {
 			t.Error("Must return an error, lines are not parsed with the same number of tokens")
 		}
 	}
