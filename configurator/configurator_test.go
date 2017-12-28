@@ -77,9 +77,13 @@ func TestDelete(t *testing.T) {
 	category := "bindings.transformers"
 	key := "hello"
 
-	c.Delete(&category, &key)
+	err := c.Delete(&category, &key)
 
-	if _, ok := (*c.Bindings.Transformers)["hello"]; !ok {
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if _, ok := (*c.Bindings.Transformers)["hello"]; ok {
 		t.Error("Must delete key hello")
 	}
 }
