@@ -147,7 +147,7 @@ func TestReadEOF(t *testing.T) {
 	scanner := NewScanner(bytes.NewBufferString(""))
 	token, data := scanner.Scan()
 
-	if token != EOF || data != "" {
+	if token != EOF || data != "\000" {
 		t.Error("Token must mark end of file got", data)
 	}
 }
