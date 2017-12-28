@@ -2,7 +2,6 @@ package configurator
 
 import (
 	"fmt"
-	// "strings"
 )
 
 // Items represents a config file option
