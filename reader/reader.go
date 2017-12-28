@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-// Reader
+// Reader reads datas from input and extract lines to analyze
 type Reader struct {
 	Input io.Reader
 }

@@ -53,7 +53,7 @@ func TestParsePositionAndFunctions(t *testing.T) {
 		},
 	}
 
-	if err != nil || reflect.DeepEqual(stmt, expected) != true {
+	if err != nil || !reflect.DeepEqual(stmt, expected) {
 		t.Errorf("Struct not equals expected %v got %v", expected, stmt)
 	}
 }
@@ -139,7 +139,7 @@ func TestParseFunctionWithoutArgs(t *testing.T) {
 		Args: []string{},
 	}
 
-	if err != nil || reflect.DeepEqual(stmt, expected) != true {
+	if err != nil || !reflect.DeepEqual(stmt, expected) {
 		t.Errorf("Struct not equals expected %v got %v", expected, stmt)
 	}
 }
@@ -153,7 +153,7 @@ func TestParseFunctionWithArgs(t *testing.T) {
 		Args: []string{"hello", "world"},
 	}
 
-	if err != nil || reflect.DeepEqual(stmt, expected) != true {
+	if err != nil || !reflect.DeepEqual(stmt, expected) {
 		t.Errorf("Struct not equals expected %v got %v", expected, stmt)
 	}
 }
@@ -210,7 +210,7 @@ func TestParsePositionsAndFunctions(t *testing.T) {
 		},
 	}
 
-	if err != nil || reflect.DeepEqual(stmt, expected) != true {
+	if err != nil || !reflect.DeepEqual(stmt, expected) {
 		t.Errorf("Struct not equals expected %v got %v", expected, stmt)
 	}
 }

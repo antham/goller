@@ -6,49 +6,49 @@ import (
 )
 
 func TestIsLetter(t *testing.T) {
-	if isLetter('A') != true {
+	if !isLetter('A') {
 		t.Error("A not seen as letter character")
 	}
 
-	if isLetter('Z') != true {
+	if !isLetter('Z') {
 		t.Error("Z not seen as letter character")
 	}
 
-	if isLetter('M') != true {
+	if !isLetter('M') {
 		t.Error("M not seen as letter character")
 	}
 
-	if isLetter('a') != true {
+	if !isLetter('a') {
 		t.Error("a not seen as letter character")
 	}
 
-	if isLetter('z') != true {
+	if !isLetter('z') {
 		t.Error("z not seen as letter character")
 	}
 
-	if isLetter('m') != true {
+	if !isLetter('m') {
 		t.Error("m not seen as letter character")
 	}
 
-	if isLetter('4') != false {
+	if isLetter('4') {
 		t.Error("4 seen as letter character")
 	}
 }
 
 func TestIsNumber(t *testing.T) {
-	if isNumber('0') != true {
+	if !isNumber('0') {
 		t.Error("0 not seen as letter character")
 	}
 
-	if isNumber('9') != true {
+	if !isNumber('9') {
 		t.Error("9 not seen as letter character")
 	}
 
-	if isNumber('5') != true {
+	if !isNumber('5') {
 		t.Error("5 not seen as letter character")
 	}
 
-	if isNumber('a') != false {
+	if isNumber('a') {
 		t.Error("a seen as number")
 	}
 }

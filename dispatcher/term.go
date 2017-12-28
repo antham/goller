@@ -11,7 +11,7 @@ type Term struct {
 	delimiter string
 }
 
-// NewTermDispatcher create a new terminal renderer
+// NewTermDispatch creates a new terminal renderer
 func NewTermDispatch(delimiter string) Term {
 	return Term{delimiter: delimiter}
 }

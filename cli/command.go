@@ -25,7 +25,7 @@ func Run(version string) {
 		group.Dispatch()
 	case cmd["tokenize"].FullCommand():
 		tokenize := NewTokenize(tokenizeArgs)
-		tokenize.Tokenize()
+		triggerFatalError(tokenize.Tokenize())
 		tokenize.Render()
 	}
 }

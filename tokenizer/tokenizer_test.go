@@ -1,18 +1,24 @@
 package tokenizer
 
 import (
+	"log"
+
 	"github.com/antham/goller/parser"
 	"testing"
 )
 
 func TestTokenizeLineWithAParser(t *testing.T) {
-	p := parser.NewParser("whi", []string{})
+	p, err := parser.NewParser("whi", []string{})
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	tok := NewTokenizer(p)
 
 	data := []byte("[2016-01-08 20:16] [ALPM] transaction started")
 
-	err := tok.Tokenize(data)
+	err = tok.Tokenize(data)
 
 	tokens := *(tok.Get())
 
@@ -38,7 +44,11 @@ func TestTokenizeLineWithAParser(t *testing.T) {
 }
 
 func TestTokenizeALineWithLessTokensThanFirstLine(t *testing.T) {
-	p := parser.NewParser("whi", []string{})
+	p, err := parser.NewParser("whi", []string{})
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	tok := NewTokenizer(p)
 
@@ -48,7 +58,7 @@ func TestTokenizeALineWithLessTokensThanFirstLine(t *testing.T) {
 
 	data2 := []byte("test1 test2 test3")
 
-	err := tok.Tokenize(data2)
+	err = tok.Tokenize(data2)
 
 	if err.Error() != "Wrong parsing strategy (based on first line tokenization), got 3 tokens instead of 4\nLine : test1 test2 test3\n" {
 		t.Error("We must have an error when we try to tokenize two lines with different sizes")
@@ -56,7 +66,11 @@ func TestTokenizeALineWithLessTokensThanFirstLine(t *testing.T) {
 }
 
 func TestTokenizeALineWithMoreTokensThanFirstLine(t *testing.T) {
-	p := parser.NewParser("whi", []string{})
+	p, err := parser.NewParser("whi", []string{})
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	tok := NewTokenizer(p)
 
@@ -66,7 +80,7 @@ func TestTokenizeALineWithMoreTokensThanFirstLine(t *testing.T) {
 
 	data2 := []byte("test1 test2 test3 test4 test5")
 
-	err := tok.Tokenize(data2)
+	err = tok.Tokenize(data2)
 
 	if err.Error() != "Wrong parsing strategy (based on first line tokenization), got 5 tokens instead of 4\nLine : test1 test2 test3 test4 test5\n" {
 		t.Error("We must have an error when we try to tokenize two lines with different sizes")

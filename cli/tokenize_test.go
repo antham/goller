@@ -1,6 +1,8 @@
 package cli
 
 import (
+	"log"
+
 	"github.com/antham/goller/reader"
 	"github.com/antham/goller/tokenizer"
 	"gopkg.in/alecthomas/kingpin.v2"
@@ -22,12 +24,16 @@ func TestTokenize(t *testing.T) {
 	switch kingpin.MustParse(app.Parse(strings.Fields("tokenize whi"))) {
 	case cmd["group"].FullCommand():
 
-		tokenize := &tokenize{
+		tokenize := &Tokenize{
 			tokenizer: *tokenizer.NewTokenizer(tokenizeArgs.parser.Get()),
 			reader:    r,
 		}
 
-		tokenize.Tokenize()
+		err := tokenize.Tokenize()
+
+		if err != nil {
+			log.Fatal(err)
+		}
 
 		if len(tokenize.tokens) != 3 {
 			t.Errorf("Got %d length, expected %d", len(tokenize.tokens), 2)

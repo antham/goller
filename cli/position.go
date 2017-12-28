@@ -14,11 +14,11 @@ type Positions struct {
 
 // Set is used to populate statement from string
 func (p *Positions) Set(value string) error {
-	positionDups := make(map[int]bool, 0)
+	positionDups := map[int]bool{}
 
 	for _, field := range strings.Split(value, ",") {
 		if position, err := strconv.Atoi(field); err == nil {
-			if _, ok := positionDups[position]; ok == true {
+			if _, ok := positionDups[position]; ok {
 				return fmt.Errorf("This element is duplicated : %d", position)
 			}
 			positionDups[position] = true
@@ -44,6 +44,6 @@ func (p *Positions) String() string {
 // PositionsWrapper is used to transform argument from command line
 func PositionsWrapper(s kingpin.Settings) (target *Positions) {
 	target = &Positions{}
-	s.SetValue((*Positions)(target))
+	s.SetValue(target)
 	return
 }

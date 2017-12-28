@@ -50,7 +50,7 @@ func (t *Transformers) Append(position int, fun string, args []string) error {
 	var function transformer
 	var err error
 
-	if _, ok := functions[len(args)][fun]; ok == true {
+	if _, ok := functions[len(args)][fun]; ok {
 		if function, err = functions[len(args)][fun](args); err != nil {
 			return err
 		}
@@ -69,7 +69,7 @@ func (t *Transformers) Append(position int, fun string, args []string) error {
 func (t *Transformers) Apply(position int, input string) string {
 	result := input
 
-	if transformers, ok := (*t)[position]; ok == true {
+	if transformers, ok := (*t)[position]; ok {
 		for _, transformer := range transformers {
 			result = transformer(result)
 		}

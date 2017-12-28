@@ -25,7 +25,7 @@ func TestGroup(t *testing.T) {
 
 	switch kingpin.MustParse(app.Parse(strings.Fields("group whi 0,1,2,3"))) {
 	case cmd["group"].FullCommand():
-		group := &group{
+		group := &Group{
 			tokenizer:  *tokenizer.NewTokenizer(groupArgs.parser.Get()),
 			agrBuilder: *agregator.NewBuilder(),
 			dispatcher: dispatcher.NewTermDispatch(*groupArgs.delimiter),
@@ -106,7 +106,7 @@ func TestGroupWithDifferenteSizeLines(t *testing.T) {
 
 	switch kingpin.MustParse(app.Parse([]string{"group", "whi", "1"})) {
 	case cmd["group"].FullCommand():
-		group := &group{
+		group := &Group{
 			tokenizer:  *tokenizer.NewTokenizer(groupArgs.parser.Get()),
 			agrBuilder: *agregator.NewBuilder(),
 			dispatcher: dispatcher.NewTermDispatch(*groupArgs.delimiter),
@@ -142,7 +142,7 @@ func TestGroupWithNoTokenParsed(t *testing.T) {
 
 	switch kingpin.MustParse(app.Parse([]string{"group", `reg("whatever")`, "1"})) {
 	case cmd["group"].FullCommand():
-		group := &group{
+		group := &Group{
 			tokenizer:  *tokenizer.NewTokenizer(groupArgs.parser.Get()),
 			agrBuilder: *agregator.NewBuilder(),
 			dispatcher: dispatcher.NewTermDispatch(*groupArgs.delimiter),
@@ -178,7 +178,7 @@ func TestGroupWithAPositionGreaterThanExistingPosition(t *testing.T) {
 
 	switch kingpin.MustParse(app.Parse([]string{"group", `whi`, "1,2,3,4"})) {
 	case cmd["group"].FullCommand():
-		group := &group{
+		group := &Group{
 			tokenizer:  *tokenizer.NewTokenizer(groupArgs.parser.Get()),
 			agrBuilder: *agregator.NewBuilder(),
 			dispatcher: dispatcher.NewTermDispatch(*groupArgs.delimiter),
@@ -206,7 +206,7 @@ func TestGroupWithTransformers(t *testing.T) {
 
 	switch kingpin.MustParse(app.Parse([]string{"group", "whi", "-t", `1:add("1")`, "-t", `2:add("2")`, "-t", `3:add("3")`, `0,1,2,3`})) {
 	case cmd["group"].FullCommand():
-		group := &group{
+		group := &Group{
 			tokenizer:  *tokenizer.NewTokenizer(groupArgs.parser.Get()),
 			agrBuilder: *agregator.NewBuilder(),
 			dispatcher: dispatcher.NewTermDispatch(*groupArgs.delimiter),
@@ -259,7 +259,7 @@ func TestGroupWithSorters(t *testing.T) {
 
 	switch kingpin.MustParse(app.Parse([]string{"group", "whi", "-s", `3:int,2:int,1:int`, `0,1,2,3`})) {
 	case cmd["group"].FullCommand():
-		group := &group{
+		group := &Group{
 			tokenizer:  *tokenizer.NewTokenizer(groupArgs.parser.Get()),
 			agrBuilder: *agregator.NewBuilder(),
 			dispatcher: dispatcher.NewTermDispatch(*groupArgs.delimiter),
@@ -333,7 +333,7 @@ func TestGroupWithIgnoreFlag(t *testing.T) {
 
 	switch kingpin.MustParse(app.Parse([]string{"group", "-i", "whi", "1"})) {
 	case cmd["group"].FullCommand():
-		group := &group{
+		group := &Group{
 			tokenizer:  *tokenizer.NewTokenizer(groupArgs.parser.Get()),
 			agrBuilder: *agregator.NewBuilder(),
 			dispatcher: dispatcher.NewTermDispatch(*groupArgs.delimiter),

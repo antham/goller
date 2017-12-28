@@ -35,24 +35,22 @@ func (s *Scanner) unread() { _ = s.r.UnreadRune() }
 func (s *Scanner) Scan() (tok Token, lit string) {
 	ch := s.read()
 
-	switch ch {
-	case eof:
-		return EOF, ""
-	case '|':
-		return PIPE, string(ch)
-	case '(':
-		return OPAREN, string(ch)
-	case ')':
-		return CPAREN, string(ch)
-	case ':':
-		return COLON, string(ch)
-	case '"':
-		return DQUOTE, string(ch)
-	case ',':
-		return COMMA, string(ch)
-	case '.':
-		return DOT, string(ch)
-	case '\\':
+	chs := map[rune]Token{
+		eof: EOF,
+		'|': PIPE,
+		'(': OPAREN,
+		')': CPAREN,
+		':': COLON,
+		'"': DQUOTE,
+		',': COMMA,
+		'.': DOT,
+	}
+
+	if v, ok := chs[ch]; ok {
+		return v, string(ch)
+	}
+
+	if ch == '\\' {
 		if s.read() == '"' {
 			return EDQUOTE, string('"')
 		}
@@ -74,35 +72,55 @@ func (s *Scanner) scanString() (token Token, data string) {
 	hasSpecialChar := false
 
 	for c := s.read(); ; c = s.read() {
-		if c == '"' || c == '|' || c == ')' || c == '(' || c == ',' || c == ':' || c == '.' || c == eof {
+		if isMarker(c) {
 			s.unread()
 			break
-		} else if isLetter(c) {
+		}
+
+		switch true {
+		case isLetter(c):
 			hasLetter = true
-		} else if isNumber(c) {
+		case isNumber(c):
 			hasNumber = true
-		} else {
+		default:
 			hasSpecialChar = true
 		}
 
 		data += string(c)
 	}
 
-	if hasNumber && !hasLetter && !hasSpecialChar {
+	if isStrNumber(hasNumber, hasLetter, hasSpecialChar) {
 		return NUMBER, data
-	} else if (hasLetter || hasNumber) && !hasSpecialChar {
+	}
+
+	if isStrAlNum(hasNumber, hasLetter, hasSpecialChar) {
 		return ALNUM, data
 	}
 
 	return STRING, data
 }
 
-// isLetter check if character is letter character
+// isStrNumber checks if a string is compound only with numbers
+func isStrNumber(hasNumber, hasLetter, hasSpecialChar bool) bool {
+	return hasNumber && !hasLetter && !hasSpecialChar
+}
+
+// isStrAlNum checks if a string is compound of numbers and letters
+func isStrAlNum(hasNumber, hasLetter, hasSpecialChar bool) bool {
+	return (hasLetter || hasNumber) && !hasSpecialChar
+}
+
+// isMarker checks rune is one of the defined runes
+func isMarker(ch rune) bool {
+	return (ch == '"' || ch == '|' || ch == ')' || ch == '(' || ch == ',' || ch == ':' || ch == '.' || ch == eof)
+}
+
+// isLetter checks if character is letter character
 func isLetter(ch rune) bool {
 	return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')
 }
 
-// isNumber check if character is number character
+// isNumber checks if character is number character
 func isNumber(ch rune) bool {
 	return (ch >= '0' && ch <= '9')
 }

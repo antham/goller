@@ -16,7 +16,7 @@ type Builder struct {
 func NewBuilder() *Builder {
 	return &Builder{
 		NewAgregators(),
-		make(map[string]*Agregator, 0),
+		map[string]*Agregator{},
 	}
 }
 
@@ -69,7 +69,7 @@ func (b *Builder) Agregate(positions []int, tokens *[]tokenizer.Token, trans *tr
 // SetCounterIfAny set counter value among other value fields
 func (b *Builder) SetCounterIfAny() {
 	for _, agregator := range *b.agregators {
-		if _, ok := (*agregator).DatasOrdered[0]; ok == true {
+		if _, ok := (*agregator).DatasOrdered[0]; ok {
 			*((*agregator).DatasOrdered[0]) = strconv.Itoa((*agregator).Count)
 		}
 	}

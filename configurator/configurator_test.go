@@ -79,7 +79,7 @@ func TestDelete(t *testing.T) {
 
 	c.Delete(&category, &key)
 
-	if _, ok := (*c.Bindings.Transformers)["hello"]; ok != false {
+	if _, ok := (*c.Bindings.Transformers)["hello"]; !ok {
 		t.Error("Must delete key hello")
 	}
 }

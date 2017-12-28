@@ -32,7 +32,7 @@ func TestRead(t *testing.T) {
 	r.Read(func(line []byte) error {
 		expected := entries[0]
 
-		if bytes.Compare(expected, line) != 0 {
+		if !bytes.Equal(expected, line) {
 			t.Errorf("Line must be %s, got %s", string(expected), string(line))
 		}
 
@@ -70,7 +70,7 @@ func TestReadFirstLine(t *testing.T) {
 	}
 
 	r.ReadFirstLine(func(line []byte) error {
-		if bytes.Compare(expected, line) != 0 {
+		if !bytes.Equal(expected, line) {
 			t.Errorf("Line must be %s, got %s", expected, line)
 		}
 

@@ -23,16 +23,17 @@ type parserEntry func([]string) (Parser, error)
 type Parser func(string) []string
 
 // NewParser from specified arguments
-func NewParser(fun string, args []string) *Parser {
-	var function Parser
+func NewParser(fun string, args []string) (*Parser, error) {
+	var p Parser
+	var err error
 	var ok bool
 	i := len(args)
 
-	if _, ok = functions[i][fun]; ok == true {
-		function, _ = functions[i][fun](args)
+	if _, ok = functions[i][fun]; ok {
+		p, err = functions[i][fun](args)
 	}
 
-	return &function
+	return &p, err
 }
 
 // split lines following given string

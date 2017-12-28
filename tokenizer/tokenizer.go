@@ -5,6 +5,7 @@ import (
 	"github.com/antham/goller/parser"
 )
 
+// Token represents a unit extracted when tokenizing a line
 type Token struct {
 	Value string
 }
@@ -43,7 +44,7 @@ func (t *Tokenizer) Tokenize(line []byte) error {
 	}
 
 	if size != (*t).maxTokensSize {
-		err := fmt.Errorf("Wrong parsing strategy (based on first line tokenization), got %d tokens instead of %d\nLine : %s\n", size, (*t).maxTokensSize, line)
+		err := fmt.Errorf("Wrong parsing strategy (based on first line tokenization), got %d tokens instead of %d\nLine : %s", size, (*t).maxTokensSize, line)
 
 		return err
 	}

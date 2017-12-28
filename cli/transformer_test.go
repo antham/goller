@@ -88,7 +88,7 @@ func TestTransformersSetTransformerAtPosition0(t *testing.T) {
 func TestTransformersIsCumulative(t *testing.T) {
 	trans := &Transformers{}
 
-	if trans.IsCumulative() != true {
+	if !trans.IsCumulative() {
 		t.Error("Must return true")
 	}
 }

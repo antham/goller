@@ -8,8 +8,8 @@ import (
 	"github.com/antham/goller/tokenizer"
 )
 
-// group is tied to group command
-type group struct {
+// Group is tied to group command
+type Group struct {
 	tokenizer  tokenizer.Tokenizer
 	agrBuilder agregator.Builder
 	dispatcher dispatcher.Dispatcher
@@ -20,9 +20,9 @@ type group struct {
 	args       *groupCommand
 }
 
-// NewGroup create an object related to group command
-func NewGroup(args *groupCommand) *group {
-	return &group{
+// NewGroup creates an object related to group command
+func NewGroup(args *groupCommand) *Group {
+	return &Group{
 		tokenizer:  *tokenizer.NewTokenizer(args.parser.Get()),
 		agrBuilder: *agregator.NewBuilder(),
 		dispatcher: dispatcher.NewTermDispatch(*args.delimiter),
@@ -33,8 +33,8 @@ func NewGroup(args *groupCommand) *group {
 	}
 }
 
-// Consume tokenize every line from reader
-func (g *group) Consume() {
+// Consume tokenizes every line from reader
+func (g *Group) Consume() {
 	err := g.reader.Read(func(line []byte) error {
 		err := g.tokenizer.Tokenize(line)
 
@@ -67,14 +67,14 @@ func (g *group) Consume() {
 	g.agregators = g.agrBuilder.Get()
 }
 
-// Sort, if defined, order tokenized lines
-func (g *group) Sort() {
+// Sort orders tokenized lines
+func (g *Group) Sort() {
 	if g.args.sorters.Get() != nil {
 		g.args.sorters.Get().Sort(g.agregators)
 	}
 }
 
-// Dispatch call appropriate renderer
-func (g *group) Dispatch() {
+// Dispatch calls appropriate renderer
+func (g *Group) Dispatch() {
 	g.dispatcher.RenderItems(g.agregators)
 }
