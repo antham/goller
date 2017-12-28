@@ -13,7 +13,7 @@ doc-hunt:
 run-tests:
 	./test.sh
 
-run-quick-tests: setup-test-fixtures
+run-quick-tests:
 	go test -v $(PKGS)
 
 test-package:
