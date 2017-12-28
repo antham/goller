@@ -1,4 +1,4 @@
-# Goller [![Build Status](https://travis-ci.org/antham/goller.svg)](https://travis-ci.org/antham/goller) [![codecov](https://codecov.io/gh/antham/goller/branch/master/graph/badge.svg)](https://codecov.io/gh/antham/goller) [![codebeat badge](https://codebeat.co/badges/d6eaab3e-4324-4f7c-aa10-83f4b553f919)](https://codebeat.co/projects/github-com-antham-goller)
+# Goller [![Build Status](https://travis-ci.org/antham/goller.svg)](https://travis-ci.org/antham/goller) [![codecov](https://codecov.io/gh/antham/goller/branch/master/graph/badge.svg)](https://codecov.io/gh/antham/goller) [![codebeat badge](https://codebeat.co/badges/d6eaab3e-4324-4f7c-aa10-83f4b553f919)](https://codebeat.co/projects/github-com-antham-goller) [![Go Report Card](https://goreportcard.com/badge/github.com/antham/goller)](https://goreportcard.com/report/github.com/antham/goller)
 
 Agregate log fields, count field occurence
 
