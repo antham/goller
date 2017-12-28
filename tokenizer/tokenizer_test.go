@@ -60,7 +60,7 @@ func TestTokenizeALineWithLessTokensThanFirstLine(t *testing.T) {
 
 	err = tok.Tokenize(data2)
 
-	if err.Error() != "Wrong parsing strategy (based on first line tokenization), got 3 tokens instead of 4\nLine : test1 test2 test3\n" {
+	if err.Error() != "Wrong parsing strategy (based on first line tokenization), got 3 tokens instead of 4\nLine : test1 test2 test3" {
 		t.Error("We must have an error when we try to tokenize two lines with different sizes")
 	}
 }
@@ -82,7 +82,7 @@ func TestTokenizeALineWithMoreTokensThanFirstLine(t *testing.T) {
 
 	err = tok.Tokenize(data2)
 
-	if err.Error() != "Wrong parsing strategy (based on first line tokenization), got 5 tokens instead of 4\nLine : test1 test2 test3 test4 test5\n" {
+	if err.Error() != "Wrong parsing strategy (based on first line tokenization), got 5 tokens instead of 4\nLine : test1 test2 test3 test4 test5" {
 		t.Error("We must have an error when we try to tokenize two lines with different sizes")
 	}
 }
