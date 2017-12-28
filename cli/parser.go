@@ -20,9 +20,9 @@ func (p *Parser) Set(value string) error {
 		return err
 	}
 
-	p.parser = parser.NewParser(stmt.Name, stmt.Args)
+	p.parser, err = parser.NewParser(stmt.Name, stmt.Args)
 
-	return nil
+	return err
 }
 
 // Get parser
@@ -37,7 +37,7 @@ func (p *Parser) String() string {
 
 // ParserWrapper is used to transform argument from command line
 func ParserWrapper(s *kingpin.ArgClause) (target *Parser) {
-	target = new(Parser)
-	s.SetValue((*Parser)(target))
+	target = &Parser{}
+	s.SetValue(target)
 	return
 }

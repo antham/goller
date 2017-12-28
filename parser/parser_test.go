@@ -1,12 +1,17 @@
 package parser
 
 import (
+	"log"
 	"reflect"
 	"testing"
 )
 
 func TestParseWhitespace(t *testing.T) {
-	p := NewParser("whi", []string{})
+	p, err := NewParser("whi", []string{})
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	result := (*p)("hello world\t, a    testing  sentence !")
 	expected := []string{"hello", "world", ",", "a", "testing", "sentence", "!"}
@@ -17,7 +22,11 @@ func TestParseWhitespace(t *testing.T) {
 }
 
 func TestParseRegexpWithPatternMatchingWholeExpression(t *testing.T) {
-	p := NewParser("reg", []string{"(h.{4}) (w.{4}), (a) (testing) (sentence) !"})
+	p, err := NewParser("reg", []string{"(h.{4}) (w.{4}), (a) (testing) (sentence) !"})
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	result := (*p)("hello world, a testing sentence !")
 	expected := []string{"hello", "world", "a", "testing", "sentence"}
@@ -28,7 +37,11 @@ func TestParseRegexpWithPatternMatchingWholeExpression(t *testing.T) {
 }
 
 func TestParseRegexpWithPatternNotMatchingExpression(t *testing.T) {
-	p := NewParser("reg", []string{"(h.{4}) (w.{4}) (testing) (sentence)"})
+	p, err := NewParser("reg", []string{"(h.{4}) (w.{4}) (testing) (sentence)"})
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	result := (*p)("hello world, a testing sentence !")
 	expected := []string{}
@@ -39,7 +52,11 @@ func TestParseRegexpWithPatternNotMatchingExpression(t *testing.T) {
 }
 
 func TestParseSplit(t *testing.T) {
-	p := NewParser("spl", []string{"separator"})
+	p, err := NewParser("spl", []string{"separator"})
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	result := (*p)("helloseparatorworld,separatoraseparatortestingseparatorsentenceseparator!")
 	expected := []string{"hello", "world,", "a", "testing", "sentence", "!"}
@@ -50,7 +67,11 @@ func TestParseSplit(t *testing.T) {
 }
 
 func TestParseCommonLogFormat(t *testing.T) {
-	p := NewParser("clf", []string{})
+	p, err := NewParser("clf", []string{})
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	result := (*p)(`127.0.0.1 user-identifier frank [10/Oct/2000:13:55:36 -0700] "GET /apache_pb.gif HTTP/1.0" 200 2326`)
 	expected := []string{"127.0.0.1", "user-identifier", "frank", "10/Oct/2000:13:55:36 -0700", "GET /apache_pb.gif HTTP/1.0", "200", "2326"}
@@ -61,7 +82,11 @@ func TestParseCommonLogFormat(t *testing.T) {
 }
 
 func TestParseCommonLogFormatWithWrongFormat(t *testing.T) {
-	p := NewParser("clf", []string{})
+	p, err := NewParser("clf", []string{})
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	result := (*p)(`127.0.0 user-identifier frank [10/Oct/2000:13:55:36 -0700] "GET /apache_pb.gif HTTP/1.0" 200 2326`)
 	expected := []string{}

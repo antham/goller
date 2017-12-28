@@ -7,24 +7,24 @@ import (
 	"strconv"
 )
 
-// tokenize is tied to tokenize command
-type tokenize struct {
+// Tokenize is tied to tokenize command
+type Tokenize struct {
 	tokenizer tokenizer.Tokenizer
 	reader    reader.Reader
 	tokens    []tokenizer.Token
 }
 
-// NewTokenize create an object related to tokenize command
-func NewTokenize(args *tokenizeCommand) *tokenize {
-	return &tokenize{
+// NewTokenize creates an object related to tokenize command
+func NewTokenize(args *tokenizeCommand) *Tokenize {
+	return &Tokenize{
 		tokenizer: *tokenizer.NewTokenizer(args.parser.Get()),
 		reader:    reader.NewStdinReader(),
 	}
 }
 
-// Consume tokenize every line from reader
-func (p *tokenize) Tokenize() {
-	p.reader.ReadFirstLine(func(line []byte) error {
+// Tokenize tokenizes every line from reader
+func (p *Tokenize) Tokenize() error {
+	return p.reader.ReadFirstLine(func(line []byte) error {
 		_ = p.tokenizer.Tokenize(line)
 		p.tokens = *(p.tokenizer.Get())
 
@@ -33,7 +33,7 @@ func (p *tokenize) Tokenize() {
 }
 
 // Render tokens
-func (p *tokenize) Render() {
+func (p *Tokenize) Render() {
 	for i, token := range p.tokens {
 		fmt.Println("position " + strconv.Itoa(i+1) + " => " + token.Value)
 	}

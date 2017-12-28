@@ -53,7 +53,7 @@ func TestParsePositionAndFunctions(t *testing.T) {
 		},
 	}
 
-	if err != nil || reflect.DeepEqual(stmt, expected) != true {
+	if err != nil || !reflect.DeepEqual(stmt, expected) {
 		t.Errorf("Struct not equals expected %v got %v", expected, stmt)
 	}
 }
@@ -116,7 +116,7 @@ func TestParseFunctionPositionAndFunctionsWithNoFinalParenToEndArg(t *testing.T)
 	parser := NewParser(bytes.NewBufferString("8:test1.test2(\"hello\""))
 	stmt, err := parser.ParsePositionAndFunctions()
 
-	if stmt != nil || err == nil || err.Error() != "found \"\", must be a comma or close paren" {
+	if stmt != nil || err == nil || err.Error() != `found "\x00", must be a comma or close paren` {
 		t.Error("Must throw an error if function arg doesn't end with paren")
 	}
 }
@@ -139,7 +139,7 @@ func TestParseFunctionWithoutArgs(t *testing.T) {
 		Args: []string{},
 	}
 
-	if err != nil || reflect.DeepEqual(stmt, expected) != true {
+	if err != nil || !reflect.DeepEqual(stmt, expected) {
 		t.Errorf("Struct not equals expected %v got %v", expected, stmt)
 	}
 }
@@ -153,7 +153,7 @@ func TestParseFunctionWithArgs(t *testing.T) {
 		Args: []string{"hello", "world"},
 	}
 
-	if err != nil || reflect.DeepEqual(stmt, expected) != true {
+	if err != nil || !reflect.DeepEqual(stmt, expected) {
 		t.Errorf("Struct not equals expected %v got %v", expected, stmt)
 	}
 }
@@ -171,7 +171,7 @@ func TestParseFunctionUnvalidFunction(t *testing.T) {
 	parser := NewParser(bytes.NewBufferString("test1(\"hello\","))
 	_, err := parser.ParseFunction()
 
-	if err == nil || err.Error() != "found \"\", arg must start with a quote" {
+	if err == nil || err.Error() != `found "\x00", arg must start with a quote` {
 		t.Error("Must throw an error if function is not correct")
 	}
 }
@@ -210,7 +210,7 @@ func TestParsePositionsAndFunctions(t *testing.T) {
 		},
 	}
 
-	if err != nil || reflect.DeepEqual(stmt, expected) != true {
+	if err != nil || !reflect.DeepEqual(stmt, expected) {
 		t.Errorf("Struct not equals expected %v got %v", expected, stmt)
 	}
 }

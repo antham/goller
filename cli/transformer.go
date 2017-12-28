@@ -89,7 +89,7 @@ func (t *Transformers) IsCumulative() bool {
 // TransformersWrapper is used to transform argument from command line
 func TransformersWrapper(s kingpin.Settings) (target *Transformers) {
 	target = &Transformers{}
-	(*Transformers)(target).Init()
-	s.SetValue((*Transformers)(target))
+	target.Init()
+	s.SetValue(target)
 	return
 }

@@ -47,13 +47,11 @@ func (h *Handler) Load() (*Configurator, error) {
 
 // Save configurator to config file
 func (h *Handler) Save(config *Configurator) error {
-	configJSON, _ := json.Marshal(config)
-
-	err := ioutil.WriteFile(h.filename, configJSON, os.ModePerm)
+	configJSON, err := json.Marshal(config)
 
 	if err != nil {
 		return err
 	}
 
-	return nil
+	return ioutil.WriteFile(h.filename, configJSON, os.ModePerm)
 }

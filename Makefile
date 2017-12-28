@@ -1,23 +1,21 @@
-compile:
-	git stash -u
-	gox -output "build/{{.Dir}}_{{.OS}}_{{.Arch}}"
-test-unary:
-	go test -race -cover github.com/antham/goller/$(pkg)
-test-all:
-	go test -race ./...
-coverage-profile:
-	go test -cover -coverprofile=/tmp/goller github.com/antham/goller/$(pkg)
-	go tool cover -html=/tmp/goller
-coverage-all:
-	./test.sh
-vet:
-	go vet ./...
-run-tests: coverage-all vet fmt
+featurePath = $(PWD)
+PKGS := $(shell go list ./... | grep -v /vendor)
+
 fmt:
-	gofmt -l -s -w .
-version:
-	git stash -u
-	sed -i "s/[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+/$(v)/g" main.go
-	git add -A
-	git commit -m "feat(version) : "$(v)
-	git tag v$(v) master
+	find ! -path "./vendor/*" -name "*.go" -exec gofmt -s -w {} \;
+
+gometalinter:
+	gometalinter -D gotype -D aligncheck --vendor --deadline=600s --dupl-threshold=200 -e '_string' -j 5 ./...
+
+doc-hunt:
+	doc-hunt check -e
+
+run-tests:
+	./test.sh
+
+run-quick-tests:
+	go test -v $(PKGS)
+
+test-package:
+	go test -race -cover -coverprofile=/tmp/chyle github.com/antham/chyle/$(pkg)
+	go tool cover -html=/tmp/chyle -o /tmp/chyle.html

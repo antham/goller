@@ -75,7 +75,7 @@ func (s *Sorters) String() string {
 // SortersWrapper is used to transform argument from command line
 func SortersWrapper(s kingpin.Settings) (target *Sorters) {
 	target = &Sorters{}
-	(*Sorters)(target).Init()
-	s.SetValue((*Sorters)(target))
+	target.Init()
+	s.SetValue(target)
 	return
 }

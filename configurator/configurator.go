@@ -2,7 +2,6 @@ package configurator
 
 import (
 	"fmt"
-	// "strings"
 )
 
 // Items represents a config file option
@@ -49,7 +48,7 @@ func (c *Configurator) Get(category *string, key *string) (string, error) {
 		return "", err
 	}
 
-	if value, ok := (*catConfig)[*key]; ok == true {
+	if value, ok := (*catConfig)[*key]; ok {
 		return value, nil
 	}
 
@@ -77,7 +76,7 @@ func (c *Configurator) Delete(category *string, key *string) error {
 		return err
 	}
 
-	if _, ok := (*catConfig)[*key]; ok == false {
+	if _, ok := (*catConfig)[*key]; !ok {
 		return nil
 	}
 
