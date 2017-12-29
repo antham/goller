@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestAgregateSingleTokenWithNoVisibleCounter(t *testing.T) {
+func TestAggregateSingleTokenWithNoVisibleCounter(t *testing.T) {
 	builder := NewBuilder()
 
 	tokens := []tokenizer.Token{
@@ -16,7 +16,7 @@ func TestAgregateSingleTokenWithNoVisibleCounter(t *testing.T) {
 		},
 	}
 
-	builder.Agregate([]int{1}, &tokens, nil)
+	builder.Aggregate([]int{1}, &tokens, nil)
 
 	for _, agregator := range *builder.Get() {
 		if agregator.Count != 1 {
@@ -34,7 +34,7 @@ func TestAgregateSingleTokenWithNoVisibleCounter(t *testing.T) {
 	}
 }
 
-func TestAgregateSingleToken(t *testing.T) {
+func TestAggregateSingleToken(t *testing.T) {
 	builder := NewBuilder()
 
 	tokens := []tokenizer.Token{
@@ -58,7 +58,7 @@ func TestAgregateSingleToken(t *testing.T) {
 		},
 	}
 
-	builder.Agregate([]int{3, 6, 0, 1}, &tokens, nil)
+	builder.Aggregate([]int{3, 6, 0, 1}, &tokens, nil)
 
 	for _, agregator := range *builder.Get() {
 		if agregator.Count != 1 {
@@ -82,7 +82,7 @@ func TestAgregateSingleToken(t *testing.T) {
 	}
 }
 
-func TestAgregateSeveralToken(t *testing.T) {
+func TestAggregateSeveralToken(t *testing.T) {
 	builder := NewBuilder()
 
 	for i := 0; i < 10; i++ {
@@ -108,11 +108,11 @@ func TestAgregateSeveralToken(t *testing.T) {
 		}
 
 		if i <= 2 {
-			builder.Agregate([]int{0, 1}, &tokens, nil)
+			builder.Aggregate([]int{0, 1}, &tokens, nil)
 		} else if i > 2 && i <= 5 {
-			builder.Agregate([]int{2, 3}, &tokens, nil)
+			builder.Aggregate([]int{2, 3}, &tokens, nil)
 		} else if i > 5 {
-			builder.Agregate([]int{4, 5}, &tokens, nil)
+			builder.Aggregate([]int{4, 5}, &tokens, nil)
 		}
 	}
 
@@ -155,7 +155,7 @@ func TestApplyPreTransformer(t *testing.T) {
 		trans.Append(1, "upp", []string{})
 		trans.Append(2, "upp", []string{})
 
-		builder.Agregate(
+		builder.Aggregate(
 			[]int{0, 1, 2},
 			&tokens,
 			trans,

@@ -136,7 +136,7 @@ func TestMatchWithBadRegexp(t *testing.T) {
 
 	err := transformers.Append(1, "match", []string{"(."})
 
-	if err == nil || err.Error() != "An error occured when parsing regexp : \"error parsing regexp: missing closing ): `(.`\"" {
+	if err == nil || err.Error() != "An error occurred when parsing regexp : \"error parsing regexp: missing closing ): `(.`\"" {
 		t.Errorf("Must throws an error")
 	}
 }

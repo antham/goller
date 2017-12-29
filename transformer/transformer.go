@@ -24,7 +24,7 @@ var functions = []map[string]transformerEntry{
 		"catl":  concatLeft,
 		"match": match,
 		"add":   add,
-		"sub":   substract,
+		"sub":   subtract,
 	},
 	{
 		"repl": replace,
@@ -169,7 +169,7 @@ func match(args []string) (transformer, error) {
 	reg, err := regexp.Compile(args[0])
 
 	if err != nil {
-		return nil, fmt.Errorf("An error occured when parsing regexp : \"%s\"", err)
+		return nil, fmt.Errorf("An error occurred when parsing regexp : \"%s\"", err)
 	}
 
 	return func(input string) string {
@@ -197,7 +197,7 @@ func add(args []string) (transformer, error) {
 }
 
 // subtract a given number from input
-func substract(args []string) (transformer, error) {
+func subtract(args []string) (transformer, error) {
 	leftOp, err := strconv.Atoi(args[0])
 
 	if err != nil {

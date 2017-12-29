@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-// Run commmand line arguments parsing
+// Run command line arguments parsing
 func Run(version string) {
 	app := initApp()
 	cmd := initCmd(app)
@@ -32,13 +32,13 @@ func Run(version string) {
 
 // initAp create a new command line app
 func initApp() *kingpin.Application {
-	return kingpin.New("goller", "Aggregate log fields and count occurences")
+	return kingpin.New("goller", "Aggregate log fields and count occurrences")
 }
 
 // initCmd defines first command level visible from cli
 func initCmd(app *kingpin.Application) map[string]*kingpin.CmdClause {
 	return map[string]*kingpin.CmdClause{
-		"group":    app.Command("group", "Group occurence of field"),
+		"group":    app.Command("group", "Group occurrence of field"),
 		"tokenize": app.Command("tokenize", "Show how first log line is tokenized"),
 	}
 }

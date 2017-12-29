@@ -26,7 +26,7 @@ func TestIntMultiSort(t *testing.T) {
 			tokens = append(tokens, tokenizer.Token{Value: item})
 		}
 
-		builder.Agregate([]int{1, 2, 3}, &tokens, nil)
+		builder.Aggregate([]int{1, 2, 3}, &tokens, nil)
 	}
 
 	builder.SetCounterIfAny()

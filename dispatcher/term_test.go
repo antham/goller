@@ -34,7 +34,7 @@ func TestTermDispatcherDisplaying(t *testing.T) {
 		},
 	}
 
-	builder.Agregate([]int{0, 1, 3}, &tokens, transformer.NewTransformers())
+	builder.Aggregate([]int{0, 1, 3}, &tokens, transformer.NewTransformers())
 	builder.SetCounterIfAny()
 
 	old := os.Stdout

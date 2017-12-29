@@ -54,7 +54,7 @@ func (g *Group) Consume() {
 			return err
 		}
 
-		g.agrBuilder.Agregate(*g.positions, g.tokenizer.Get(), g.args.transformers.Get())
+		g.agrBuilder.Aggregate(*g.positions, g.tokenizer.Get(), g.args.transformers.Get())
 
 		return nil
 	})

@@ -36,8 +36,8 @@ func (b *Builder) iterate(datas []*string, datasOrdered map[int]*string, accumul
 	}
 }
 
-// Agregate agregate tokens according to positions
-func (b *Builder) Agregate(positions []int, tokens *[]tokenizer.Token, trans *transformer.Transformers) {
+// Aggregate aggregates tokens according to positions
+func (b *Builder) Aggregate(positions []int, tokens *[]tokenizer.Token, trans *transformer.Transformers) {
 	var accumulator string
 	datas := []*string{}
 	datasOrdered := map[int]*string{}

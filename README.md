@@ -1,6 +1,6 @@
 # Goller [![CircleCI](https://circleci.com/gh/antham/goller.svg?style=svg)](https://circleci.com/gh/antham/goller) [![codecov](https://codecov.io/gh/antham/goller/branch/master/graph/badge.svg)](https://codecov.io/gh/antham/goller) [![codebeat badge](https://codebeat.co/badges/d6eaab3e-4324-4f7c-aa10-83f4b553f919)](https://codebeat.co/projects/github-com-antham-goller) [![Go Report Card](https://goreportcard.com/badge/github.com/antham/goller)](https://goreportcard.com/report/github.com/antham/goller) [![GoDoc](https://godoc.org/github.com/antham/goller?status.svg)](http://godoc.org/github.com/antham/goller) [![GitHub tag](https://img.shields.io/github/tag/antham/goller.svg)]()
 
-Agregate log fields, count field occurence
+Aggregate log fields, count field occurrence
 
 [![asciicast](https://asciinema.org/a/d5o27yx3kclnluwaan2p46fki.png)](https://asciinema.org/a/d5o27yx3kclnluwaan2p46fki)
 
@@ -15,7 +15,7 @@ From [release page](https://github.com/antham/goller/releases) download the bina
 ```bash
 usage: goller [<flags>] <command> [<args> ...]
 
-Aggregate log fields and count occurences
+Aggregate log fields and count occurrences
 
 Flags:
   --help     Show help (also see --help-long and --help-man).
@@ -26,7 +26,7 @@ Commands:
     Show help.
 
   group [<flags>] <parser> <positions>
-    Group occurence of field
+    Group occurrence of field
 
   tokenize <parser>
     Show how first log line is tokenized
@@ -55,12 +55,12 @@ Args:
 
 ### Group
 
-*Group and count field occurences*
+*Group and count field occurrences*
 
 ```bash
 usage: goller group [<flags>] <parser> <positions>
 
-Group occurence of field
+Group occurrence of field
 
 Flags:
   --help           Show help (also see --help-long and --help-man).
@@ -77,7 +77,7 @@ Args:
   <positions>  Field positions
 ```
 
-*A log line is splitted according to given parsing strategy, you can then refer every field using its position number. 0 position is a special position, it counts number of time a field occured*
+*A log line is splitted according to given parsing strategy, you can then refer every field using its position number. 0 position is a special position, it counts number of time a field occurred*
 
 If we want to parse thoses lines :
 
@@ -430,7 +430,7 @@ hi | everybody
 
 ##### sub
 
-*Substract given integer to field, field must be an integer*
+*Subtract given integer to field, field must be an integer*
 
 For instance :
 
