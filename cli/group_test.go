@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"github.com/antham/goller/agregator"
+	"github.com/antham/goller/aggregator"
 	"github.com/antham/goller/dispatcher"
 	"github.com/antham/goller/reader"
 	"github.com/antham/goller/tokenizer"
@@ -27,7 +27,7 @@ func TestGroup(t *testing.T) {
 	case cmd["group"].FullCommand():
 		group := &Group{
 			tokenizer:  *tokenizer.NewTokenizer(groupArgs.parser.Get()),
-			agrBuilder: *agregator.NewBuilder(),
+			agrBuilder: *aggregator.NewBuilder(),
 			dispatcher: dispatcher.NewTermDispatch(*groupArgs.delimiter),
 			reader:     r,
 			positions:  &positions,
@@ -36,10 +36,10 @@ func TestGroup(t *testing.T) {
 
 		group.Consume()
 
-		agregators := group.agrBuilder.Get()
+		aggregators := group.agrBuilder.Get()
 
-		if len(*agregators) != 2 {
-			t.Errorf("Got %d length, expected %d", len(*agregators), 2)
+		if len(*aggregators) != 2 {
+			t.Errorf("Got %d length, expected %d", len(*aggregators), 2)
 		}
 
 		test1 := "2"
@@ -54,7 +54,7 @@ func TestGroup(t *testing.T) {
 			&test4,
 		}
 
-		got := (*agregators)[0].Datas
+		got := (*aggregators)[0].Datas
 
 		for i := 0; i < len(got); i++ {
 			if !reflect.DeepEqual(got[i], expected[i]) {
@@ -74,7 +74,7 @@ func TestGroup(t *testing.T) {
 			&test4,
 		}
 
-		got = (*agregators)[1].Datas
+		got = (*aggregators)[1].Datas
 
 		for i := 0; i < len(got); i++ {
 			if !reflect.DeepEqual(got[i], expected[i]) {
@@ -108,7 +108,7 @@ func TestGroupWithDifferenteSizeLines(t *testing.T) {
 	case cmd["group"].FullCommand():
 		group := &Group{
 			tokenizer:  *tokenizer.NewTokenizer(groupArgs.parser.Get()),
-			agrBuilder: *agregator.NewBuilder(),
+			agrBuilder: *aggregator.NewBuilder(),
 			dispatcher: dispatcher.NewTermDispatch(*groupArgs.delimiter),
 			reader:     r,
 			positions:  &positions,
@@ -144,7 +144,7 @@ func TestGroupWithNoTokenParsed(t *testing.T) {
 	case cmd["group"].FullCommand():
 		group := &Group{
 			tokenizer:  *tokenizer.NewTokenizer(groupArgs.parser.Get()),
-			agrBuilder: *agregator.NewBuilder(),
+			agrBuilder: *aggregator.NewBuilder(),
 			dispatcher: dispatcher.NewTermDispatch(*groupArgs.delimiter),
 			reader:     r,
 			positions:  &positions,
@@ -180,7 +180,7 @@ func TestGroupWithAPositionGreaterThanExistingPosition(t *testing.T) {
 	case cmd["group"].FullCommand():
 		group := &Group{
 			tokenizer:  *tokenizer.NewTokenizer(groupArgs.parser.Get()),
-			agrBuilder: *agregator.NewBuilder(),
+			agrBuilder: *aggregator.NewBuilder(),
 			dispatcher: dispatcher.NewTermDispatch(*groupArgs.delimiter),
 			reader:     r,
 			positions:  &positions,
@@ -208,7 +208,7 @@ func TestGroupWithTransformers(t *testing.T) {
 	case cmd["group"].FullCommand():
 		group := &Group{
 			tokenizer:  *tokenizer.NewTokenizer(groupArgs.parser.Get()),
-			agrBuilder: *agregator.NewBuilder(),
+			agrBuilder: *aggregator.NewBuilder(),
 			dispatcher: dispatcher.NewTermDispatch(*groupArgs.delimiter),
 			reader:     r,
 			positions:  &positions,
@@ -217,10 +217,10 @@ func TestGroupWithTransformers(t *testing.T) {
 
 		group.Consume()
 
-		agregators := group.agrBuilder.Get()
+		aggregators := group.agrBuilder.Get()
 
-		if len(*agregators) != 1 {
-			t.Errorf("Got %d length, expected %d", len(*agregators), 1)
+		if len(*aggregators) != 1 {
+			t.Errorf("Got %d length, expected %d", len(*aggregators), 1)
 		}
 
 		test1 := "3"
@@ -235,7 +235,7 @@ func TestGroupWithTransformers(t *testing.T) {
 			&test4,
 		}
 
-		got := (*agregators)[0].Datas
+		got := (*aggregators)[0].Datas
 
 		for i := 0; i < len(got); i++ {
 			if !reflect.DeepEqual(got[i], expected[i]) {
@@ -261,7 +261,7 @@ func TestGroupWithSorters(t *testing.T) {
 	case cmd["group"].FullCommand():
 		group := &Group{
 			tokenizer:  *tokenizer.NewTokenizer(groupArgs.parser.Get()),
-			agrBuilder: *agregator.NewBuilder(),
+			agrBuilder: *aggregator.NewBuilder(),
 			dispatcher: dispatcher.NewTermDispatch(*groupArgs.delimiter),
 			reader:     r,
 			positions:  &positions,
@@ -271,10 +271,10 @@ func TestGroupWithSorters(t *testing.T) {
 		group.Consume()
 		group.Sort()
 
-		agregators := group.agrBuilder.Get()
+		aggregators := group.agrBuilder.Get()
 
-		if len(*agregators) != 3 {
-			t.Errorf("Got %d length, expected %d", len(*agregators), 1)
+		if len(*aggregators) != 3 {
+			t.Errorf("Got %d length, expected %d", len(*aggregators), 1)
 		}
 
 		test1 := "1"
@@ -289,7 +289,7 @@ func TestGroupWithSorters(t *testing.T) {
 			&test4,
 		}
 
-		got := (*agregators)[0].Datas
+		got := (*aggregators)[0].Datas
 
 		for i := 0; i < len(got); i++ {
 			if !reflect.DeepEqual(got[i], expected[i]) {
@@ -309,7 +309,7 @@ func TestGroupWithSorters(t *testing.T) {
 			&test4,
 		}
 
-		got = (*agregators)[2].Datas
+		got = (*aggregators)[2].Datas
 
 		if !reflect.DeepEqual(got, expected) {
 			t.Errorf("Got %v, expected %v", got, expected)
@@ -335,7 +335,7 @@ func TestGroupWithIgnoreFlag(t *testing.T) {
 	case cmd["group"].FullCommand():
 		group := &Group{
 			tokenizer:  *tokenizer.NewTokenizer(groupArgs.parser.Get()),
-			agrBuilder: *agregator.NewBuilder(),
+			agrBuilder: *aggregator.NewBuilder(),
 			dispatcher: dispatcher.NewTermDispatch(*groupArgs.delimiter),
 			reader:     r,
 			positions:  &positions,
@@ -345,10 +345,10 @@ func TestGroupWithIgnoreFlag(t *testing.T) {
 
 		group.Consume()
 
-		agregators := group.agrBuilder.Get()
+		aggregators := group.agrBuilder.Get()
 
-		if len(*agregators) != 2 {
-			t.Errorf("Got %d length, expected %d", len(*agregators), 1)
+		if len(*aggregators) != 2 {
+			t.Errorf("Got %d length, expected %d", len(*aggregators), 1)
 		}
 
 		test1 := "1"
@@ -359,7 +359,7 @@ func TestGroupWithIgnoreFlag(t *testing.T) {
 			&test2,
 		}
 
-		got := (*agregators)[0].Datas
+		got := (*aggregators)[0].Datas
 
 		for i := 0; i < len(got); i++ {
 			if !reflect.DeepEqual(got[i], expected[i]) {

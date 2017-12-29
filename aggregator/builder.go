@@ -1,4 +1,4 @@
-package agregator
+package aggregator
 
 import (
 	"github.com/antham/goller/tokenizer"
@@ -6,33 +6,33 @@ import (
 	"strconv"
 )
 
-// Builder wraps operations needed to manage agregators
+// Builder wraps operations needed to manage aggregators
 type Builder struct {
-	agregators *Agregators
-	footprints map[string]*Agregator
+	aggregators *Aggregators
+	footprints  map[string]*Aggregator
 }
 
 // NewBuilder create builder
 func NewBuilder() *Builder {
 	return &Builder{
-		NewAgregators(),
-		map[string]*Agregator{},
+		NewAggregators(),
+		map[string]*Aggregator{},
 	}
 }
 
-// iterate create a new agregator or increase existing agregator counter
+// iterate create a new aggregator or increase existing aggregator counter
 func (b *Builder) iterate(datas []*string, datasOrdered map[int]*string, accumulator string) {
 	if _, ok := (*b).footprints[accumulator]; ok {
 		(*b).footprints[accumulator].Count = (*b).footprints[accumulator].Count + 1
 	} else {
-		agregator := &Agregator{
+		aggregator := &Aggregator{
 			Count:        1,
 			DatasOrdered: datasOrdered,
 			Datas:        datas,
 		}
 
-		(*b).footprints[accumulator] = agregator
-		(*b.agregators) = append((*b.agregators), agregator)
+		(*b).footprints[accumulator] = aggregator
+		(*b.aggregators) = append((*b.aggregators), aggregator)
 	}
 }
 
@@ -68,14 +68,14 @@ func (b *Builder) Aggregate(positions []int, tokens *[]tokenizer.Token, trans *t
 
 // SetCounterIfAny set counter value among other value fields
 func (b *Builder) SetCounterIfAny() {
-	for _, agregator := range *b.agregators {
-		if _, ok := (*agregator).DatasOrdered[0]; ok {
-			*((*agregator).DatasOrdered[0]) = strconv.Itoa((*agregator).Count)
+	for _, aggregator := range *b.aggregators {
+		if _, ok := (*aggregator).DatasOrdered[0]; ok {
+			*((*aggregator).DatasOrdered[0]) = strconv.Itoa((*aggregator).Count)
 		}
 	}
 }
 
-// Get retrieve agregators from builder
-func (b *Builder) Get() *Agregators {
-	return b.agregators
+// Get retrieve aggregators from builder
+func (b *Builder) Get() *Aggregators {
+	return b.aggregators
 }

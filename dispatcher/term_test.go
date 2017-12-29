@@ -2,7 +2,7 @@ package dispatcher
 
 import (
 	"bytes"
-	"github.com/antham/goller/agregator"
+	"github.com/antham/goller/aggregator"
 	"github.com/antham/goller/tokenizer"
 	"github.com/antham/goller/transformer"
 	"io"
@@ -11,7 +11,7 @@ import (
 )
 
 func TestTermDispatcherDisplaying(t *testing.T) {
-	builder := agregator.NewBuilder()
+	builder := aggregator.NewBuilder()
 
 	tokens := []tokenizer.Token{
 		{

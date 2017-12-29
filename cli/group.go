@@ -2,7 +2,7 @@ package cli
 
 import (
 	"fmt"
-	"github.com/antham/goller/agregator"
+	"github.com/antham/goller/aggregator"
 	"github.com/antham/goller/dispatcher"
 	"github.com/antham/goller/reader"
 	"github.com/antham/goller/tokenizer"
@@ -10,21 +10,21 @@ import (
 
 // Group is tied to group command
 type Group struct {
-	tokenizer  tokenizer.Tokenizer
-	agrBuilder agregator.Builder
-	dispatcher dispatcher.Dispatcher
-	agregators *agregator.Agregators
-	reader     reader.Reader
-	ignore     *bool
-	positions  *[]int
-	args       *groupCommand
+	tokenizer   tokenizer.Tokenizer
+	agrBuilder  aggregator.Builder
+	dispatcher  dispatcher.Dispatcher
+	aggregators *aggregator.Aggregators
+	reader      reader.Reader
+	ignore      *bool
+	positions   *[]int
+	args        *groupCommand
 }
 
 // NewGroup creates an object related to group command
 func NewGroup(args *groupCommand) *Group {
 	return &Group{
 		tokenizer:  *tokenizer.NewTokenizer(args.parser.Get()),
-		agrBuilder: *agregator.NewBuilder(),
+		agrBuilder: *aggregator.NewBuilder(),
 		dispatcher: dispatcher.NewTermDispatch(*args.delimiter),
 		reader:     reader.NewStdinReader(),
 		positions:  args.positions.Get(),
@@ -64,17 +64,17 @@ func (g *Group) Consume() {
 	}
 
 	g.agrBuilder.SetCounterIfAny()
-	g.agregators = g.agrBuilder.Get()
+	g.aggregators = g.agrBuilder.Get()
 }
 
 // Sort orders tokenized lines
 func (g *Group) Sort() {
 	if g.args.sorters.Get() != nil {
-		g.args.sorters.Get().Sort(g.agregators)
+		g.args.sorters.Get().Sort(g.aggregators)
 	}
 }
 
 // Dispatch calls appropriate renderer
 func (g *Group) Dispatch() {
-	g.dispatcher.RenderItems(g.agregators)
+	g.dispatcher.RenderItems(g.aggregators)
 }

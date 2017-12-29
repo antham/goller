@@ -1,7 +1,7 @@
 package sorter
 
 import (
-	"github.com/antham/goller/agregator"
+	"github.com/antham/goller/aggregator"
 	"log"
 	"sort"
 	"strconv"
@@ -42,36 +42,36 @@ func (s *Sorters) Append(position int, sorterName string, args []string) {
 	}
 }
 
-// Sort agregators using provided sorters
-func (s *Sorters) Sort(agregators *agregator.Agregators) {
+// Sort aggregators using provided sorters
+func (s *Sorters) Sort(aggregators *aggregator.Aggregators) {
 	for i := len(*s) - 1; i >= 0; i-- {
-		(*s)[i].SetAgregators(agregators)
+		(*s)[i].SetAggregators(aggregators)
 		sort.Stable((*s)[i])
 	}
 }
 
-// Sorter represents a sorter applied to agregators
+// Sorter represents a sorter applied to aggregators
 type Sorter struct {
-	agregators *agregator.Agregators
-	position   int
-	less       less
+	aggregators *aggregator.Aggregators
+	position    int
+	less        less
 }
 
-// SetAgregators populate agregators
-func (s *Sorter) SetAgregators(agregators *agregator.Agregators) {
-	s.agregators = agregators
+// SetAggregators populate aggregators
+func (s *Sorter) SetAggregators(aggregators *aggregator.Aggregators) {
+	s.aggregators = aggregators
 }
 
 func (s *Sorter) Len() int {
-	return len(*(s.agregators))
+	return len(*(s.aggregators))
 }
 
 func (s *Sorter) Less(i, j int) bool {
-	return s.less(*(*s.agregators)[i].DatasOrdered[s.position], *(*s.agregators)[j].DatasOrdered[s.position])
+	return s.less(*(*s.aggregators)[i].DatasOrdered[s.position], *(*s.aggregators)[j].DatasOrdered[s.position])
 }
 
 func (s *Sorter) Swap(i, j int) {
-	(*s.agregators)[i], (*s.agregators)[j] = (*s.agregators)[j], (*s.agregators)[i]
+	(*s.aggregators)[i], (*s.aggregators)[j] = (*s.aggregators)[j], (*s.aggregators)[i]
 }
 
 // HasPosition check if position exists

@@ -1,4 +1,4 @@
-package agregator
+package aggregator
 
 import (
 	"github.com/antham/goller/tokenizer"
@@ -18,14 +18,14 @@ func TestAggregateSingleTokenWithNoVisibleCounter(t *testing.T) {
 
 	builder.Aggregate([]int{1}, &tokens, nil)
 
-	for _, agregator := range *builder.Get() {
-		if agregator.Count != 1 {
-			t.Error("Count must be 1 got", agregator.Count)
+	for _, aggregator := range *builder.Get() {
+		if aggregator.Count != 1 {
+			t.Error("Count must be 1 got", aggregator.Count)
 		}
 
 		test1 := "test1"
 
-		got := agregator.Datas
+		got := aggregator.Datas
 		expected := []*string{&test1}
 
 		if !reflect.DeepEqual(got, expected) {
@@ -60,9 +60,9 @@ func TestAggregateSingleToken(t *testing.T) {
 
 	builder.Aggregate([]int{3, 6, 0, 1}, &tokens, nil)
 
-	for _, agregator := range *builder.Get() {
-		if agregator.Count != 1 {
-			t.Error("Count must be 1 got", agregator.Count)
+	for _, aggregator := range *builder.Get() {
+		if aggregator.Count != 1 {
+			t.Error("Count must be 1 got", aggregator.Count)
 		}
 
 		test1 := "test3"
@@ -70,7 +70,7 @@ func TestAggregateSingleToken(t *testing.T) {
 		test3 := "1"
 		test4 := "test1"
 
-		got := agregator.Datas
+		got := aggregator.Datas
 		expected := []*string{&test1, &test2, &test3, &test4}
 
 		if *got[0] == *expected[0] &&

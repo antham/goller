@@ -1,7 +1,7 @@
 package sorter
 
 import (
-	"github.com/antham/goller/agregator"
+	"github.com/antham/goller/aggregator"
 	"github.com/antham/goller/tokenizer"
 	"testing"
 )
@@ -17,7 +17,7 @@ func TestIntMultiSort(t *testing.T) {
 		{"2", "9", "1"},
 	}
 
-	builder := agregator.NewBuilder()
+	builder := aggregator.NewBuilder()
 
 	for _, data := range datas {
 		tokens := []tokenizer.Token{}
@@ -30,13 +30,13 @@ func TestIntMultiSort(t *testing.T) {
 	}
 
 	builder.SetCounterIfAny()
-	agregators := builder.Get()
+	aggregators := builder.Get()
 
 	sorters := NewSorters()
 	sorters.Append(1, "int", []string{})
 	sorters.Append(2, "int", []string{})
 	sorters.Append(3, "int", []string{})
-	sorters.Sort(agregators)
+	sorters.Sort(aggregators)
 
 	expected := [][]*string{}
 
@@ -59,8 +59,8 @@ func TestIntMultiSort(t *testing.T) {
 
 	for i := 0; i < len(expected); i++ {
 		for j := 0; j < 3; j++ {
-			if *(*agregators)[i].Datas[j] != *expected[i][j] {
-				t.Errorf("Got %s, expected %s", *(*agregators)[i].Datas[j], *expected[i][j])
+			if *(*aggregators)[i].Datas[j] != *expected[i][j] {
+				t.Errorf("Got %s, expected %s", *(*aggregators)[i].Datas[j], *expected[i][j])
 			}
 		}
 	}
@@ -80,8 +80,8 @@ func TestInt(t *testing.T) {
 		datas3 = append(datas3, &row[2])
 	}
 
-	agregators := agregator.Agregators{
-		0: &agregator.Agregator{
+	aggregators := aggregator.Aggregators{
+		0: &aggregator.Aggregator{
 			Count: 5,
 			Datas: datas1,
 			DatasOrdered: map[int]*string{
@@ -89,7 +89,7 @@ func TestInt(t *testing.T) {
 				1: datas1[1],
 			},
 		},
-		1: &agregator.Agregator{
+		1: &aggregator.Aggregator{
 			Count: 5,
 			Datas: datas2,
 			DatasOrdered: map[int]*string{
@@ -97,7 +97,7 @@ func TestInt(t *testing.T) {
 				1: datas2[1],
 			},
 		},
-		2: &agregator.Agregator{
+		2: &aggregator.Aggregator{
 			Count: 5,
 			Datas: datas3,
 			DatasOrdered: map[int]*string{
@@ -109,12 +109,12 @@ func TestInt(t *testing.T) {
 
 	sorters := NewSorters()
 	sorters.Append(1, "int", []string{})
-	sorters.Sort(&agregators)
+	sorters.Sort(&aggregators)
 
-	if *agregators[0].DatasOrdered[1] != "1" ||
-		*agregators[1].DatasOrdered[1] != "8" ||
-		*agregators[2].DatasOrdered[1] != "9" {
-		t.Errorf("Got %s,%s,%s, expected order 1,8,9", *agregators[0].DatasOrdered[1], *agregators[0].DatasOrdered[1], *agregators[0].DatasOrdered[2])
+	if *aggregators[0].DatasOrdered[1] != "1" ||
+		*aggregators[1].DatasOrdered[1] != "8" ||
+		*aggregators[2].DatasOrdered[1] != "9" {
+		t.Errorf("Got %s,%s,%s, expected order 1,8,9", *aggregators[0].DatasOrdered[1], *aggregators[0].DatasOrdered[1], *aggregators[0].DatasOrdered[2])
 	}
 }
 
@@ -132,8 +132,8 @@ func TestStrl(t *testing.T) {
 		datas3 = append(datas3, &row[2])
 	}
 
-	agregators := agregator.Agregators{
-		0: &agregator.Agregator{
+	aggregators := aggregator.Aggregators{
+		0: &aggregator.Aggregator{
 			Count: 5,
 			Datas: datas1,
 			DatasOrdered: map[int]*string{
@@ -141,7 +141,7 @@ func TestStrl(t *testing.T) {
 				1: datas1[1],
 			},
 		},
-		1: &agregator.Agregator{
+		1: &aggregator.Aggregator{
 			Count: 5,
 			Datas: datas2,
 			DatasOrdered: map[int]*string{
@@ -149,7 +149,7 @@ func TestStrl(t *testing.T) {
 				1: datas2[1],
 			},
 		},
-		2: &agregator.Agregator{
+		2: &aggregator.Aggregator{
 			Count: 5,
 			Datas: datas3,
 			DatasOrdered: map[int]*string{
@@ -161,12 +161,12 @@ func TestStrl(t *testing.T) {
 
 	sorters := NewSorters()
 	sorters.Append(1, "strl", []string{})
-	sorters.Sort(&agregators)
+	sorters.Sort(&aggregators)
 
-	if *agregators[0].DatasOrdered[1] != "!" ||
-		*agregators[1].DatasOrdered[1] != "hello" ||
-		*agregators[2].DatasOrdered[1] != "everybody" {
-		t.Errorf("Got %s,%s,%s, expected order !,hello,everybody", *agregators[0].DatasOrdered[1], *agregators[0].DatasOrdered[1], *agregators[0].DatasOrdered[2])
+	if *aggregators[0].DatasOrdered[1] != "!" ||
+		*aggregators[1].DatasOrdered[1] != "hello" ||
+		*aggregators[2].DatasOrdered[1] != "everybody" {
+		t.Errorf("Got %s,%s,%s, expected order !,hello,everybody", *aggregators[0].DatasOrdered[1], *aggregators[0].DatasOrdered[1], *aggregators[0].DatasOrdered[2])
 	}
 }
 
@@ -184,8 +184,8 @@ func TestStr(t *testing.T) {
 		datas3 = append(datas3, &row[2])
 	}
 
-	agregators := agregator.Agregators{
-		0: &agregator.Agregator{
+	aggregators := aggregator.Aggregators{
+		0: &aggregator.Aggregator{
 			Count: 5,
 			Datas: datas1,
 			DatasOrdered: map[int]*string{
@@ -193,7 +193,7 @@ func TestStr(t *testing.T) {
 				1: datas1[1],
 			},
 		},
-		1: &agregator.Agregator{
+		1: &aggregator.Aggregator{
 			Count: 5,
 			Datas: datas2,
 			DatasOrdered: map[int]*string{
@@ -201,7 +201,7 @@ func TestStr(t *testing.T) {
 				1: datas2[1],
 			},
 		},
-		2: &agregator.Agregator{
+		2: &aggregator.Aggregator{
 			Count: 5,
 			Datas: datas3,
 			DatasOrdered: map[int]*string{
@@ -213,11 +213,11 @@ func TestStr(t *testing.T) {
 
 	sorters := NewSorters()
 	sorters.Append(1, "str", []string{})
-	sorters.Sort(&agregators)
+	sorters.Sort(&aggregators)
 
-	if *agregators[0].DatasOrdered[1] != "!" ||
-		*agregators[1].DatasOrdered[1] != "everybody" ||
-		*agregators[2].DatasOrdered[1] != "hello" {
-		t.Errorf("Got %s,%s,%s, expected order !,everybody,hello", *agregators[0].DatasOrdered[1], *agregators[0].DatasOrdered[1], *agregators[0].DatasOrdered[2])
+	if *aggregators[0].DatasOrdered[1] != "!" ||
+		*aggregators[1].DatasOrdered[1] != "everybody" ||
+		*aggregators[2].DatasOrdered[1] != "hello" {
+		t.Errorf("Got %s,%s,%s, expected order !,everybody,hello", *aggregators[0].DatasOrdered[1], *aggregators[0].DatasOrdered[1], *aggregators[0].DatasOrdered[2])
 	}
 }

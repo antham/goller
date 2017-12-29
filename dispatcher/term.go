@@ -2,7 +2,7 @@ package dispatcher
 
 import (
 	"fmt"
-	"github.com/antham/goller/agregator"
+	"github.com/antham/goller/aggregator"
 	"strings"
 )
 
@@ -17,11 +17,11 @@ func NewTermDispatch(delimiter string) Term {
 }
 
 // RenderItems is called to render items in a terminal
-func (t Term) RenderItems(agregators *agregator.Agregators) {
-	for _, agregator := range *agregators {
+func (t Term) RenderItems(aggregators *aggregator.Aggregators) {
+	for _, aggregator := range *aggregators {
 		datas := []string{}
 
-		for _, data := range agregator.Datas {
+		for _, data := range aggregator.Datas {
 			datas = append(datas, *data)
 		}
 

@@ -1,10 +1,10 @@
 package dispatcher
 
 import (
-	"github.com/antham/goller/agregator"
+	"github.com/antham/goller/aggregator"
 )
 
 // Dispatcher interface has to be implemented to render results
 type Dispatcher interface {
-	RenderItems(agregators *agregator.Agregators)
+	RenderItems(aggregators *aggregator.Aggregators)
 }
