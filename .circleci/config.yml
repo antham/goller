@@ -2,35 +2,37 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.9
+      - image: circleci/golang:1.12
     working_directory: /go/src/github.com/antham/goller
     environment:
        BASH_ENV: /home/circleci/.bashrc
     steps:
       - checkout
       - run:
-          name: Get gommit binary
+          name: Install dependencies
           command: |
-            mkdir ~/bin
-            wget -O ~/bin/gommit https://github.com/antham/gommit/releases/download/v2.1.1/gommit_linux_386 && chmod 777 ~/bin/gommit
-      - run:
-          name: Install dep and gometalinter
-          command: |
-            go get -u github.com/golang/dep/cmd/dep
-            go get github.com/alecthomas/gometalinter
-            gometalinter --install --update
+            wget -O doc-hunt https://github.com/antham/doc-hunt/releases/download/v2.1.1/doc-hunt_linux_amd64
+            sudo mv doc-hunt /usr/local/bin
+            sudo chmod 777 /usr/local/bin/doc-hunt
+            wget -O gommit https://github.com/antham/gommit/releases/download/v2.1.1/gommit_linux_386
+            sudo mv gommit /usr/local/bin
+            sudo chmod 777 /usr/local/bin/gommit
+            go get -u github.com/mitchellh/gox
+            go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
       - run:
           name: Install vendors
           command: |
-            dep ensure -v
-      - run:
-          name: Run gometalinter
-          command: |
-            make gometalinter
+            export GO111MODULE=on
+            go mod vendor
       - run:
           name: Run tests
           command: |
-            make run-tests
+            make test-all
+      - run:
+          name: Compile
+          command: |
+            gox -output "build/{{.Dir}}_{{.OS}}_{{.Arch}}"
+
       - run:
           name: Run gommit
           command: |
@@ -45,7 +47,7 @@ jobs:
 
   publish:
     docker:
-      - image: circleci/golang:1.9
+      - image: circleci/golang:1.12
     working_directory: /go/src/github.com/antham/goller
     steps:
       - checkout
@@ -59,13 +61,13 @@ jobs:
             mkdir /home/circleci/bin
             go get -u github.com/mitchellh/gox
             go get -u github.com/tcnksm/ghr
-            go get -u github.com/golang/dep/cmd/dep
             wget -O ~/bin/chyle https://github.com/antham/chyle/releases/download/v1.2.0/chyle_linux_amd64
             chmod 777 ~/bin/chyle
       - run:
           name: Install vendors
           command: |
-            dep ensure -v
+            export GO111MODULE=on
+            go mod vendor
       - run:
           name: Compile
           command: |
