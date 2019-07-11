@@ -2,7 +2,7 @@ package dispatcher
 
 import (
 	"fmt"
-	"github.com/antham/goller/aggregator"
+	"github.com/antham/goller/v2/aggregator"
 	"strings"
 )
 

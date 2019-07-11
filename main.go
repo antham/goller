@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/antham/goller/cli"
+	"github.com/antham/goller/v2/cli"
 )
 
 const version = "2.3.0"

@@ -2,8 +2,8 @@ package cli
 
 import (
 	"bytes"
-	"github.com/antham/goller/dsl"
-	"github.com/antham/goller/parser"
+	"github.com/antham/goller/v2/dsl"
+	"github.com/antham/goller/v2/parser"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 

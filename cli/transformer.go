@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/antham/goller/dsl"
-	"github.com/antham/goller/transformer"
+	"github.com/antham/goller/v2/dsl"
+	"github.com/antham/goller/v2/transformer"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 

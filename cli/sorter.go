@@ -3,8 +3,8 @@ package cli
 import (
 	"bytes"
 	"fmt"
-	"github.com/antham/goller/dsl"
-	"github.com/antham/goller/sorter"
+	"github.com/antham/goller/v2/dsl"
+	"github.com/antham/goller/v2/sorter"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 

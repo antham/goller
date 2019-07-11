@@ -1,9 +1,9 @@
 package aggregator
 
 import (
+	"github.com/antham/goller/v2/tokenizer"
+	"github.com/antham/goller/v2/transformer"
 	"github.com/stretchr/testify/assert"
-	"github.com/antham/goller/tokenizer"
-	"github.com/antham/goller/transformer"
 	"reflect"
 	"testing"
 )

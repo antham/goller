@@ -2,8 +2,8 @@ package cli
 
 import (
 	"fmt"
-	"github.com/antham/goller/reader"
-	"github.com/antham/goller/tokenizer"
+	"github.com/antham/goller/v2/reader"
+	"github.com/antham/goller/v2/tokenizer"
 	"strconv"
 )
 

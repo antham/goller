@@ -1,8 +1,8 @@
 package sorter
 
 import (
-	"github.com/antham/goller/aggregator"
-	"github.com/antham/goller/tokenizer"
+	"github.com/antham/goller/v2/aggregator"
+	"github.com/antham/goller/v2/tokenizer"
 	"testing"
 )
 

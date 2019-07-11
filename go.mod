@@ -1,4 +1,4 @@
-module github.com/antham/goller
+module github.com/antham/goller/v2
 
 go 1.12
 
