@@ -1,7 +1,7 @@
 package dispatcher
 
 import (
-	"github.com/antham/goller/aggregator"
+	"github.com/antham/goller/v2/aggregator"
 )
 
 // Dispatcher interface has to be implemented to render results

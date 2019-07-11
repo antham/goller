@@ -2,9 +2,9 @@ package dispatcher
 
 import (
 	"bytes"
-	"github.com/antham/goller/aggregator"
-	"github.com/antham/goller/tokenizer"
-	"github.com/antham/goller/transformer"
+	"github.com/antham/goller/v2/aggregator"
+	"github.com/antham/goller/v2/tokenizer"
+	"github.com/antham/goller/v2/transformer"
 	"io"
 	"os"
 	"testing"

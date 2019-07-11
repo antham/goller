@@ -1,10 +1,10 @@
 package cli
 
 import (
-	"github.com/antham/goller/aggregator"
-	"github.com/antham/goller/dispatcher"
-	"github.com/antham/goller/reader"
-	"github.com/antham/goller/tokenizer"
+	"github.com/antham/goller/v2/aggregator"
+	"github.com/antham/goller/v2/dispatcher"
+	"github.com/antham/goller/v2/reader"
+	"github.com/antham/goller/v2/tokenizer"
 	"gopkg.in/alecthomas/kingpin.v2"
 	"reflect"
 	"strings"

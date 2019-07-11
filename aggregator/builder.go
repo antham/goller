@@ -1,8 +1,8 @@
 package aggregator
 
 import (
-	"github.com/antham/goller/tokenizer"
-	"github.com/antham/goller/transformer"
+	"github.com/antham/goller/v2/tokenizer"
+	"github.com/antham/goller/v2/transformer"
 	"strconv"
 )
 

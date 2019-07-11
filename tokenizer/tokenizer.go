@@ -2,7 +2,7 @@ package tokenizer
 
 import (
 	"fmt"
-	"github.com/antham/goller/parser"
+	"github.com/antham/goller/v2/parser"
 )
 
 // Token represents a unit extracted when tokenizing a line

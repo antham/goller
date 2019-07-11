@@ -1,7 +1,7 @@
 package sorter
 
 import (
-	"github.com/antham/goller/aggregator"
+	"github.com/antham/goller/v2/aggregator"
 	"log"
 	"sort"
 	"strconv"

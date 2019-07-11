@@ -4,7 +4,7 @@ import (
 	"log"
 	"testing"
 
-	"github.com/antham/goller/parser"
+	"github.com/antham/goller/v2/parser"
 	"github.com/stretchr/testify/assert"
 )
 
