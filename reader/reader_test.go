@@ -6,6 +6,8 @@ import (
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNewRead(t *testing.T) {
@@ -29,7 +31,7 @@ func TestRead(t *testing.T) {
 		Input: input,
 	}
 
-	r.Read(func(line []byte) error {
+	assert.NoError(t, r.Read(func(line []byte) error {
 		expected := entries[0]
 
 		if !bytes.Equal(expected, line) {
@@ -41,7 +43,7 @@ func TestRead(t *testing.T) {
 		}
 
 		return nil
-	})
+	}))
 }
 
 func TestReadWithAnError(t *testing.T) {
@@ -69,11 +71,11 @@ func TestReadFirstLine(t *testing.T) {
 		Input: input,
 	}
 
-	r.ReadFirstLine(func(line []byte) error {
+	assert.NoError(t, r.ReadFirstLine(func(line []byte) error {
 		if !bytes.Equal(expected, line) {
 			t.Errorf("Line must be %s, got %s", expected, line)
 		}
 
 		return nil
-	})
+	}))
 }

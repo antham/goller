@@ -1,6 +1,7 @@
 package aggregator
 
 import (
+	"github.com/stretchr/testify/assert"
 	"github.com/antham/goller/tokenizer"
 	"github.com/antham/goller/transformer"
 	"reflect"
@@ -152,8 +153,8 @@ func TestApplyPreTransformer(t *testing.T) {
 		}
 
 		trans := transformer.NewTransformers()
-		trans.Append(1, "upp", []string{})
-		trans.Append(2, "upp", []string{})
+		assert.NoError(t, trans.Append(1, "upp", []string{}))
+		assert.NoError(t, trans.Append(2, "upp", []string{}))
 
 		builder.Aggregate(
 			[]int{0, 1, 2},

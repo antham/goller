@@ -6,6 +6,8 @@ import (
 	"path"
 	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func createConfig(filename string, data string, t *testing.T) {
@@ -16,7 +18,7 @@ func createConfig(filename string, data string, t *testing.T) {
 	}
 
 	buf := []byte(data)
-	ioutil.WriteFile(path.Join(baseDir.HomeDir, filename), buf, 0666)
+	assert.NoError(t, ioutil.WriteFile(path.Join(baseDir.HomeDir, filename), buf, 0666))
 }
 
 func readConfig(filename string, t *testing.T) ([]byte, error) {
@@ -89,7 +91,7 @@ func TestSaveConfig(t *testing.T) {
 	value := "world"
 
 	c := New()
-	c.Set(&category, &key, &value)
+	assert.NoError(t, c.Set(&category, &key, &value))
 
 	err := handler.Save(c)
 
