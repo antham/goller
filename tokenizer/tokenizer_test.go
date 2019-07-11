@@ -2,9 +2,10 @@ package tokenizer
 
 import (
 	"log"
+	"testing"
 
 	"github.com/antham/goller/parser"
-	"testing"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestTokenizeLineWithAParser(t *testing.T) {
@@ -54,7 +55,7 @@ func TestTokenizeALineWithLessTokensThanFirstLine(t *testing.T) {
 
 	data1 := []byte("test1 test2 test3 test4")
 
-	tok.Tokenize(data1)
+	assert.NoError(t, tok.Tokenize(data1))
 
 	data2 := []byte("test1 test2 test3")
 
@@ -76,7 +77,7 @@ func TestTokenizeALineWithMoreTokensThanFirstLine(t *testing.T) {
 
 	data1 := []byte("test1 test2 test3 test4")
 
-	tok.Tokenize(data1)
+	assert.NoError(t, tok.Tokenize(data1))
 
 	data2 := []byte("test1 test2 test3 test4 test5")
 

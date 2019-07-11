@@ -1,6 +1,8 @@
 package configurator
 
 import (
+	"github.com/stretchr/testify/assert"
+
 	"testing"
 )
 
@@ -47,7 +49,7 @@ func TestSet(t *testing.T) {
 	key := "hello"
 	value := "world"
 
-	c.Set(&category, &key, &value)
+	assert.NoError(t, c.Set(&category, &key, &value))
 
 	if (*c.Bindings.Transformers)["hello"] != "world" {
 		t.Error("Must retrieve value world")
