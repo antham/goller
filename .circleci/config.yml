@@ -2,10 +2,10 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.12
+      - image: circleci/golang:1.18
     working_directory: /go/src/github.com/antham/goller
     environment:
-       BASH_ENV: /home/circleci/.bashrc
+      BASH_ENV: /home/circleci/.bashrc
     steps:
       - checkout
       - run:
@@ -18,7 +18,7 @@ jobs:
             sudo mv gommit /usr/local/bin
             sudo chmod 777 /usr/local/bin/gommit
             go get -u github.com/mitchellh/gox
-            go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+            go get -u github.com/golangci/golangci-lint/cmd/golangci-lint@v1.35.2
       - run:
           name: Install vendors
           command: |
@@ -47,7 +47,7 @@ jobs:
 
   publish:
     docker:
-      - image: circleci/golang:1.12
+      - image: circleci/golang:1.18
     working_directory: /go/src/github.com/antham/goller
     steps:
       - checkout
